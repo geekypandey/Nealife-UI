@@ -1,0 +1,18 @@
+<div class="sidebar row flex-column">
+    <div class="company-logo p-3" routerLink="/">
+        <img class="" src="./../../../../../assets/dashboard/light-logo.svg" alt="logo-svg" width="120" height="30"/>
+    </div>
+    <div class="menus p-0">
+        <ng-container *ngFor="let menu of menus">                
+        <div class="menu p-0 d-flex align-items-center" routerLinkActive="active" [routerLink]="menu.url">
+            <div class="bar"></div>
+            <img
+            routerLinkActive="active"
+            [src]="'./../../../../assets/dashboard/'+menu.icon+'.svg'"
+            [alt]="menu.icon"
+             />               
+             {{menu.label}}
+        </div>
+    </ng-container>
+    </div>
+</div>

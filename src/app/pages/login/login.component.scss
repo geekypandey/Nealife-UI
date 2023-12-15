@@ -1,0 +1,39 @@
+:host {
+    display: block;
+    height: 100%;
+    position: relative;
+    background-image: url('./../../../assets/login/login-bg.svg');
+    background-size:100% 100%;
+    -o-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-color: #FAFCFF;
+}
+// .wave-img {
+//     position: fixed;
+//     left: 0;
+//     bottom: 15px;
+// }
+// .illustration-img {
+//     position: absolute;
+//     left: -67px;
+//     bottom: 15px;
+//     height: 400px;
+//     width: 630px;
+// }
+.login-welcome {
+    position: absolute;
+    left: 35px;
+    top: 35px;
+    font-size: 2rem;
+    color: var(--nl-primary-color);
+    font-weight: 600;
+}
+.login-container {
+    width: 400px;
+    position: absolute;
+    top: 60px;
+    // right: 260px;
+    right:20%
+}
