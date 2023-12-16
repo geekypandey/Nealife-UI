@@ -1,18 +1,18 @@
 .header {
-    height: 60px;
-    box-shadow: 5px 5px 10px 0px #E9F2FF;
-    .brand {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--nl-secondary-color);
+  height: 60px;
+  box-shadow: 5px 5px 10px 0px #e9f2ff;
+  .brand {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--nl-secondary-color);
+  }
+  .user {
+    padding-right: 2rem;
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border: 1px solid;
+      border-radius: 50%;
     }
-    .user {
-        padding-right: 2rem;
-        .avatar {
-            width: 45px;
-            height: 45px;
-            border:1px solid;
-            border-radius: 50%;
-        }
-    }
+  }
 }

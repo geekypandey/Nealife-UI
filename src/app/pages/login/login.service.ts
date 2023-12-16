@@ -2,13 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginService {
-
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   authenticate() {
-    return this.http.post('authenticate',{})
+    return this.http.post('authenticate', {});
   }
 }

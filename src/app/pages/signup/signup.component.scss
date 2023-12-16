@@ -10,7 +10,7 @@
   background-repeat: no-repeat;
   background-color: #fafcff;
 }
-.login-welcome {
+.signup-welcome {
   position: absolute;
   left: 35px;
   top: 35px;
@@ -18,14 +18,12 @@
   color: var(--nl-primary-color);
   font-weight: 600;
 }
-.login-container {
+.signup-container {
   width: 400px;
   position: absolute;
   top: 60px;
   right: 20%;
 }
-.signup-link {
-  margin-left: 0.5rem;
-  color: #0062f8;
+.company-logo {
   cursor: pointer;
 }

@@ -8,7 +8,7 @@ describe('AdminComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AdminComponent]
+      imports: [AdminComponent],
     });
     fixture = TestBed.createComponent(AdminComponent);
     component = fixture.componentInstance;

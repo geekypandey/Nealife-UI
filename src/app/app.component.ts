@@ -3,10 +3,10 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'nl-root',
-  standalone:true,
+  standalone: true,
   imports: [RouterModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'Nealife';

@@ -1,26 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.min.css";
 @import "bootstrap/dist/css/bootstrap-reboot.min.css";
 @import "bootstrap/dist/css/bootstrap-grid.min.css";
 
 body {
-    font-family: 'Lato', sans-serif;
-    height: 100vh;
-    margin: 0;
+  font-family: "Lato", sans-serif;
+  height: 100vh;
+  margin: 0;
 }
 
 :root {
-    --nl-primary-color: #0062F8;
-    --nl-secondary-color: #03C988;
+  --nl-primary-color: #0062f8;
+  --nl-secondary-color: #03c988;
 }
 
 .p-button {
-    background: #03C988;
-    border: none;
-    border-radius: 8px;
+  background: #03c988;
+  border: none;
+  border-radius: 8px;
 }
 
 .h-full {
-    height: 100%;
+  height: 100%;
 }
