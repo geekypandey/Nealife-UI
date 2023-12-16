@@ -1,0 +1,6 @@
+{
+  "/nealife/api": {
+    "target": "http://qa-portal.nealife.in",
+    "secure": false
+  }
+}

@@ -4,21 +4,24 @@
 @import 'bootstrap/dist/css/bootstrap-reboot.min.css';
 @import 'bootstrap/dist/css/bootstrap-grid.min.css';
 
+:root {
+  --nl-primary-color: #0062f8;
+  --nl-secondary-color: #03c988;
+}
+
 body {
   font-family: 'Lato', sans-serif;
   height: 100vh;
   margin: 0;
 }
 
-:root {
-  --nl-primary-color: #0062f8;
-  --nl-secondary-color: #03c988;
-}
-
 .p-button {
   background: #03c988;
   border: none;
   border-radius: 8px;
+  &[disabled] {
+    opacity: 0.6;
+  }
 }
 
 .h-full {

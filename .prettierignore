@@ -5,12 +5,10 @@ dist
 node_modules
 e2e
 
-.vscode/*
 npm-debug.log
 yarn-error.log
 
 /.angular/cache
 .angular
-*.json
 .editorconfig
 .gitignore
