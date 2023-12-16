@@ -16,7 +16,7 @@ export class LoginComponent {
   private loginService = inject(LoginService);
 
   submit(user: string, pass: string) {
-    this.loginService.authenticate().subscribe((resp) => {
+    this.loginService.authenticate().subscribe(resp => {
       console.log(resp);
     });
   }
