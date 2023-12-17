@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TableModule } from 'primeng/table';
+import { ColDef } from './table.model';
 
 @Component({
   selector: 'nl-table',
@@ -11,61 +12,12 @@ import { TableModule } from 'primeng/table';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent {
-  cols = [
-    { field: 'code', header: 'Code' },
-    { field: 'name', header: 'Name' },
-    { field: 'category', header: 'Category' },
-    { field: 'quantity', header: 'Quantity' },
-  ];
-
-  products = [
-    {
-      id: '1000',
-      code: 'f230fh0g3',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5,
-    },
-    {
-      id: '1000',
-      code: 'f230fh0g3',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5,
-    },
-    {
-      id: '1000',
-      code: 'f230fh0g3',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5,
-    },
-    {
-      id: '1000',
-      code: 'f230fh0g3',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5,
-    },
-  ];
+  @Input() cols: ColDef[] = [];
+  @Input() value: any[] = [];
+  @Input() paginator: boolean = true;
+  @Input() showCurrentPageReport: boolean = true;
+  @Input() defaultRowCount: number = 10;
+  @Input() rowsPerPageOptions: number[] = [10, 25, 50];
+  @Input() currentPageReportTemplate: string =
+    'Showing {first} to {last} of {totalRecords} entries';
 }

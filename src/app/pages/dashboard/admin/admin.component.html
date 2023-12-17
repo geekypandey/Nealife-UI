@@ -1,28 +1,18 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-2">
-      <nl-sidebar />
-    </div>
-    <div class="col">
-      <nl-header />
-      <div class="mt-3 row flex-column">
-        <strong class="col mb-3">My Dashboard</strong>
-        <div class="col mb-3">
-          <div class="row g-2">
-            <div class="col-2">
-              <div class="card"></div>
-            </div>
-            <div class="col-2">
-              <div class="card"></div>
-            </div>
-            <div class="col-2">
-              <div class="card"></div>
-            </div>
-          </div>
-        </div>
-        <strong class="col mb-4">Assessment Dashboard</strong>
-        <nl-table />
+<div class="mt-3 row flex-column">
+  <strong class="col mb-3">My Dashboard</strong>
+  <div class="col mb-3">
+    <div class="row g-2">
+      <div class="col-2">
+        <div class="card"></div>
+      </div>
+      <div class="col-2">
+        <div class="card"></div>
+      </div>
+      <div class="col-2">
+        <div class="card"></div>
       </div>
     </div>
   </div>
+  <strong class="col mb-4">Assessment Dashboard</strong>
+  <nl-table [cols]="cols" [value]="dashboardService.compProjections" />
 </div>

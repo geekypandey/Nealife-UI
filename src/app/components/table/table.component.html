@@ -1,4 +1,11 @@
-<p-table [columns]="cols" [value]="products">
+<p-table
+  [columns]="cols"
+  [value]="value"
+  [paginator]="paginator"
+  [showCurrentPageReport]="showCurrentPageReport"
+  [rows]="defaultRowCount"
+  [currentPageReportTemplate]="currentPageReportTemplate"
+  [rowsPerPageOptions]="rowsPerPageOptions">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th *ngFor="let col of columns">

@@ -1,13 +1,13 @@
 import { HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { TokenService } from '../services/token.service';
 
 export function AuthorizationInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
-  const authService = inject(AuthService);
-  if (authService.token) {
+  const tokenService = inject(TokenService);
+  if (tokenService.tokenValue) {
     const clonedRequest = request.clone({
       setHeaders: {
-        Authorization: 'Bearer ' + authService.token,
+        Authorization: 'Bearer ' + tokenService.tokenValue,
       },
     });
     return next(clonedRequest);

@@ -1,18 +1,20 @@
 import { Routes } from '@angular/router';
+import { isAuthenticatedGuard, isNotAuthenticatedGuard } from './guards/is-authenticated.guard';
 
 export const APP_ROUTES: Routes = [
   {
     path: 'login',
-    loadComponent: () => import('./pages/login/login.component').then(mod => mod.LoginComponent),
+    loadComponent: () => import('./pages/login/login.component').then(c => c.LoginComponent),
+    canActivate: [isNotAuthenticatedGuard],
   },
   {
     path: 'signup',
-    loadComponent: () => import('./pages/signup/signup.component').then(mod => mod.SignupComponent),
+    loadComponent: () => import('./pages/signup/signup.component').then(c => c.SignupComponent),
   },
   {
     path: 'dashboard',
-    loadComponent: () =>
-      import('./pages/dashboard/admin/admin.component').then(mod => mod.AdminComponent),
+    loadChildren: () => import('./pages/dashboard/dashboard.routes').then(r => r.DASHBOARD_ROUTES),
+    canActivate: [isAuthenticatedGuard],
   },
   {
     path: '',

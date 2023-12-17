@@ -16,7 +16,7 @@ body {
 }
 
 .p-button {
-  background: #03c988;
+  background: var(--nl-secondary-color);
   border: none;
   border-radius: 8px;
   &[disabled] {

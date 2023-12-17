@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CheckboxModule } from 'primeng/checkbox';
-import { switchMap } from 'rxjs';
 import { LoginService } from './login.service';
 
 @Component({
@@ -41,12 +40,9 @@ export class LoginComponent {
       password: this.password.value,
       rememberMe: false,
     };
-    this.loginService
-      .authenticate(request)
-      .pipe(switchMap(() => this.loginService.getLoggedInUser()))
-      .subscribe(resp => {
-        this.router.navigate(['/dashboard']);
-      });
+    this.loginService.authenticate(request).subscribe(_ => {
+      this.router.navigate(['/dashboard']);
+    });
   }
 
   get username() {

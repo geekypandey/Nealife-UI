@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
@@ -14,12 +14,12 @@ export class SidebarComponent {
     {
       label: 'Dashboard',
       icon: 'dashboard',
-      url: '/dashboard',
+      url: '/dashboard/admin',
     },
     {
       label: 'Register Company',
       icon: 'register',
-      url: '/register',
+      url: '/dashboard/register',
     },
     {
       label: 'Assign',
