@@ -10,6 +10,7 @@ export const APP_ROUTES: Routes = [
   {
     path: 'signup',
     loadComponent: () => import('./pages/signup/signup.component').then(c => c.SignupComponent),
+    canActivate: [isNotAuthenticatedGuard],
   },
   {
     path: 'dashboard',

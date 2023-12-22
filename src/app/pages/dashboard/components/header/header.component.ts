@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { HeaderMenu } from './header.model';
 
 @Component({
   selector: 'nl-header',
@@ -12,4 +13,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class HeaderComponent {
   @Input() companyName!: string;
   @Input() username!: string;
+  @Input() headerMenus: HeaderMenu[] = [];
+
+  showMenu = false;
 }

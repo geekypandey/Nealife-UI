@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { API_URL } from 'src/app/constants/api-url.constants';
-import { CompetencyAspectProjections } from '../dashboard.model';
+import { CompetencyAspectItemROCount, CompetencyAspectProjections } from '../dashboard.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +17,10 @@ export class DashboardService {
         this.compProjectionsData = resp;
       })
     );
+  }
+
+  getCompetencyAspectItemROCount() {
+    return this.http.get<CompetencyAspectItemROCount>(API_URL.competencyAspectItemROCount);
   }
 
   get compProjections() {

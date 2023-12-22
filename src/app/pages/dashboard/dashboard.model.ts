@@ -35,3 +35,17 @@ export interface CompetencyAspectProjections {
   parentAspect: string;
   parentAspectType: string;
 }
+
+export interface CompetencyAspectItemROCount {
+  aspectCount: string;
+  competencyCount: string;
+  itemCount: string;
+  responseOptionCount: string;
+}
+
+export interface SidebarMenu {
+  label: string;
+  icon: string;
+  url?: string;
+  children?: SidebarMenu[];
+}

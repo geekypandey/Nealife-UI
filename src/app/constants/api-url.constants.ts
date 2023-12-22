@@ -1,4 +1,4 @@
-export const BASE_URL = '/nealife/api';
+export const BASE_URL = '/nealife-qa/api';
 export const API_URL = {
   login: BASE_URL + '/authenticate',
   getLoggedInUser: BASE_URL + '/users/getLoggedInUser',
@@ -6,4 +6,5 @@ export const API_URL = {
 
   competencyAspectProjections:
     BASE_URL + '/competencyAspectProjections?page=0&size=5000&sort=competency,desc',
+  competencyAspectItemROCount: BASE_URL + '/competencies/getCompetencyAspectItemROCount',
 };

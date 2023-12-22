@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { ColDef } from './table.model';
+import { ColDef2 } from './table.model';
 
 @Component({
   selector: 'nl-table',
@@ -12,7 +12,7 @@ import { ColDef } from './table.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent {
-  @Input() cols: ColDef[] = [];
+  @Input() cols: ColDef2[] = [];
   @Input() value: any[] = [];
   @Input() paginator: boolean = true;
   @Input() showCurrentPageReport: boolean = true;

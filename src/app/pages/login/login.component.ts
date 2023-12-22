@@ -8,8 +8,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { CheckboxModule } from 'primeng/checkbox';
-import { LoginService } from './login.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'nl-login',
@@ -23,8 +24,9 @@ export class LoginComponent {
   loginForm: FormGroup;
 
   private fb = inject(FormBuilder);
-  private loginService = inject(LoginService);
+  private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
+  private spinner = inject(NgxSpinnerService);
 
   constructor() {
     this.loginForm = this.fb.nonNullable.group({
@@ -40,8 +42,12 @@ export class LoginComponent {
       password: this.password.value,
       rememberMe: false,
     };
-    this.loginService.authenticate(request).subscribe(_ => {
-      this.router.navigate(['/dashboard']);
+    this.spinner.show();
+    this.authenticationService.authenticate(request).subscribe({
+      next: _ => {
+        this.router.navigate(['/dashboard']).then(() => this.spinner.hide());
+      },
+      error: () => this.spinner.hide(),
     });
   }
 

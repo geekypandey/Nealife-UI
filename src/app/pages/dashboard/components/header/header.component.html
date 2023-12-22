@@ -1,9 +1,14 @@
 <div class="header row justify-content-between">
   <div class="brand col-2 p-3">{{ companyName }}</div>
   <div class="align-items-center col-2 d-flex user">
-    <div class="name col">
+    <div class="name col" (click)="showMenu = !showMenu">
       {{ username }}
       <img [src]="'./../../../../assets/dashboard/down-arrow.svg'" alt="down-arrow" />
+      <div class="dropdown-menu" *ngIf="showMenu">
+        <ng-container *ngFor="let headerMenu of headerMenus">
+          <div class="option" (click)="headerMenu.onClick()">{{ headerMenu.label }}</div>
+        </ng-container>
+      </div>
     </div>
     <div class="avatar"></div>
   </div>

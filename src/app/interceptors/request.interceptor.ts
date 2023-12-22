@@ -2,7 +2,7 @@ import { HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { TokenService } from '../services/token.service';
 
-export function AuthorizationInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
+export function RequestInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
   const tokenService = inject(TokenService);
   if (tokenService.tokenValue) {
     const clonedRequest = request.clone({
@@ -11,7 +11,6 @@ export function AuthorizationInterceptor(request: HttpRequest<unknown>, next: Ht
       },
     });
     return next(clonedRequest);
-  } else {
-    return next(request);
   }
+  return next(request);
 }

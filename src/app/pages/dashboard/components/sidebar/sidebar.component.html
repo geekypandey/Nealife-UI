@@ -1,5 +1,5 @@
 <div class="sidebar row flex-column">
-  <div class="company-logo p-3" routerLink="/">
+  <div class="company-logo p-3" routerLink="">
     <img
       class=""
       src="./../../../../../assets/dashboard/light-logo.svg"
@@ -19,6 +19,13 @@
           [src]="'./../../../../assets/dashboard/' + menu.icon + '.svg'"
           [alt]="menu.icon" />
         {{ menu.label }}
+
+        <ng-container *ngIf="menu.children?.length">
+          <img
+            class="down-arrow-white"
+            src="./../../../../../assets/dashboard/down-arrow-white.svg"
+            alt="down-arrow" />
+        </ng-container>
       </div>
     </ng-container>
   </div>

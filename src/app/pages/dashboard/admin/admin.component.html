@@ -1,18 +1,54 @@
-<div class="mt-3 row flex-column">
+<div class="mt-3 row flex-column h-100">
   <strong class="col mb-3">My Dashboard</strong>
-  <div class="col mb-3">
-    <div class="row g-2">
-      <div class="col-2">
-        <div class="card"></div>
-      </div>
-      <div class="col-2">
-        <div class="card"></div>
-      </div>
-      <div class="col-2">
-        <div class="card"></div>
+  <ng-container *ngIf="compentencies$ | async as projections">
+    <div class="col mb-3">
+      <div class="row g-2">
+        <div class="col-2">
+          <div class="card">
+            <div class="row">
+              <div class="col-3">
+                <img src="./../../../../assets/dashboard/alloted-assess.svg" alt="alloted-assess" />
+              </div>
+              <div class="col">
+                <div>Allotted Assessments</div>
+                <strong>{{ projections.compProjectionsROObject.aspectCount }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="card">
+            <div class="row">
+              <div class="col-3">
+                <img src="./../../../../assets/dashboard/used-assess.svg" alt="used-assess" />
+              </div>
+              <div class="col">
+                <div>Used Assessments</div>
+                <strong>{{ projections.compProjectionsROObject.itemCount }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="card">
+            <div class="row">
+              <div class="col-3">
+                <img src="./../../../../assets/dashboard/balance-assess.svg" alt="balance-assess" />
+              </div>
+              <div class="col">
+                <div>Balance Assessments</div>
+                <strong>{{ projections.compProjectionsROObject.competencyCount }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <strong class="col mb-4">Assessment Dashboard</strong>
-  <nl-table [cols]="cols" [value]="dashboardService.compProjections" />
+    <strong class="col mb-4">Assessment Dashboard</strong>
+    <nl-table [cols]="cols" [value]="projections.compProjections" />
+    <!-- <nl-ag-table
+      style="flex: 1 0 100%"
+      [colDefs]="cols2"
+      [rowData]="projections.compProjections"></nl-ag-table> -->
+  </ng-container>
 </div>
