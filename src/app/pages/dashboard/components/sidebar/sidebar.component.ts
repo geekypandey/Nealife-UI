@@ -11,6 +11,6 @@ import { SidebarMenu } from '../../dashboard.model';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
-  @Input()
-  menus: SidebarMenu[] = [];
+  @Input() menus: SidebarMenu[] = [];
+  @Input() defaultRoute: string = '/';
 }

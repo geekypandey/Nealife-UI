@@ -30,18 +30,30 @@ export class DashboardComponent {
   private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
   private spinner = inject(NgxSpinnerService);
+  public defaultRoute: string = '/';
 
   ngOnInit() {
     this.spinner.show();
     forkJoin([this.profileService.getLoggedInUser(), this.profileService.getAccount()]).subscribe({
       next: ([profile, account]) => {
-        this.sidebarMenus = this.getSidebarMenu(profile.role);
+        let sidebarMenus = this.getSidebarMenu(profile.role);
         this.headerMenus = this.getHeaderMenu();
         this.username = profile.roleDisplayName;
         this.companyName = profile.companyName;
 
         // Load first route
-        this.loadFirstRoute(profile.role);
+        const baseRoute = '/assess';
+        this.defaultRoute = baseRoute + this.getDefaultRoute(profile.role);
+        const dashboardMenus: SidebarMenu[] = [
+          {
+            label: 'Dashboard',
+            icon: 'dashboard',
+            url: this.defaultRoute,
+          },
+        ];
+        sidebarMenus = sidebarMenus.map(menu => ({ ...menu, url: baseRoute + menu.url }));
+        this.sidebarMenus = dashboardMenus.concat(sidebarMenus);
+        this.router.navigate([this.defaultRoute]);
         this.spinner.hide();
         this.cd.markForCheck();
       },
@@ -49,50 +61,45 @@ export class DashboardComponent {
     });
   }
 
-  private loadFirstRoute(role: string) {
-    const baseRoute = '/dashboard';
+  private getDefaultRoute(role: string) {
     if (role === USER_ROLE.SUPER_ADMIN) {
-      this.router.navigate([baseRoute + '/superadmin']);
+      return '/superadmin';
     } else if (role === USER_ROLE.ADMIN) {
-      this.router.navigate([baseRoute + '/admin']);
+      return '/admin';
     } else if (role === USER_ROLE.FRANCHISE) {
-      this.router.navigate([baseRoute + '/franchise']);
+      return '/franchise';
     }
+    return '/';
   }
 
   private getSidebarMenu(role: string): SidebarMenu[] {
     const commonMenu: SidebarMenu[] = [
       {
-        label: 'Dashboard',
-        icon: 'dashboard',
-        url: '/dashboard',
-      },
-      {
         label: 'Register Company',
         icon: 'register',
-        url: '/dashboard/register',
+        url: '/company',
       },
       {
         label: 'Assign',
         icon: 'assign',
-        url: '/dashboard/assign',
+        url: '/assign',
       },
       {
         label: 'Results',
         icon: 'results',
-        url: '/dashboard/results',
+        url: '/results',
       },
     ];
     const paymentSettingsMenu: SidebarMenu[] = [
       {
         label: 'Payment',
         icon: 'payment',
-        url: '/dashboard/payment',
+        url: '/payment',
       },
       {
         label: 'Settings',
         icon: 'settings',
-        url: '/dashboard/settings',
+        url: '/settings',
         children: [
           {
             label: 'Configure',
@@ -105,7 +112,7 @@ export class DashboardComponent {
       commonMenu.splice(1, 0, {
         label: 'Master Data',
         icon: 'dashboard',
-        url: '/dashboard/master',
+        url: '/master',
       });
       commonMenu.splice(commonMenu.length - 1, 0, ...paymentSettingsMenu);
       return commonMenu;

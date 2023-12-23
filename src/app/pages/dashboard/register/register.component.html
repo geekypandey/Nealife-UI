@@ -1,3 +1,10 @@
+<nl-spinner name="register-spinner"></nl-spinner>
 <div class="mt-3 row flex-column">
-  <strong class="col mb-3">Register</strong>
+  <strong class="col mb-3">Company</strong>
+  <div class="mb-3">
+    <button type="button" routerLink="add" class="p-button ml-auto d-block">Add Company</button>
+  </div>
+  <ng-container *ngIf="companies$ | async as companies">
+    <nl-table [cols]="cols" [value]="companies" [actionsList]="actionsList" />
+  </ng-container>
 </div>

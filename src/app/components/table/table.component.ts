@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { ColDef2 } from './table.model';
+import { Action, ColDef2 } from './table.model';
 
 @Component({
   selector: 'nl-table',
@@ -20,4 +20,5 @@ export class TableComponent {
   @Input() rowsPerPageOptions: number[] = [10, 25, 50];
   @Input() currentPageReportTemplate: string =
     'Showing {first} to {last} of {totalRecords} entries';
+  @Input() actionsList: Action[] = [];
 }

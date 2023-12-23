@@ -6,6 +6,7 @@ export const DASHBOARD_ROUTES: Route[] = [
   {
     path: '',
     loadComponent: () => import('./dashboard.component').then(c => c.DashboardComponent),
+    canActivateChild: [isAuthorizedGuard],
     children: [
       {
         path: 'superadmin',
@@ -14,8 +15,6 @@ export const DASHBOARD_ROUTES: Route[] = [
         data: {
           role: [USER_ROLE.SUPER_ADMIN],
         },
-        canActivate: [isAuthorizedGuard],
-        canActivateChild: [isAuthorizedGuard],
       },
       {
         path: 'admin',
@@ -23,7 +22,6 @@ export const DASHBOARD_ROUTES: Route[] = [
         data: {
           role: [USER_ROLE.ADMIN],
         },
-        canActivateChild: [isAuthorizedGuard],
       },
       {
         path: 'franchise',
@@ -32,15 +30,14 @@ export const DASHBOARD_ROUTES: Route[] = [
         data: {
           role: [USER_ROLE.FRANCHISE],
         },
-        canActivateChild: [isAuthorizedGuard],
       },
       {
         path: 'master',
         loadComponent: () => import('./admin/admin.component').then(c => c.AdminComponent),
       },
       {
-        path: 'register',
-        loadComponent: () => import('./register/register.component').then(c => c.RegisterComponent),
+        path: 'company',
+        loadChildren: () => import('./register/register.route').then(c => c.REGISTER_ROUTES),
       },
       {
         path: 'assign',

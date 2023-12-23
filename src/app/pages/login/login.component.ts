@@ -45,7 +45,7 @@ export class LoginComponent {
     this.spinner.show();
     this.authenticationService.authenticate(request).subscribe({
       next: _ => {
-        this.router.navigate(['/dashboard']).then(() => this.spinner.hide());
+        this.router.navigate(['/assess']).then(() => this.spinner.hide());
       },
       error: () => this.spinner.hide(),
     });

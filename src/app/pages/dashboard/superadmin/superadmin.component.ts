@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, finalize, forkJoin, map } from 'rxjs';
+import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ColDef2 } from 'src/app/components/table/table.model';
 import { CompetencyAspectItemROCount, CompetencyAspectProjections } from '../dashboard.model';
@@ -10,7 +11,7 @@ import { DashboardService } from '../services/dashboard.service';
 @Component({
   selector: 'nl-superadmin',
   standalone: true,
-  imports: [CommonModule, TableComponent],
+  imports: [CommonModule, TableComponent, SpinnerComponent],
   templateUrl: './superadmin.component.html',
   styleUrls: ['./superadmin.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,7 +49,7 @@ export class SuperadminComponent {
   }>;
 
   constructor() {
-    this.spinner.show();
+    this.spinner.show('superadmin-spinner');
     this.compentencies$ = forkJoin([
       this.dashboardService.getCompetencyAspectProjections(),
       this.dashboardService.getCompetencyAspectItemROCount(),
@@ -57,7 +58,7 @@ export class SuperadminComponent {
         compProjections,
         compProjectionsROObject,
       })),
-      finalize(() => this.spinner.hide())
+      finalize(() => this.spinner.hide('superadmin-spinner'))
     );
   }
 }

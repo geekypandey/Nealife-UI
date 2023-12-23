@@ -5,7 +5,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { APP_ROUTES } from './app/app-routes.constant';
@@ -17,7 +17,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(BrowserModule, BrowserAnimationsModule),
     provideHttpClient(withInterceptors(INTERCEPTORS)),
-    provideRouter([...APP_ROUTES]),
+    provideRouter([...APP_ROUTES], withComponentInputBinding()),
     MessageService,
     ConfirmationService,
     NgxSpinnerService,

@@ -7,4 +7,6 @@ export const API_URL = {
   competencyAspectProjections:
     BASE_URL + '/competencyAspectProjections?page=0&size=5000&sort=competency,desc',
   competencyAspectItemROCount: BASE_URL + '/competencies/getCompetencyAspectItemROCount',
+  companies: BASE_URL + '/companies',
+  lookup: BASE_URL + '/lookups',
 };

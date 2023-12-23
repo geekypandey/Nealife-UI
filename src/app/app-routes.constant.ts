@@ -13,18 +13,18 @@ export const APP_ROUTES: Routes = [
     canActivate: [isNotAuthenticatedGuard],
   },
   {
-    path: 'dashboard',
+    path: 'assess',
     loadChildren: () => import('./pages/dashboard/dashboard.routes').then(r => r.DASHBOARD_ROUTES),
     canActivate: [isAuthenticatedGuard],
   },
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'login',
+    redirectTo: 'assess',
   },
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: 'login',
+    redirectTo: 'assess',
   },
 ];

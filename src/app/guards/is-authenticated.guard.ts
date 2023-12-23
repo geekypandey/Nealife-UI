@@ -15,7 +15,7 @@ export const isNotAuthenticatedGuard: CanActivateFn = (next, state) => {
   const tokenService = inject(TokenService);
   const router = inject(Router);
   if (!!tokenService.tokenValue) {
-    return router.navigate(['/dashboard']);
+    return router.navigate(['/assess']);
   }
   return true;
 };

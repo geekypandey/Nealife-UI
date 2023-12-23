@@ -11,12 +11,23 @@
       <th *ngFor="let col of columns">
         {{ col.header }}
       </th>
+      <th *ngIf="actionsList && actionsList.length">Action</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr>
       <td *ngFor="let col of columns">
         {{ rowData[col.field] }}
+      </td>
+      <td *ngIf="actionsList && actionsList.length">
+        <img
+          style="cursor: pointer; margin-left: 10px"
+          (click)="action.onClick(rowData[action.field])"
+          *ngFor="let action of actionsList"
+          width="16px"
+          height="16px"
+          [src]="'./../../../assets/dashboard/actions/' + action.icon + '.svg'"
+          [alt]="action.icon" />
       </td>
     </tr>
   </ng-template>

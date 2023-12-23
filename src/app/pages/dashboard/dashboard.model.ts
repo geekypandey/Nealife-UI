@@ -43,6 +43,38 @@ export interface CompetencyAspectItemROCount {
   responseOptionCount: string;
 }
 
+export interface Company {
+  id: number;
+  serialNo: null;
+  name: string;
+  contactPerson: string;
+  email: string;
+  address: string;
+  contactNumber1: string;
+  contactNumber2: null;
+  status: string;
+  emailTemplateId: null;
+  emailTemplateName: null;
+  totalPayment: null;
+  paymentDate: null;
+  companyType: number;
+  partnerType: number;
+  companyTypeName: null;
+  parentId: number;
+  parentName: string;
+  website: string;
+  logoUrl: string;
+  brandingId: null;
+  validFrom?: string;
+  validTo?: string;
+}
+
+export interface CompanyQuery {
+  'id.equals': string;
+  'parent.equals': string;
+  [key: string]: string;
+}
+
 export interface SidebarMenu {
   label: string;
   icon: string;

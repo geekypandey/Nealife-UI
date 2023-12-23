@@ -4,6 +4,7 @@ import { ColDef } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, finalize, forkJoin, map } from 'rxjs';
 import { AgTableComponent } from 'src/app/components/ag-table/ag-table.component';
+import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ColDef2 } from 'src/app/components/table/table.model';
 import { CompetencyAspectItemROCount, CompetencyAspectProjections } from '../dashboard.model';
@@ -12,7 +13,7 @@ import { DashboardService } from '../services/dashboard.service';
 @Component({
   selector: 'nl-admin',
   standalone: true,
-  imports: [CommonModule, TableComponent, AgTableComponent],
+  imports: [CommonModule, TableComponent, AgTableComponent, SpinnerComponent],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
 })
@@ -71,7 +72,7 @@ export class AdminComponent {
   private dashboardService = inject(DashboardService);
 
   constructor() {
-    this.spinner.show();
+    this.spinner.show('admin-spinner');
     this.compentencies$ = forkJoin([
       this.dashboardService.getCompetencyAspectProjections(),
       this.dashboardService.getCompetencyAspectItemROCount(),
@@ -80,7 +81,7 @@ export class AdminComponent {
         compProjections,
         compProjectionsROObject,
       })),
-      finalize(() => this.spinner.hide())
+      finalize(() => this.spinner.hide('admin-spinner'))
     );
   }
 }
