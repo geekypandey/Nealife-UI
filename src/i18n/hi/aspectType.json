@@ -1,0 +1,10 @@
+{
+  "nealifeApp": {
+    "AspectType": {
+      "null": "",
+      "FACTOR": "FACTOR",
+      "ABILITY": "ABILITY",
+      "TRAIT": "TRAIT"
+    }
+  }
+}

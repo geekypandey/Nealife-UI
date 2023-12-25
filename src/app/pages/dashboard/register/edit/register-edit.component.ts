@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DropdownModule } from 'primeng/dropdown';
 import { forkJoin, map } from 'rxjs';
@@ -20,7 +21,14 @@ import { RegisterService } from '../register.service';
 @Component({
   selector: 'nl-register-edit',
   standalone: true,
-  imports: [CommonModule, RouterLink, SpinnerComponent, DropdownModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    SpinnerComponent,
+    DropdownModule,
+    ReactiveFormsModule,
+    TranslateModule,
+  ],
   templateUrl: './register-edit.component.html',
   styleUrls: ['./register-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,6 +50,7 @@ export class RegisterEditComponent {
   }
 
   parentCompanies: DropdownOption[] = [];
+  statusList: DropdownOption[] = [];
   company!: Company;
   editForm!: FormGroup;
   accountTypes: DropdownOption[] = [];
@@ -51,12 +60,22 @@ export class RegisterEditComponent {
   private spinner = inject(NgxSpinnerService);
   private fb = inject(FormBuilder);
   private cdRef = inject(ChangeDetectorRef);
+  private translateService = inject(TranslateService);
 
   constructor() {
+    const statusBaseStr = 'nealifeApp.ActivityStatus.';
+    const statusValues = ['ACTIVE', 'INACTIVE', 'TERMINATED', 'EXPIRED'];
+    this.statusList = statusValues.map(value => ({
+      label: this.translateService.instant(statusBaseStr + value),
+      value: value,
+    }));
     this.parentCompanies = this.registerService.companies.map(company => ({
       label: company.name,
       value: '' + company.id,
     }));
+  }
+
+  ngOnInit() {
     this.spinner.show('register-edit');
     forkJoin([
       this.registerService.lookup('COMPANY_TYPE'),

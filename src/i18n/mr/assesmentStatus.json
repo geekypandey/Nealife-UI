@@ -1,0 +1,11 @@
+{
+  "nealifeApp": {
+    "AssesmentStatus": {
+      "null": "",
+      "SCHEDULED": "SCHEDULED",
+      "INPROGRESS": "INPROGRESS",
+      "COMPLETED": "COMPLETED",
+      "INVALID": "INVALID"
+    }
+  }
+}

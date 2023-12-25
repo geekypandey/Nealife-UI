@@ -1,0 +1,10 @@
+{
+  "nealifeApp": {
+    "ActivityStatus": {
+      "null": "",
+      "ACTIVE": "ACTIVE",
+      "INACTIVE": "INACTIVE",
+      "TERMINATE": "TERMINATE"
+    }
+  }
+}

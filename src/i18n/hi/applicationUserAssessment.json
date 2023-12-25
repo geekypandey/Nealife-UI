@@ -1,0 +1,29 @@
+{
+  "nealifeApp": {
+    "applicationUserAssessment": {
+      "home": {
+        "title": "ApplicationUserAssessments",
+        "createLabel": "नया Application User Assessment बनाएँ",
+        "createOrEditLabel": "Application User Assessment बनाएँ या संपादित करें",
+        "notFound": "No Application User Assessments found"
+      },
+      "created": "एक नया Application User Assessment [identifier: {{ param }}] तैयार है",
+      "updated": "एक Application User Assessment [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Application User Assessment [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Application User Assessment [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Application User Assessment"
+      },
+      "activationkey": "Activationkey",
+      "rawScore": "Raw Score",
+      "activated": "Activated",
+      "userResponse": "User Response",
+      "status": "Status",
+      "report": "Report",
+      "user": "User",
+      "assessment": "Assessment"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "nealifeApp": {
+    "lookup": {
+      "home": {
+        "title": "Lookups",
+        "createLabel": "Create a new Lookup",
+        "createOrEditLabel": "Create or edit a Lookup",
+        "notFound": "No Lookups found"
+      },
+      "created": "A new Lookup is created with identifier {{ param }}",
+      "updated": "A Lookup is updated with identifier {{ param }}",
+      "deleted": "A Lookup is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Lookup {{ id }}?"
+      },
+      "detail": {
+        "title": "Lookup"
+      },
+      "type": "Type",
+      "subType": "Sub Type",
+      "key": "Key",
+      "value": "Value"
+    }
+  }
+}

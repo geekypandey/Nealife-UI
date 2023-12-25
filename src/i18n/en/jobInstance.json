@@ -1,0 +1,29 @@
+{
+  "nealifeApp": {
+    "jobInstance": {
+      "home": {
+        "title": "Job Instances",
+        "createLabel": "Create a new Job Instance",
+        "createOrEditLabel": "Create or edit a Job Instance",
+        "notFound": "No Job Instances found"
+      },
+      "created": "A new Job Instance is created with identifier {{ param }}",
+      "updated": "A Job Instance is updated with identifier {{ param }}",
+      "deleted": "A Job Instance is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Job Instance {{ id }}?"
+      },
+      "detail": {
+        "title": "Job Instance"
+      },
+      "sequence": "Sequence",
+      "status": "Status",
+      "scheduleStartDate": "Schedule Start Date",
+      "scheduleEndDate": "Schedule End Date",
+      "startedOn": "Started On",
+      "endedOn": "Ended On",
+      "errorDetails": "Error Details",
+      "jobheader": "Jobheader"
+    }
+  }
+}

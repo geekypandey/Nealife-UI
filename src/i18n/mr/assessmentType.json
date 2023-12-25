@@ -1,0 +1,23 @@
+{
+  "nealifeApp": {
+    "assessmentType": {
+      "home": {
+        "title": "Assessment Types",
+        "createLabel": "नवीन Assessment Type तयार करा",
+        "createOrEditLabel": "Assessment Type तयार किंवा संपादित करा",
+        "notFound": "No Assessment Types found"
+      },
+      "created": "Assessment Type [identifier: {{ param }}] तयार आहे",
+      "updated": "Assessment Type [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Assessment Type [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Assessment Type [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Assessment Type"
+      },
+      "name": "Name",
+      "description": "Description"
+    }
+  }
+}

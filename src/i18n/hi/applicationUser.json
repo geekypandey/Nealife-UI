@@ -1,0 +1,30 @@
+{
+  "nealifeApp": {
+    "applicationUser": {
+      "home": {
+        "title": "ApplicationUsers",
+        "createLabel": "नया Application User बनाएँ",
+        "createOrEditLabel": "Application User बनाएँ या संपादित करें",
+        "notFound": "No Application Users found"
+      },
+      "created": "एक नया Application User [identifier: {{ param }}] तैयार है",
+      "updated": "एक Application User [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Application User [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Application User [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Application User"
+      },
+      "userName": "User Name",
+      "address": "Address",
+      "contactNumber1": "Contact Number 1",
+      "contactNumber2": "Contact Number 2",
+      "status": "Status",
+      "internalUser": "Internal User",
+      "assessments": "Assessments",
+      "company": "Company",
+      "manager": "Manager"
+    }
+  }
+}

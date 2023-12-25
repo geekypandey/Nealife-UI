@@ -1,0 +1,23 @@
+{
+  "nealifeApp": {
+    "responseOption": {
+      "home": {
+        "title": "Response Options",
+        "createLabel": "नवीन Response Option तयार करा",
+        "createOrEditLabel": "Response Option तयार किंवा संपादित करा",
+        "notFound": "No Response Options found"
+      },
+      "created": "Response Option [identifier: {{ param }}] तयार आहे",
+      "updated": "Response Option [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Response Option [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Response Option [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Response Option"
+      },
+      "responseOption": "Response Option",
+      "choices": "Choices"
+    }
+  }
+}

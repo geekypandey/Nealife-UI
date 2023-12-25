@@ -1,0 +1,24 @@
+{
+  "nealifeApp": {
+    "competency": {
+      "home": {
+        "title": "Competencies",
+        "createLabel": "नवीन Competency तयार करा",
+        "createOrEditLabel": "Competency तयार किंवा संपादित करा",
+        "notFound": "No Competencies found"
+      },
+      "created": "Competency [identifier: {{ param }}] तयार आहे",
+      "updated": "Competency [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Competency [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Competency [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Competency"
+      },
+      "name": "Name",
+      "description": "Description",
+      "aspects": "Aspects"
+    }
+  }
+}

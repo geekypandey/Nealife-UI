@@ -1,0 +1,29 @@
+{
+  "nealifeApp": {
+    "norm": {
+      "home": {
+        "title": "Norms",
+        "createLabel": "नवीन Norm तयार करा",
+        "createOrEditLabel": "Norm तयार किंवा संपादित करा",
+        "notFound": "No Norms found"
+      },
+      "created": "Norm [identifier: {{ param }}] तयार आहे",
+      "updated": "Norm [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Norm [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Norm [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Norm"
+      },
+      "stanine": "Stanine",
+      "percentiles": "Percentiles",
+      "grade": "Grade",
+      "aspect": "Aspect",
+      "traits": "Traits",
+      "value": "Value",
+      "total": "Total",
+      "trait": "Trait"
+    }
+  }
+}

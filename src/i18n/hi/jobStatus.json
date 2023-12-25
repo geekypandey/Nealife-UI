@@ -1,0 +1,14 @@
+{
+  "nealifeApp": {
+    "JobStatus": {
+      "null": "",
+      "IN_PROCESS": "IN_PROCESS",
+      "SCHEDULED": "SCHEDULED",
+      "COMPLETED": "COMPLETED",
+      "CANCELLED": "CANCELLED",
+      "CANCEL_FAILED": "CANCEL_FAILED",
+      "COMPLETED_WITH_ERROR": "COMPLETED_WITH_ERROR",
+      "FAILED": "FAILED"
+    }
+  }
+}

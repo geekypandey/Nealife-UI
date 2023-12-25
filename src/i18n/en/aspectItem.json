@@ -1,0 +1,23 @@
+{
+  "nealifeApp": {
+    "aspectItem": {
+      "home": {
+        "title": "Aspect Items",
+        "createLabel": "Create a new Aspect Item",
+        "createOrEditLabel": "Create or edit a Aspect Item",
+        "notFound": "No Aspect Items found"
+      },
+      "created": "A new Aspect Item is created with identifier {{ param }}",
+      "updated": "A Aspect Item is updated with identifier {{ param }}",
+      "deleted": "A Aspect Item is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Aspect Item {{ id }}?"
+      },
+      "detail": {
+        "title": "Aspect Item"
+      },
+      "item": "Item",
+      "aspect": "Aspect"
+    }
+  }
+}

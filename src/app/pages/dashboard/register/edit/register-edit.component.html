@@ -47,7 +47,12 @@
               </div>
               <div class="col-6">
                 <label class="d-block" for="status">Status</label>
-                <input type="text" formControlName="status" id="status" class="p-inputtext" />
+                <p-dropdown
+                  [attr.id]="'status'"
+                  formControlName="status"
+                  [options]="statusList"
+                  placeholder="Select parent company">
+                </p-dropdown>
               </div>
             </div>
             <div class="row mb-3 p-fluid">

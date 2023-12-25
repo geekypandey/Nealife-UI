@@ -4,6 +4,8 @@
 @import 'primeng/resources/primeng.min.css';
 @import 'bootstrap/dist/css/bootstrap-reboot.min.css';
 @import 'bootstrap/dist/css/bootstrap-grid.min.css';
+@import 'bootstrap/dist/css/bootstrap-utilities.min.css';
+
 /* Core Grid CSS */
 @import 'ag-grid-community/styles/ag-grid.css';
 /* Quartz Theme Specific CSS */
@@ -31,12 +33,4 @@ body {
 
 .p-dropdown-items {
   padding: 0 !important; // required as reboot.scss overrided
-}
-
-.h-full {
-  height: 100%;
-}
-
-.ml-auto {
-  margin-left: auto;
 }

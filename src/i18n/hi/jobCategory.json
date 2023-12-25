@@ -1,0 +1,16 @@
+{
+  "nealifeApp": {
+    "JobCategory": {
+      "null": "",
+      "BYSECONDS": "BYSECONDS",
+      "BYMINUTES": "BYMINUTES",
+      "BYHOURS": "BYHOURS",
+      "IMMEDIATELY": "IMMEDIATELY",
+      "ONCE": "ONCE",
+      "DAILY": "DAILY",
+      "WEEKLY": "WEEKLY",
+      "MONTHLY": "MONTHLY",
+      "QUATERLY": "QUATERLY"
+    }
+  }
+}

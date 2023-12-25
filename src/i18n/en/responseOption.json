@@ -1,0 +1,23 @@
+{
+  "nealifeApp": {
+    "responseOption": {
+      "home": {
+        "title": "Response Options",
+        "createLabel": "Create a new Response Option",
+        "createOrEditLabel": "Create or edit a Response Option",
+        "notFound": "No Response Options found"
+      },
+      "created": "A new Response Option is created with identifier {{ param }}",
+      "updated": "A Response Option is updated with identifier {{ param }}",
+      "deleted": "A Response Option is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Response Option {{ id }}?"
+      },
+      "detail": {
+        "title": "Response Option"
+      },
+      "responseOption": "Response Option",
+      "choices": "Choices"
+    }
+  }
+}

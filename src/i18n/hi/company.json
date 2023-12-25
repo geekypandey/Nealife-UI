@@ -1,0 +1,31 @@
+{
+  "nealifeApp": {
+    "company": {
+      "home": {
+        "title": "Companies",
+        "createLabel": "नया Company बनाएँ",
+        "createOrEditLabel": "Company बनाएँ या संपादित करें",
+        "notFound": "No Companies found"
+      },
+      "created": "एक नया Company [identifier: {{ param }}] तैयार है",
+      "updated": "एक Company [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Company [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Company [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Company"
+      },
+      "name": "Name",
+      "contactPerson": "Contact Person",
+      "email": "Email",
+      "address": "Address",
+      "contactNumber1": "Contact Number 1",
+      "contactNumber2": "Contact Number 2",
+      "status": "Status",
+      "validFrom": "Valid From",
+      "validTo": "Valid To",
+      "assessments": "Assessments"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "nealifeApp": {
+    "companyAssessment": {
+      "home": {
+        "title": "CompanyAssessments",
+        "createLabel": "नया Company Assessment बनाएँ",
+        "createOrEditLabel": "Company Assessment बनाएँ या संपादित करें",
+        "notFound": "No Company Assessments found"
+      },
+      "created": "एक नया Company Assessment [identifier: {{ param }}] तैयार है",
+      "updated": "एक Company Assessment [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Company Assessment [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Company Assessment [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Company Assessment"
+      },
+      "company": "Company",
+      "assessment": "Assessment"
+    }
+  }
+}

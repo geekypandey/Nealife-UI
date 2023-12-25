@@ -1,0 +1,31 @@
+{
+  "nealifeApp": {
+    "interpretation": {
+      "home": {
+        "title": "Interpretations",
+        "createLabel": "नवीन Interpretation तयार करा",
+        "createOrEditLabel": "Interpretation तयार किंवा संपादित करा",
+        "notFound": "No Interpretations found"
+      },
+      "created": "Interpretation [identifier: {{ param }}] तयार आहे",
+      "updated": "Interpretation [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Interpretation [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Interpretation [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Interpretation"
+      },
+      "high": "High",
+      "low": "Low",
+      "medium": "Medium",
+      "interpretation1": "Interpretation 1",
+      "interpretation2": "Interpretation 2",
+      "interpretation3": "Interpretation 3",
+      "interpretation4": "Interpretation 4",
+      "interpretation5": "Interpretation 5",
+      "interpretation6": "Interpretation 6",
+      "aspect": "Aspect"
+    }
+  }
+}

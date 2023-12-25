@@ -1,0 +1,29 @@
+{
+  "nealifeApp": {
+    "norm": {
+      "home": {
+        "title": "Norms",
+        "createLabel": "Create a new Norm",
+        "createOrEditLabel": "Create or edit a Norm",
+        "notFound": "No Norms found"
+      },
+      "created": "A new Norm is created with identifier {{ param }}",
+      "updated": "A Norm is updated with identifier {{ param }}",
+      "deleted": "A Norm is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Norm {{ id }}?"
+      },
+      "detail": {
+        "title": "Norm"
+      },
+      "stanine": "Stanine",
+      "percentiles": "Percentiles",
+      "grade": "Grade",
+      "aspect": "Aspect",
+      "traits": "Traits",
+      "value": "Value",
+      "total": "Total",
+      "trait": "Trait"
+    }
+  }
+}

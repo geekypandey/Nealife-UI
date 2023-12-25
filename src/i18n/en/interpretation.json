@@ -1,0 +1,31 @@
+{
+  "nealifeApp": {
+    "interpretation": {
+      "home": {
+        "title": "Interpretations",
+        "createLabel": "Create a new Interpretation",
+        "createOrEditLabel": "Create or edit a Interpretation",
+        "notFound": "No Interpretations found"
+      },
+      "created": "A new Interpretation is created with identifier {{ param }}",
+      "updated": "A Interpretation is updated with identifier {{ param }}",
+      "deleted": "A Interpretation is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Interpretation {{ id }}?"
+      },
+      "detail": {
+        "title": "Interpretation"
+      },
+      "high": "High",
+      "low": "Low",
+      "medium": "Medium",
+      "interpretation1": "Interpretation 1",
+      "interpretation2": "Interpretation 2",
+      "interpretation3": "Interpretation 3",
+      "interpretation4": "Interpretation 4",
+      "interpretation5": "Interpretation 5",
+      "interpretation6": "Interpretation 6",
+      "aspect": "Aspect"
+    }
+  }
+}

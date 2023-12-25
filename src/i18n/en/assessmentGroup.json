@@ -1,0 +1,35 @@
+{
+  "nealifeApp": {
+    "assessment": {
+      "home": {
+        "title": "Assessments ",
+        "createLabel": "Create a new Assessment",
+        "createOrEditLabel": "Create or edit a Assessment",
+        "notFound": "No Assessments found"
+      },
+      "created": "A new Assessment is created with identifier {{ param }}",
+      "updated": "A Assessment is updated with identifier {{ param }}",
+      "deleted": "A Assessment is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Assessment {{ id }}?",
+        "question2": "Are you sure you want to delete Assessment Group Assessment {{ id }}?"
+      },
+      "detail": {
+        "title": "Assessment Group Assessment"
+      },
+      "create": {
+        "title": "Create Assessment Group"
+      },
+      "assessmentGroup": "Assessment Group",
+      "name": "Assessment Name",
+      "description": "Assessment Description",
+      "abbreviation": "Abbreviation",
+      "industry": "Industry",
+      "experienceRange": "Experience Range",
+      "status": "Status",
+      "validFrom": "Valid From",
+      "validTo": "Valid To",
+      "assessmentGroupName": "Assessment GroupName"
+    }
+  }
+}

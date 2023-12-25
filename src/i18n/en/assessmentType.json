@@ -1,0 +1,23 @@
+{
+  "nealifeApp": {
+    "assessmentType": {
+      "home": {
+        "title": "Assessment Types",
+        "createLabel": "Create a new Assessment Type",
+        "createOrEditLabel": "Create or edit a Assessment Type",
+        "notFound": "No Assessment Types found"
+      },
+      "created": "A new Assessment Type is created with identifier {{ param }}",
+      "updated": "A Assessment Type is updated with identifier {{ param }}",
+      "deleted": "A Assessment Type is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Assessment Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Assessment Type"
+      },
+      "name": "Name",
+      "description": "Description"
+    }
+  }
+}

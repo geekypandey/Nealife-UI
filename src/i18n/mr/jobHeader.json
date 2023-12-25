@@ -1,0 +1,35 @@
+{
+  "nealifeApp": {
+    "jobHeader": {
+      "home": {
+        "title": "Job Headers",
+        "createLabel": "नवीन Job Header तयार करा",
+        "createOrEditLabel": "Job Header तयार किंवा संपादित करा",
+        "notFound": "No Job Headers found"
+      },
+      "created": "Job Header [identifier: {{ param }}] तयार आहे",
+      "updated": "Job Header [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Job Header [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Job Header [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Job Header"
+      },
+      "name": "Name",
+      "description": "Description",
+      "cronExpression": "Cron Expression",
+      "status": "Status",
+      "startsOn": "Starts On",
+      "endsOn": "Ends On",
+      "nextRunsOn": "Next Runs On",
+      "previousRanOn": "Previous Ran On",
+      "jobType": "Job Type",
+      "jobCategory": "Job Category",
+      "userJob": "User Job",
+      "errorDetails": "Error Details",
+      "jobInstances": "Job Instances",
+      "clonedFrom": "Cloned From"
+    }
+  }
+}

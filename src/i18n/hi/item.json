@@ -1,0 +1,29 @@
+{
+  "nealifeApp": {
+    "item": {
+      "home": {
+        "title": "Items",
+        "createLabel": "नया Item बनाएँ",
+        "createOrEditLabel": "Item बनाएँ या संपादित करें",
+        "notFound": "No Items found"
+      },
+      "created": "एक नया Item [identifier: {{ param }}] तैयार है",
+      "updated": "एक Item [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Item [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Item [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Item"
+      },
+      "key": "Key",
+      "question": "Question",
+      "fiHigh": "Fi High",
+      "fiAboveAverage": "Fi Above Average",
+      "fiAverage": "Fi Average",
+      "fiBelowAverage": "Fi Below Average",
+      "fiLow": "Fi Low",
+      "choices": "Choices"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "nealifeApp": {
+    "jobInstance": {
+      "home": {
+        "title": "Job Instances",
+        "createLabel": "नवीन Job Instance तयार करा",
+        "createOrEditLabel": "Job Instance तयार किंवा संपादित करा",
+        "notFound": "No Job Instances found"
+      },
+      "created": "Job Instance [identifier: {{ param }}] तयार आहे",
+      "updated": "Job Instance [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Job Instance [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Job Instance [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Job Instance"
+      },
+      "sequence": "Sequence",
+      "status": "Status",
+      "scheduleStartDate": "Schedule Start Date",
+      "scheduleEndDate": "Schedule End Date",
+      "startedOn": "Started On",
+      "endedOn": "Ended On",
+      "errorDetails": "Error Details",
+      "jobheader": "Jobheader"
+    }
+  }
+}

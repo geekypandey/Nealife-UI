@@ -1,0 +1,23 @@
+{
+  "nealifeApp": {
+    "assessmentCompetency": {
+      "home": {
+        "title": "Assessment Competencies",
+        "createLabel": "Create a new Assessment Competency",
+        "createOrEditLabel": "Create or edit a Assessment Competency",
+        "notFound": "No Assessment Competencies found"
+      },
+      "created": "A new Assessment Competency is created with identifier {{ param }}",
+      "updated": "A Assessment Competency is updated with identifier {{ param }}",
+      "deleted": "A Assessment Competency is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Assessment Competency {{ id }}?"
+      },
+      "detail": {
+        "title": "Assessment Competency"
+      },
+      "competency": "Competency",
+      "assessment": "Assessment"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "nealifeApp": {
+    "assessment": {
+      "home": {
+        "title": "Assessments",
+        "createLabel": "नवीन Assessment तयार करा",
+        "createOrEditLabel": "Assessment तयार किंवा संपादित करा",
+        "notFound": "No Assessments found"
+      },
+      "created": "Assessment [identifier: {{ param }}] तयार आहे",
+      "updated": "Assessment [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Assessment [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Assessment [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Assessment"
+      },
+      "name": "Name",
+      "description": "Description",
+      "abbreviation": "Abbreviation",
+      "industry": "Industry",
+      "experienceRange": "Experience Range",
+      "status": "Status",
+      "validFrom": "Valid From",
+      "validTo": "Valid To",
+      "questions": "Questions",
+      "type": "Type",
+      "companies": "Companies",
+      "users": "Users",
+      "competencies": "Competencies",
+      "emails": "Emails",
+      "clonedFrom": "Cloned From",
+      "category": "Category"
+    }
+  }
+}

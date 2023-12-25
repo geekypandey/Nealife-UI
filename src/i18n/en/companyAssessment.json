@@ -1,0 +1,23 @@
+{
+  "nealifeApp": {
+    "companyAssessment": {
+      "home": {
+        "title": "Company Assessments",
+        "createLabel": "Create a new Company Assessment",
+        "createOrEditLabel": "Create or edit a Company Assessment",
+        "notFound": "No Company Assessments found"
+      },
+      "created": "A new Company Assessment is created with identifier {{ param }}",
+      "updated": "A Company Assessment is updated with identifier {{ param }}",
+      "deleted": "A Company Assessment is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Company Assessment {{ id }}?"
+      },
+      "detail": {
+        "title": "Company Assessment"
+      },
+      "company": "Company",
+      "assessment": "Assessment"
+    }
+  }
+}

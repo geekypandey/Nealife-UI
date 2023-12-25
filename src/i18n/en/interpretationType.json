@@ -1,0 +1,10 @@
+{
+  "nealifeApp": {
+    "InterpretationType": {
+      "null": "",
+      "FACTOR": "FACTOR",
+      "TRAIT": "TRAIT",
+      "ABILITY": "ABILITY"
+    }
+  }
+}

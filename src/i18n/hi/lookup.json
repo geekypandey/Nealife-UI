@@ -1,0 +1,25 @@
+{
+  "nealifeApp": {
+    "lookup": {
+      "home": {
+        "title": "Lookups",
+        "createLabel": "नया Lookup बनाएँ",
+        "createOrEditLabel": "Lookup बनाएँ या संपादित करें",
+        "notFound": "No Lookups found"
+      },
+      "created": "एक नया Lookup [identifier: {{ param }}] तैयार है",
+      "updated": "एक Lookup [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Lookup [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Lookup [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Lookup"
+      },
+      "type": "Type",
+      "subType": "Sub Type",
+      "key": "Key",
+      "value": "Value"
+    }
+  }
+}

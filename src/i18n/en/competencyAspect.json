@@ -1,0 +1,23 @@
+{
+  "nealifeApp": {
+    "competencyAspect": {
+      "home": {
+        "title": "Competency Aspects",
+        "createLabel": "Create a new Competency Aspect",
+        "createOrEditLabel": "Create or edit a Competency Aspect",
+        "notFound": "No Competency Aspects found"
+      },
+      "created": "A new Competency Aspect is created with identifier {{ param }}",
+      "updated": "A Competency Aspect is updated with identifier {{ param }}",
+      "deleted": "A Competency Aspect is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Competency Aspect {{ id }}?"
+      },
+      "detail": {
+        "title": "Competency Aspect"
+      },
+      "aspect": "Aspect",
+      "competency": "Competency"
+    }
+  }
+}

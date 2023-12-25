@@ -1,0 +1,9 @@
+{
+  "nealifeApp": {
+    "ReportType": {
+      "null": "",
+      "HTML": "HTML",
+      "PDF": "PDF"
+    }
+  }
+}

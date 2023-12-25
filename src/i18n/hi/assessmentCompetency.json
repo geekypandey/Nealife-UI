@@ -1,0 +1,23 @@
+{
+  "nealifeApp": {
+    "assessmentCompetency": {
+      "home": {
+        "title": "AssessmentCompetencies",
+        "createLabel": "नया Assessment Competency बनाएँ",
+        "createOrEditLabel": "Assessment Competency बनाएँ या संपादित करें",
+        "notFound": "No Assessment Competencies found"
+      },
+      "created": "एक नया Assessment Competency [identifier: {{ param }}] तैयार है",
+      "updated": "एक Assessment Competency [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Assessment Competency [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Assessment Competency [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Assessment Competency"
+      },
+      "competency": "Competency",
+      "assessment": "Assessment"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "nealifeApp": {
+    "report": {
+      "home": {
+        "title": "Reports",
+        "createLabel": "नवीन Report तयार करा",
+        "createOrEditLabel": "Report तयार किंवा संपादित करा",
+        "notFound": "No Reports found"
+      },
+      "created": "Report [identifier: {{ param }}] तयार आहे",
+      "updated": "Report [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Report [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Report [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Report"
+      },
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "section": "Section",
+      "content": "Content",
+      "sequence": "Sequence"
+    }
+  }
+}

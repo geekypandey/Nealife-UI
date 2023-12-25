@@ -1,0 +1,28 @@
+{
+  "nealifeApp": {
+    "aspect": {
+      "home": {
+        "title": "Aspects",
+        "createLabel": "नवीन Aspect तयार करा",
+        "createOrEditLabel": "Aspect तयार किंवा संपादित करा",
+        "notFound": "No Aspects found"
+      },
+      "created": "Aspect [identifier: {{ param }}] तयार आहे",
+      "updated": "Aspect [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Aspect [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Aspect [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Aspect"
+      },
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "interpretations": "Interpretations",
+      "traits": "Traits",
+      "items": "Items",
+      "parent": "Parent"
+    }
+  }
+}

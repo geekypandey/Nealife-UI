@@ -1,0 +1,26 @@
+{
+  "nealifeApp": {
+    "emailTemplate": {
+      "home": {
+        "title": "Email Templates",
+        "createLabel": "नवीन Email Template तयार करा",
+        "createOrEditLabel": "Email Template तयार किंवा संपादित करा",
+        "notFound": "No Email Templates found"
+      },
+      "created": "Email Template [identifier: {{ param }}] तयार आहे",
+      "updated": "Email Template [identifier: {{ param }}] सुधारित केले आहे",
+      "deleted": "Email Template [identifier: {{ param }}] हटविले आहे",
+      "delete": {
+        "question": "Email Template [id: {{ id }}] काढून टाकण्याबाबत पुष्टी?"
+      },
+      "detail": {
+        "title": "Email Template"
+      },
+      "name": "Name",
+      "to": "To",
+      "cC": "C C",
+      "body": "Body",
+      "assessment": "Assessment"
+    }
+  }
+}

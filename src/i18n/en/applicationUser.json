@@ -1,0 +1,33 @@
+{
+  "nealifeApp": {
+    "applicationUser": {
+      "home": {
+        "title": "Users",
+        "createLabel": "Create a new User",
+        "createOrEditLabel": "Create or edit a User",
+        "notFound": "No Users found"
+      },
+      "created": "User created with identifier {{ param }}",
+      "updated": "User updated with identifier {{ param }}",
+      "deleted": "User deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete  User {{ id }}?"
+      },
+      "detail": {
+        "title": "User"
+      },
+      "userName": "User Name",
+      "address": "Address",
+      "contactNumber1": "Contact Number 1",
+      "contactNumber2": "Contact Number 2",
+      "status": "Status",
+      "internalUser": "Internal User",
+      "assessments": "Assessments",
+      "company": "Company",
+      "manager": "Manager",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email"
+    }
+  }
+}
