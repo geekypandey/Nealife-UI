@@ -1,0 +1,52 @@
+:host {
+  display: block;
+}
+.side-buttons {
+  > * {
+    writing-mode: vertical-lr;
+    cursor: pointer;
+    // border: 1px solid blue;
+  }
+  .active-border-left {
+    border-left: 2px solid var(--nl-primary-color);
+  }
+}
+
+.table-container {
+  > div:nth-child(1) {
+    padding-right: 0;
+  }
+}
+
+.table-tool-container {
+  // box-shadow: 0px 0px 10px 0px #cbdbf3;
+  border-top: 1px solid #c8d7ed;
+  border-bottom: 1px solid #c8d7ed;
+  // border-right: 1px solid #c8d7ed;
+}
+
+.table-tool-panel {
+  box-shadow: 0px 0px 10px 0px #cbdbf3;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-right: 1px solid #c8d7ed;
+}
+
+.select-all-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+::ng-deep p-table {
+  .p-datatable {
+    box-shadow: 0px 0px 10px 0px #cbdbf3;
+    border-radius: 8px;
+    .p-datatable-thead > tr > th {
+      background: #e9f2ff;
+    }
+    .p-datatable-tbody > tr {
+      border-bottom: 1px solid #c8d7ed;
+    }
+  }
+}
