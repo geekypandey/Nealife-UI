@@ -1,6 +1,7 @@
-export interface ColDef2 {
+export interface ColDef {
   field: string;
   header: string;
+  width?: string;
 }
 
 export enum ACTION_ICON {

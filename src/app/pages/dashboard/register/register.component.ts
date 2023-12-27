@@ -5,7 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, finalize } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
-import { ACTION_ICON, Action, ColDef2 } from 'src/app/components/table/table.model';
+import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { Company } from '../dashboard.model';
 import { ProfileService } from '../services/profile.service';
 import { RegisterService } from './register.service';
@@ -20,7 +20,7 @@ import { RegisterService } from './register.service';
 })
 export class RegisterComponent {
   companies$: Observable<Company[]>;
-  cols: ColDef2[] = [
+  cols: ColDef[] = [
     {
       header: 'Id',
       field: 'id',

@@ -4,7 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, finalize, forkJoin, map } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
-import { ColDef2 } from 'src/app/components/table/table.model';
+import { ColDef } from 'src/app/components/table/table.model';
 import { CompetencyAspectItemROCount, CompetencyAspectProjections } from '../dashboard.model';
 import { DashboardService } from '../services/dashboard.service';
 
@@ -17,7 +17,7 @@ import { DashboardService } from '../services/dashboard.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuperadminComponent {
-  cols: ColDef2[] = [
+  cols: ColDef[] = [
     {
       header: 'Compentency',
       field: 'competency',

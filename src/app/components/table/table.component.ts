@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
-import { Action, ColDef2 } from './table.model';
+import { Action, ColDef } from './table.model';
 
-type ExtendedColDef = ColDef2 & { visible: boolean };
+type ExtendedColDef = ColDef & { visible: boolean };
 
 @Component({
   selector: 'nl-table',
@@ -16,12 +16,17 @@ type ExtendedColDef = ColDef2 & { visible: boolean };
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent {
+  filterAccordion: ExtendedColDef[] = [];
   extendedColDefs: ExtendedColDef[] = [];
   @Input()
-  set cols(cols: ColDef2[]) {
+  set cols(cols: ColDef[]) {
     this.extendedColDefs = cols.map(col => ({
       ...col,
       visible: true,
+    }));
+    this.filterAccordion = cols.map(col => ({
+      ...col,
+      visible: false,
     }));
   }
 
@@ -45,8 +50,9 @@ export class TableComponent {
     );
   }
 
-  selectAll() {
-    this.extendedColDefs = this.extendedColDefs.map(col => ({ ...col, visible: true }));
+  selectAll(event: Event) {
+    const isChecked = (<HTMLInputElement>event.target).checked;
+    this.extendedColDefs = this.extendedColDefs.map(col => ({ ...col, visible: isChecked }));
   }
 
   onColumnInput(value: string) {
