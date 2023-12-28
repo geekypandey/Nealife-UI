@@ -2,6 +2,7 @@
   padding: 20px;
   background-color: #fafcff;
   border-radius: 8px;
+  border: 1px solid var(--blue-100);
 }
 :host ::ng-deep p-calendar {
   .p-datepicker-trigger.p-button {

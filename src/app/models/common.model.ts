@@ -1,6 +1,6 @@
 export interface DropdownOption {
-  label: string;
-  value: string;
+  label: string | number;
+  value: string | number;
 }
 export interface LookupResponse {
   id: number;
