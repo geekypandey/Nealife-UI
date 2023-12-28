@@ -1,0 +1,10 @@
+.personal-info-card {
+  padding: 20px;
+  background-color: #fafcff;
+  border-radius: 8px;
+}
+:host ::ng-deep p-calendar {
+  .p-datepicker-trigger.p-button {
+    border-radius: 0 8px 8px 0;
+  }
+}

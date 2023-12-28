@@ -1,0 +1,49 @@
+<nl-spinner [name]="'assessment-test'"></nl-spinner>
+<ng-container *ngIf="landingPage">
+  <div class="render-assessment">
+    <h3 class="assess-welcome">Welcome to Assess</h3>
+    <div class="assess-container">
+      <div class="d-inline-flex justify-content-center">
+        <img
+          routerLink="/"
+          class="company-logo justify-content-center"
+          src="./../../../assets/login/logo.svg"
+          alt="logo-svg"
+          height="60" />
+      </div>
+      <h5 class="mt-4">{{ renderAssessmentData?.displayName }}</h5>
+      <form [formGroup]="assessmentForm" (ngSubmit)="onSubmit()">
+        <div class="row mt-3 mb-3 p-fluid">
+          <div class="col-12">
+            <label for="cc">Credit Code</label>
+            <input
+              type="text"
+              formControlName="code"
+              name="cc"
+              id="cc"
+              class="p-inputtext p-component" />
+          </div>
+        </div>
+        <div class="row mb-3 p-fluid">
+          <div class="col-12">
+            <label for="lang">Language</label>
+            <p-dropdown
+              [attr.id]="'lang'"
+              formControlName="language"
+              [options]="languagesOptions"
+              placeholder="Select language"></p-dropdown>
+          </div>
+        </div>
+        <button
+          [disabled]="!isValidCreditCode || assessmentForm.invalid"
+          type="submit"
+          class="w-100 p-button justify-content-center mt-3">
+          Take a Test
+        </button>
+      </form>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="personalInfoPage">
+  <nl-personal-info [fields]="personalInfofields"></nl-personal-info>
+</ng-container>

@@ -27,15 +27,6 @@ export class RegisterService {
       .pipe(map(resp => (this.companiesData = resp)));
   }
 
-  lookup(type: string) {
-    const query = {
-      'type.equals': type,
-    };
-    return this.http.get<any[]>(API_URL.lookup, {
-      params: query,
-    });
-  }
-
   get companies() {
     return this.companiesData;
   }

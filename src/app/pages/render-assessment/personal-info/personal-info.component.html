@@ -1,0 +1,186 @@
+<nl-spinner name="personal-info"></nl-spinner>
+<nl-assessment-header></nl-assessment-header>
+<!-- <div class="d-flex mt-4 justify-content-center">
+  <div class="container">
+    <div class="personal-info-card">
+      <div class="row mb-3 gy-3 p-fluid">
+        <div class="col-12 col-sm-6">
+          <label for="fname">First Name</label>
+          <input type="text" name="fname" id="fname" class="p-inputtext p-component" />
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="lname">Last Name</label>
+          <input type="text" name="lname" id="lname" class="p-inputtext p-component" />
+        </div>
+      </div>
+      <div class="row mb-3 gy-3 p-fluid">
+        <div class="col-12 col-sm-6">
+          <label for="gender">Gender</label>
+          <div class="d-flex gap-3 mt-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" id="gender-male" />
+              <label class="form-check-label" for="gender-male">Male</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="gender"
+                id="gender-female"
+                checked />
+              <label class="form-check-label" for="gender-female">Female</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="gender"
+                id="gender-other"
+                checked />
+              <label class="form-check-label" for="gender-other">Other</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="dob">Date of birth</label>
+          <p-calendar [showIcon]="true"> </p-calendar>
+        </div>
+      </div>
+      <div class="row mb-3 gy-3 p-fluid">
+        <div class="col-12 col-sm-6">
+          <label for="std">Standard</label>
+          <p-dropdown
+            [attr.id]="'std'"
+            [options]="standardOptions"
+            placeholder="Select standard"></p-dropdown>
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="dob">Stream</label>
+          <p-dropdown
+            [attr.id]="'lang'"
+            [options]="streamOptions"
+            placeholder="Select stream"></p-dropdown>
+        </div>
+      </div>
+      <div class="row mb-3 gy-3 p-fluid">
+        <div class="col-12 col-sm-6">
+          <label for="board">Board</label>
+          <p-dropdown
+            [attr.id]="'board'"
+            [options]="boardOptions"
+            placeholder="Select board"></p-dropdown>
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="place">Place</label>
+          <input type="text" name="place" id="place" class="p-inputtext p-component" />
+        </div>
+      </div>
+      <div class="row mb-3 gy-3 p-fluid">
+        <div class="col-12 col-sm-6">
+          <label for="location">Location</label>
+          <p-dropdown
+            [attr.id]="'location'"
+            [options]="locationOptions"
+            placeholder="Select location"></p-dropdown>
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="email">Email</label>
+          <input type="text" name="email" id="email" class="p-inputtext p-component" />
+        </div>
+      </div>
+      <div class="row mb-3 gy-3 p-fluid">
+        <div class="col-12 col-sm-6">
+          <label for="contactNumber">Contact Number</label>
+          <input
+            type="text"
+            name="contactNumber"
+            id="contactNumber"
+            class="p-inputtext p-component" />
+        </div>
+      </div>
+      <div class="row mb-3 justify-content-center">
+        <div class="col-auto">
+          <button type="submit" class="w-100 p-button justify-content-center">
+            Start Assessment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="d-flex mt-4 justify-content-center">
+  <div class="container">
+    <div class="personal-info-card">
+      <div class="row mb-3 gy-3 p-fluid">
+        <div
+          class="col-12 col-sm-6"
+          [hidden]="fieldObj.key === 'code' || fieldObj.key === 'sectors'"
+          *ngFor="let fieldObj of personalInfoFields">
+          <!-- <ng-container *ngIf="isDropdownField(fieldObj); else elseInput">
+            <ng-container
+              *ngTemplateOutlet="dropdownTpl; context: { $implicit: fieldObj }"></ng-container>
+          </ng-container>
+          <ng-template #elseInput>
+            <ng-container
+              *ngTemplateOutlet="inputTpl; context: { $implicit: fieldObj }"></ng-container>
+          </ng-template> -->
+          <ng-container [ngSwitch]="fieldObj.key">
+            <ng-container *ngSwitchCase="isDropdownField(fieldObj)">
+              <ng-container
+                *ngTemplateOutlet="dropdownTpl; context: { $implicit: fieldObj }"></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'dateOfBirth'">
+              <ng-container
+                *ngTemplateOutlet="calendarTpl; context: { $implicit: fieldObj }"></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'gender'">
+              <ng-container
+                *ngTemplateOutlet="radioTpl; context: { $implicit: fieldObj }"></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              <ng-container
+                *ngTemplateOutlet="inputTpl; context: { $implicit: fieldObj }"></ng-container>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+      <div class="row mb-3 justify-content-center">
+        <div class="col-auto">
+          <button type="submit" class="w-100 p-button justify-content-center">
+            Start Assessment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #inputTpl let-field>
+  <label [for]="field.key">{{ field.value }}</label>
+  <input type="text" name="fname" [id]="field.key" class="p-inputtext p-component" />
+</ng-template>
+<ng-template #dropdownTpl let-field>
+  <label [for]="field.key">{{ field.value }}</label>
+  <p-dropdown [attr.id]="field.key" [options]="standardOptions"></p-dropdown>
+</ng-template>
+<ng-template #calendarTpl let-field>
+  <p-calendar [showIcon]="true"></p-calendar>
+</ng-template>
+<ng-template #radioTpl let-field>
+  <label for="gender">Gender</label>
+  <div class="d-flex gap-3 mt-2">
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="gender" id="gender-male" />
+      <label class="form-check-label" for="gender-male">Male</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="gender" id="gender-female" checked />
+      <label class="form-check-label" for="gender-female">Female</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="gender" id="gender-other" checked />
+      <label class="form-check-label" for="gender-other">Other</label>
+    </div>
+  </div>
+</ng-template>

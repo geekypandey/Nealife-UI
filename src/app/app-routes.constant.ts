@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { isAuthenticatedGuard, isNotAuthenticatedGuard } from './guards/is-authenticated.guard';
+import { RenderAssessmentComponent } from './pages/render-assessment/render-assessment.component';
 
 export const APP_ROUTES: Routes = [
   {
@@ -16,6 +17,10 @@ export const APP_ROUTES: Routes = [
     path: 'assess',
     loadChildren: () => import('./pages/dashboard/dashboard.routes').then(r => r.DASHBOARD_ROUTES),
     canActivate: [isAuthenticatedGuard],
+  },
+  {
+    path: 'render-assessment',
+    loadComponent: ()=> import('./pages/render-assessment/render-assessment.component').then(r=> RenderAssessmentComponent)
   },
   {
     path: '',

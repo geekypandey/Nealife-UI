@@ -13,7 +13,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DropdownModule } from 'primeng/dropdown';
 import { forkJoin, map } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
-import { DropdownOption } from 'src/app/models/common.model';
+import { DropdownOption, LookupResponse } from 'src/app/models/common.model';
+import { SharedApiService } from 'src/app/services/shared-api.service';
 import { getDropdownOptions } from 'src/app/util/util';
 import { Company } from '../../dashboard.model';
 import { RegisterService } from '../register.service';
@@ -57,6 +58,7 @@ export class RegisterEditComponent {
   partnerTypes: DropdownOption[] = [];
 
   private registerService = inject(RegisterService);
+  private sharedApiService = inject(SharedApiService);
   private spinner = inject(NgxSpinnerService);
   private fb = inject(FormBuilder);
   private cdRef = inject(ChangeDetectorRef);
@@ -78,16 +80,18 @@ export class RegisterEditComponent {
   ngOnInit() {
     this.spinner.show('register-edit');
     forkJoin([
-      this.registerService.lookup('COMPANY_TYPE'),
-      this.registerService.lookup('PARTNER_TYPE'),
+      this.sharedApiService.lookup('COMPANY_TYPE'),
+      this.sharedApiService.lookup('PARTNER_TYPE'),
     ])
       .pipe(
-        map(([accountTypes, partnerTypes]) => {
-          return {
-            accountTypes: getDropdownOptions(accountTypes, 'key', 'id'),
-            partnerTypes: getDropdownOptions(partnerTypes, 'key', 'id'),
-          };
-        })
+        map<[LookupResponse[], LookupResponse[]], { accountTypes: any[]; partnerTypes: any[] }>(
+          ([accountTypes, partnerTypes]) => {
+            return {
+              accountTypes: getDropdownOptions(accountTypes, 'key', 'id'),
+              partnerTypes: getDropdownOptions(partnerTypes, 'key', 'id'),
+            };
+          }
+        )
       )
       .subscribe({
         next: resp => {
