@@ -13,4 +13,5 @@ export const API_URL = {
   assessment: BASE_URL + '/assessments/renderNewAssesment',
   assessmentJson: BASE_URL + '/assessments/getAssessmentJson',
   checkCreditCode: BASE_URL + '/checkCreditUsed',
+  branchAssessmentCourseFitURL: BASE_URL + '/assessments/renderNewAssesmentForCourseFit',
 };

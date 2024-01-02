@@ -7,6 +7,12 @@
 // @import "'../node_modules/bootstrap/scss/mixins/banner";
 // @include bsBanner("");
 
+// Default variable overrides
+// $primary: #03c988;
+// $warning: rgba(232, 195, 27, 1);
+
+// $btn-color: #ffffff;
+
 // scss-docs-start import-stack
 // Configuration
 @import '../node_modules/bootstrap/scss/functions';
@@ -25,7 +31,7 @@
 @import '../node_modules/bootstrap/scss/grid';
 // @import '../node_modules/bootstrap/scss/tables';
 @import '../node_modules/bootstrap/scss/forms';
-// @import "buttons";
+// @import '../node_modules/bootstrap/scss/buttons';
 @import '../node_modules/bootstrap/scss/transitions';
 // @import "dropdown";
 // @import "button-group";

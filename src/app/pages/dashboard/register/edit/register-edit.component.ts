@@ -13,9 +13,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DropdownModule } from 'primeng/dropdown';
 import { forkJoin, map } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
-import { DropdownOption, LookupResponse } from 'src/app/models/common.model';
+import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
-import { getDropdownOptions } from 'src/app/util/util';
 import { Company } from '../../dashboard.model';
 import { RegisterService } from '../register.service';
 
@@ -84,11 +83,11 @@ export class RegisterEditComponent {
       this.sharedApiService.lookup('PARTNER_TYPE'),
     ])
       .pipe(
-        map<[LookupResponse[], LookupResponse[]], { accountTypes: any[]; partnerTypes: any[] }>(
+        map<[DropdownOption[], DropdownOption[]], { accountTypes: any[]; partnerTypes: any[] }>(
           ([accountTypes, partnerTypes]) => {
             return {
-              accountTypes: getDropdownOptions(accountTypes, 'key', 'id'),
-              partnerTypes: getDropdownOptions(partnerTypes, 'key', 'id'),
+              accountTypes: accountTypes,
+              partnerTypes: partnerTypes,
             };
           }
         )

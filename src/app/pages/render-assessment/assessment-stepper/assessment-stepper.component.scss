@@ -1,0 +1,14 @@
+$color: rgba(46, 49, 146, 1);
+$bg-color: rgba(235, 237, 249, 1);
+
+.assessment-timer-section {
+  box-shadow: -4px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+.question-number {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid $color;
+  color: $color;
+  background-color: $bg-color;
+}

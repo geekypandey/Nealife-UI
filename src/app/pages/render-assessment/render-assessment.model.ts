@@ -7,7 +7,7 @@ export interface RenderAssessment {
   timeLimit: number;
   landingPage: string;
   displayName: string;
-  reportType: string;
+  reportType: string | null;
   editSelectedOption: boolean;
   showBackButton: boolean;
   showSkipButton: boolean;
@@ -17,7 +17,7 @@ export interface RenderAssessment {
   assessments: Assessment[];
 }
 
-interface Assessment {
+export interface Assessment {
   assessmentId: number;
   assessmentName: string;
   displayName: string;
@@ -27,7 +27,7 @@ interface Assessment {
   instructionPage: Language;
 }
 
-interface Section {
+export interface Section {
   id?: any;
   name: string;
   text?: any;
@@ -65,8 +65,9 @@ interface SelectedAnswer {
 }
 
 interface QuestionImage {
-  English?: string;
-  Marathi?: string;
+  English: string;
+  Marathi: string;
+  [key: string]: string;
 }
 
 interface AnswerOption {
@@ -83,6 +84,7 @@ interface AnswerOption {
 interface Language {
   English: string;
   Marathi: string;
+  [key: string]: string;
 }
 
 export interface Demographic {
@@ -91,4 +93,31 @@ export interface Demographic {
   value: string;
   value1?: any;
   value2?: any;
+}
+
+export class AssessmentAnswer {
+  companyId: string | null;
+  assessmentGroupId: number | null;
+  companyAssessmentGroupId: number | null;
+  groupId: null;
+  isGroup: string | null;
+  assessmentUUID: string | null;
+  assessmentId: null;
+  demographics: Demographic | null;
+  answers: any[];
+  emailReport: null;
+  language: null;
+  constructor() {
+    this.companyId = null;
+    this.assessmentGroupId = null;
+    this.companyAssessmentGroupId = null;
+    this.groupId = null;
+    this.isGroup = null;
+    this.assessmentUUID = null;
+    this.assessmentId = null;
+    this.demographics = null;
+    this.answers = [];
+    this.emailReport = null;
+    this.language = null;
+  }
 }

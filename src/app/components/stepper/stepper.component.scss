@@ -1,0 +1,42 @@
+$stepper-icon-width: 40px;
+$stepper-icon-height: 40px;
+$stepper-color: rgba(46, 49, 146, 1);
+
+.nl-stepper-icon {
+  width: $stepper-icon-width;
+  height: $stepper-icon-height;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  background-position: center;
+  border: 2px solid $stepper-color;
+}
+.stepper-dot {
+  background-image: url('./../../../assets/render-assessment/stepper-dot.svg');
+}
+.stepper-tick {
+  background-image: url('./../../../assets/render-assessment/stepper-tick.svg');
+}
+.nl-step {
+  opacity: 0.5;
+  &.active {
+    color: $stepper-color;
+    opacity: 1;
+  }
+}
+.nl-step-bar {
+  position: absolute;
+  top: calc($stepper-icon-width / 2);
+  left: calc(50% + $stepper-icon-width / 2);
+  border: 2px solid $stepper-color;
+  width: calc(100% - $stepper-icon-width);
+  transition: all 0.3s ease-out;
+}
+.nl-step-bar-vertical {
+  border-left: 2px solid;
+  padding: 20px;
+  margin-left: 20px;
+  transition: all 0.3s ease-out;
+  &.active {
+    padding: 40px 30px;
+  }
+}

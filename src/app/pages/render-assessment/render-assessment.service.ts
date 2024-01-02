@@ -16,4 +16,9 @@ export class RenderAssessmentService {
   checkCreditUsed(queryParamcc: string) {
     return this.http.get(`${API_URL.checkCreditCode}?creditCode=${queryParamcc}`);
   }
+
+  assessmentCourseFit(ids: number[], params: string) {
+    const payload = { branchIds: ids, AA: params };
+    return this.http.post<any>(API_URL.branchAssessmentCourseFitURL, payload);
+  }
 }

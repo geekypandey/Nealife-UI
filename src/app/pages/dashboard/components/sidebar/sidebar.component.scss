@@ -29,9 +29,9 @@
         background: url('./../../../../../assets/dashboard/menu-bg.svg');
       }
       &.active {
-        color: var(--nl-secondary-color);
+        color: var(--nl-success-color);
         .bar {
-          background-color: var(--nl-secondary-color);
+          background-color: var(--nl-success-color);
         }
       }
     }

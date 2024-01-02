@@ -4,7 +4,7 @@
 <div class="d-flex mt-4 justify-content-center">
   <div class="container">
     <div class="personal-info-card">
-      <form *ngIf="basicInfoForm" [formGroup]="basicInfoForm" (ngSubmit)="onSubmit()">
+      <form *ngIf="basicInfoForm" [formGroup]="basicInfoForm">
         <div class="row mb-3 gy-3 p-fluid">
           <div
             class="col-12 col-sm-6"
@@ -21,6 +21,32 @@
                       : inputTpl;
                 context: { $implicit: fieldObj }
               "></ng-container>
+
+            <small
+              *ngIf="
+                basicInfoForm.controls[fieldObj.key].invalid &&
+                basicInfoForm.controls[fieldObj.key].dirty
+              "
+              class="p-error">
+              <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['required']">
+                {{ fieldObj.value | titlecase }} is required.
+              </div>
+              <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['minlength']">
+                {{ fieldObj.value | titlecase }} must be at least
+                {{
+                  basicInfoForm.controls[fieldObj.key].errors?.['minlength']?.requiredLength | json
+                }}
+                characters long.
+              </div>
+              <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['maxlength']">
+                {{ fieldObj.value | titlecase }} must be equal to
+                {{ basicInfoForm.controls[fieldObj.key].errors?.['maxlength']?.requiredLength }}
+                characters long.
+              </div>
+              <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['pattern']">
+                Invalid {{ fieldObj.value | titlecase }}
+              </div>
+            </small>
           </div>
         </div>
 
@@ -51,6 +77,7 @@
           >
           <p-calendar
             [maxDate]="todaysDate"
+            dateFormat="yy-mm-dd"
             [formControlName]="field.key"
             [showIcon]="true"></p-calendar>
         </ng-template>
@@ -79,7 +106,8 @@
         <div class="col-auto">
           <button
             [disabled]="basicInfoForm.invalid"
-            type="submit"
+            (click)="submit()"
+            type="button"
             class="w-100 p-button justify-content-center">
             Start Assessment
           </button>
@@ -88,5 +116,3 @@
     </div>
   </div>
 </div>
-
-<!-- {{ basicInfoForm.value | json }} -->

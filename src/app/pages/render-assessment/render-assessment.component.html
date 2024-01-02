@@ -45,5 +45,14 @@
   </div>
 </ng-container>
 <ng-container *ngIf="personalInfoPage">
-  <nl-personal-info [fields]="personalInfofields" [queryParamcc]="queryParamcc"></nl-personal-info>
+  <nl-personal-info
+    [fields]="personalInfofields"
+    [queryParamcc]="queryParamcc"
+    (onSubmitForm)="onSubmitPersonalInfoForm($event)"></nl-personal-info>
+</ng-container>
+
+<ng-container *ngIf="assessmentPage">
+  <nl-assessment-stepper
+    [selectedLanguage]="languageCtrl.value"
+    [assessmentsData]="renderAssessmentData"></nl-assessment-stepper>
 </ng-container>

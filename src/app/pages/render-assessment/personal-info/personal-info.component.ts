@@ -3,7 +3,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
+  Output,
   inject,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -15,7 +17,6 @@ import { tap } from 'rxjs/operators';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
-import { getDropdownOptions } from 'src/app/util/util';
 import { AssessmentHeaderComponent } from '../assessment-header/assessment-header.component';
 import { Demographic } from '../render-assessment.model';
 
@@ -72,6 +73,9 @@ export class PersonalInfoComponent {
     setTimeout(() => this.basicInfoForm.get('code')?.setValue(cc));
   }
 
+  @Output()
+  onSubmitForm = new EventEmitter();
+
   ngOnInit() {
     this.spinner.show('personal-info');
     forkJoin(this.lookupObsArr()).subscribe({
@@ -87,10 +91,13 @@ export class PersonalInfoComponent {
     return this.dropDownFieldsKeys.includes(fieldObj.key) ? 'dropdown' : fieldObj.key;
   }
 
-  onSubmit() {}
+  submit() {
+    this.onSubmitForm.emit(this.basicInfoForm.value);
+  }
 
   isRequired(key: string) {
-    return this.basicInfoForm.get(key)?.hasValidator(Validators.required);
+    const formCtrl = this.basicInfoForm.get(key);
+    return formCtrl && formCtrl.enabled && formCtrl.hasValidator(Validators.required);
   }
 
   optionsArray(fieldName: string): any {
@@ -152,56 +159,54 @@ export class PersonalInfoComponent {
     });
     this.basicInfoForm = this.fb.group(form);
 
+    this.basicInfoForm.get('standard')?.valueChanges.subscribe(val => {
+      if ([4, 5, 6].includes(val)) {
+        this.basicInfoForm.get('stream')?.disable();
+        this.basicInfoForm.get('stream')?.setValue('');
+      } else {
+        this.basicInfoForm.get('stream')?.enable();
+        this.basicInfoForm.get('stream')?.setValue('');
+      }
+    });
+
+    // TODO added to avoid refill details
+    const assessmentAnswer = localStorage.getItem('assessmentAnswer');
+    if (assessmentAnswer) {
+      const assessmentAnswerObj = JSON.parse(assessmentAnswer);
+      const demographics = assessmentAnswerObj.demographics;
+      if (demographics) {
+        this.basicInfoForm.patchValue({
+          ...demographics,
+          dateOfBirth: this.getFormattedDate(demographics.dateOfBirth),
+        });
+      }
+    }
+
     // this.cd.markForCheck();
+  }
+
+  private getFormattedDate(dateStr: string) {
+    var d = new Date(dateStr);
+    return d.toJSON().slice(0, 10);
   }
 
   private lookupObsArr() {
     return [
-      this.sharedApiService
-        .lookup('USER_TYPE')
-        .pipe(tap(res => (this.userType = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('GENDER')
-        .pipe(tap(res => (this.gender = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('AGE')
-        .pipe(tap(res => (this.age = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('EDUCATION')
-        .pipe(tap(res => (this.education = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('EXPERIENCE')
-        .pipe(tap(res => (this.experience = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('RACE')
-        .pipe(tap(res => (this.race = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('OCCUPATION')
-        .pipe(tap(res => (this.occupation = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('CAREERS')
-        .pipe(tap(res => (this.career = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('DESIGNATION')
-        .pipe(tap(res => (this.designation = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('COUNTRY')
-        .pipe(tap(res => (this.country = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('LOCATION')
-        .pipe(tap(res => (this.location = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('FAMILY_INCOME')
-        .pipe(tap(res => (this.income = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('STANDARD')
-        .pipe(tap(res => (this.standard = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('STREAM')
-        .pipe(tap(res => (this.stream = getDropdownOptions(res, 'key', 'id')))),
-      this.sharedApiService
-        .lookup('BOARD')
-        .pipe(tap(res => (this.board = getDropdownOptions(res, 'key', 'id')))),
+      this.sharedApiService.lookup('USER_TYPE').pipe(tap(res => (this.userType = res))),
+      this.sharedApiService.lookup('GENDER').pipe(tap(res => (this.gender = res))),
+      this.sharedApiService.lookup('AGE').pipe(tap(res => (this.age = res))),
+      this.sharedApiService.lookup('EDUCATION').pipe(tap(res => (this.education = res))),
+      this.sharedApiService.lookup('EXPERIENCE').pipe(tap(res => (this.experience = res))),
+      this.sharedApiService.lookup('RACE').pipe(tap(res => (this.race = res))),
+      this.sharedApiService.lookup('OCCUPATION').pipe(tap(res => (this.occupation = res))),
+      this.sharedApiService.lookup('CAREERS').pipe(tap(res => (this.career = res))),
+      this.sharedApiService.lookup('DESIGNATION').pipe(tap(res => (this.designation = res))),
+      this.sharedApiService.lookup('COUNTRY').pipe(tap(res => (this.country = res))),
+      this.sharedApiService.lookup('LOCATION').pipe(tap(res => (this.location = res))),
+      this.sharedApiService.lookup('FAMILY_INCOME').pipe(tap(res => (this.income = res))),
+      this.sharedApiService.lookup('STANDARD').pipe(tap(res => (this.standard = res))),
+      this.sharedApiService.lookup('STREAM').pipe(tap(res => (this.stream = res))),
+      this.sharedApiService.lookup('BOARD').pipe(tap(res => (this.board = res))),
     ];
   }
 

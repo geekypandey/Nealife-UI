@@ -1,3 +1,11 @@
+:host {
+  display: block;
+  background-image: url('./../../../../assets/render-assessment/curve.svg');
+  background-repeat: repeat-y;
+  // background-size: cover;
+  height: 100%;
+  overflow: auto;
+}
 .personal-info-card {
   padding: 20px;
   background-color: #fafcff;

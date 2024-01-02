@@ -20,8 +20,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { REPORT_TYPE } from 'src/app/constants/assessment.constants';
 import { DropdownOption } from 'src/app/models/common.model';
+import { SharedApiService } from 'src/app/services/shared-api.service';
+import { AssessmentStepperComponent } from './assessment-stepper/assessment-stepper.component';
 import { PersonalInfoComponent } from './personal-info/personal-info.component';
-import { Demographic, RenderAssessment } from './render-assessment.model';
+import { AssessmentAnswer, Demographic, RenderAssessment } from './render-assessment.model';
 import { RenderAssessmentService } from './render-assessment.service';
 
 @Component({
@@ -33,6 +35,7 @@ import { RenderAssessmentService } from './render-assessment.service';
     SpinnerComponent,
     ReactiveFormsModule,
     PersonalInfoComponent,
+    AssessmentStepperComponent,
   ],
   templateUrl: './render-assessment.component.html',
   styleUrls: ['./render-assessment.component.scss'],
@@ -56,21 +59,30 @@ export class RenderAssessmentComponent implements OnInit {
   personalInfoPage: boolean = false;
   isValidCreditCode: boolean = false;
   personalInfofields: Demographic[] = [];
+  branchesList: DropdownOption[] = [];
+  assessmentPage: boolean = false;
+  readonly spinnerName = 'assessment-test';
 
   private languages: string[] = [];
   private route = inject(ActivatedRoute);
   private spinner: NgxSpinnerService = inject(NgxSpinnerService);
   private assementService = inject(RenderAssessmentService);
+  private sharedApiService = inject(SharedApiService);
   private fb = inject(FormBuilder);
   private cd = inject(ChangeDetectorRef);
   private toastService = inject(MessageService);
+  private assessmentAnswer: AssessmentAnswer;
+  private companyAssessmentGroupId: number | null = null;
+  private assessmentGroupId: number | null = null;
+  private reportType: string | null = null;
 
   constructor() {
+    this.assessmentAnswer = new AssessmentAnswer();
     this.landingPage = true;
     this.route.queryParams.subscribe(params => {
       this.queryParamau = params['AU'];
       this.queryParamaa = params['AA'];
-      this.companyId = params['C'];
+      this.assessmentAnswer.companyId = params['C'];
       this.isGroup = params['G'];
       this.emailReport = params['ER'] || 'N';
       this.queryParamcc = params['CC'] || '';
@@ -92,15 +104,16 @@ export class RenderAssessmentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.spinner.show('assessment-test');
+    // localStorage.removeItem('assessmentAnswer'); // TODO uncomment line
+    this.spinner.show(this.spinnerName);
     this.assementService.renderAssessment(this.queryParamaa).subscribe({
       next: resp => {
-        this.spinner.hide('assessment-test');
+        this.spinner.hide(this.spinnerName);
         this.renderAssessmentData = resp;
         this.initialiseFields(this.renderAssessmentData);
         this.cd.markForCheck();
       },
-      error: () => this.spinner.hide('assessment-test'),
+      error: () => this.spinner.hide(this.spinnerName),
     });
   }
 
@@ -114,9 +127,39 @@ export class RenderAssessmentComponent implements OnInit {
     }
   }
 
+  onSubmitPersonalInfoForm(value: any) {
+    this.assessmentAnswer.demographics = value;
+    this.saveAssessmentAnswer(this.assessmentAnswer);
+    if (this.reportType === 'ECFEREPORT') {
+      // this.getAssessmentCourseFit(this.assessmentAnswer);
+      // TODO
+    } else {
+      this.personalInfoPage = false;
+      this.assessmentPage = true;
+    }
+  }
+
+  private saveAssessmentAnswer(value: any, keyName?: string) {
+    let assessmentAnswerStr = localStorage.getItem('assessmentAnswer');
+    if (assessmentAnswerStr && keyName) {
+      let assessmentAnswer = JSON.parse(assessmentAnswerStr);
+      assessmentAnswer = { ...assessmentAnswer, [keyName]: value };
+      localStorage.setItem('assessmentAnswer', JSON.stringify(assessmentAnswer));
+    } else {
+      localStorage.setItem('assessmentAnswer', JSON.stringify(value));
+    }
+  }
+
   private initialiseFields(renderAssessmentData: RenderAssessment) {
     if (renderAssessmentData) {
-      const { demographics, reportType } = renderAssessmentData;
+      const { demographics, reportType, assessmentGroupId, companyAssessmentGroupId } =
+        renderAssessmentData;
+      this.assessmentAnswer.assessmentGroupId = assessmentGroupId;
+      this.assessmentAnswer.companyAssessmentGroupId = companyAssessmentGroupId;
+      this.assessmentAnswer.isGroup = this.isGroup;
+      this.assessmentAnswer.assessmentUUID = this.queryParamaa;
+      this.reportType = reportType;
+      this.getbranches(reportType);
       this.languages = this.getLanguages(demographics);
       this.languagesOptions = this.languages.map(v => ({ label: v, value: v }));
       this.assessmentForm.setValue({
@@ -131,12 +174,13 @@ export class RenderAssessmentComponent implements OnInit {
       next: _ => {
         this.isValidCreditCode = true;
         this.toastService.add({
-          severity: 'info',
+          severity: 'success',
           summary: 'Success',
           detail: 'Valid credit code',
           sticky: false,
           id: 'creditCode',
         });
+        this.cd.markForCheck();
       },
       error: _ => {
         this.isValidCreditCode = false;
@@ -157,13 +201,34 @@ export class RenderAssessmentComponent implements OnInit {
     return [...uniqueLang];
   }
 
-  private getbranches(reportType: string): void {
-    if (reportType === REPORT_TYPE.engReport || reportType === REPORT_TYPE.engReport) {
+  private getAssessmentCourseFit(data: any): void {
+    // this.spinner.show(this.spinnerName);
+    // this.assementService.assessmentCourseFit(this.selectedBranches, this.queryParamaa).subscribe(
+    //   response => {
+    //     if (response.body) {
+    //       this.assessments = response.body.assessments;
+    //       this.basicInfoSumbmitted = true;
+    //       this.isValidForm = true;
+    //       this.hasErrorAfterSubmitted = false;
+    //       this.onStepNext(false, true, true);
+    //     }
+    //     this.spinner.hide(this.spinnerName);
+    //   },
+    //   error => {
+    //     this.spinner.hide(this.spinnerName);
+    //     alert('Server Error');
+    //   }
+    // );
+  }
+
+  private getbranches(reportType: string | null): void {
+    if (reportType === REPORT_TYPE.engReport || reportType === REPORT_TYPE.mbaReport) {
       const branchType =
         reportType === REPORT_TYPE.engReport ? 'ENGINEERING_BRANCH' : 'MBA_BRANCH ';
-      // this.assessmentService.getBranchList(branchType).subscribe(branches => {
-      //   this.branchesList = branches.body;
-      // });
+      this.sharedApiService.lookup(branchType).subscribe(branches => {
+        this.branchesList = branches;
+        this.cd.markForCheck();
+      });
     }
   }
 

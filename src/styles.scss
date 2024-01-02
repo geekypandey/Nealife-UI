@@ -4,10 +4,13 @@
 @import 'primeng/resources/primeng.min.css';
 // @import 'bootstrap/dist/css/bootstrap.min.css';
 @import './custom-bootstrap.scss';
+@import './custom-icons.scss';
 
 :root {
   --nl-primary-color: #0062f8;
-  --nl-secondary-color: #03c988;
+  --nl-secondary-color: #898989;
+  --nl-success-color: #03c988;
+  --nl-warning-color: #e8c31b;
 }
 
 body {
@@ -16,12 +19,24 @@ body {
   margin: 0;
 }
 
+.form-check-input:checked {
+  background-color: var(--nl-success-color);
+  border-color: var(--nl-success-color);
+}
+
 .p-button {
-  background: var(--nl-secondary-color);
+  background-color: var(--nl-success-color);
   border: none;
   border-radius: 8px;
   &[disabled] {
     opacity: 0.6;
+  }
+  &.p-button-warning {
+    background-color: #e8c31b;
+    border-color: #e8c31b;
+  }
+  &.p-button-secondary {
+    background-color: var(--nl-secondary-color);
   }
 }
 

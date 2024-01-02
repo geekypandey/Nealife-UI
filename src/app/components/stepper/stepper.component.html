@@ -1,0 +1,51 @@
+<!--Horizontal-->
+<div class="nl-stepper-container d-none d-sm-block">
+  <div class="nl-stepper container">
+    <div class="row flex-nowrap gx-2 overflow-x-auto row">
+      <ng-container *ngFor="let step of steps; index as i; first as isFirst; last as isLast">
+        <div class="col-sm-3 nl-step position-relative" [ngClass]="{ active: selectedIndex === i }">
+          <div class="nl-step-bar" *ngIf="!isLast"></div>
+          <div class="w-100 d-flex flex-column align-items-center text-center">
+            <!--(click)="onClick(i)" -->
+            <div
+              class="nl-stepper-icon"
+              [ngClass]="{ 'stepper-tick': step.completed, 'stepper-dot': !step.completed }"></div>
+            <div class="nl-stepper-title pt-2 w-100 fw-semibold text-truncate">
+              {{ step.title }}
+            </div>
+            <div class="nl-stepper-subtitle w-100 text-truncate">{{ step.subTitle }}</div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div [style.display]="selected ? 'block' : 'none'">
+    <ng-container *ngIf="selected" [ngTemplateOutlet]="selected.content"></ng-container>
+  </div>
+</div>
+
+<!--Vertical-->
+<!-- <div class="d-block d-sm-none">
+  <div class="nl-stepper container-fluid">
+    <div class="row align-items-center justify-content-center">
+      <ng-container *ngFor="let step of steps; index as i; first as isFirst; last as isLast">
+        <div class="col-12 nl-step" [ngClass]="{ active: selectedIndex === i }">
+          <div class="d-inline-flex align-items-center gap-3" (click)="onClick(i)">
+            <div class="nl-stepper-icon" [ngClass]="step.icon"></div>
+            <div class="nl-stepper-label">
+              <div class="nl-stepper-title fw-semibold text-truncate">
+                {{ step.title }}
+              </div>
+              <div class="nl-stepper-subtitle text-truncate">{{ step.subTitle }}</div>
+            </div>
+          </div>
+          <div [ngClass]="{ active: selectedIndex === i, 'nl-step-bar-vertical': !isLast }">
+            <ng-container
+              *ngIf="selectedIndex === i"
+              [ngTemplateOutlet]="step.content"></ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div> -->

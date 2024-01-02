@@ -1,0 +1,12 @@
+.nl-icon {
+  //   display: inline-block;
+  //   background-size: 1rem 1rem;
+  &.left-arrow {
+    content: url('./assets/render-assessment/left-arrow.svg');
+    // background-repeat: no-repeat;
+  }
+  &.right-arrow {
+    content: url('./assets/render-assessment/right-arrow.svg');
+    // background-repeat: no-repeat;
+  }
+}
