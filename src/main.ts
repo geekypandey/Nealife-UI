@@ -4,7 +4,7 @@
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -22,6 +22,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 // platformBrowserDynamic().bootstrapModule(AppModule)
 bootstrapApplication(AppComponent, {
   providers: [
+    provideAnimations(),
     importProvidersFrom(
       BrowserModule,
       BrowserAnimationsModule,

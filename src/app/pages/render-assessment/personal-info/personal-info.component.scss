@@ -5,10 +5,11 @@
   // background-size: cover;
   height: 100%;
   overflow: auto;
+  background-color: var(--nl-body-bg-color);
 }
 .personal-info-card {
   padding: 20px;
-  background-color: #fafcff;
+  background-color: var(--nl-body-bg-color);
   border-radius: 8px;
   border: 1px solid var(--blue-100);
 }

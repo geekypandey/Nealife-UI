@@ -1,14 +1,23 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
   SimpleChanges,
   inject,
 } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { CustomCircleProgressComponent } from 'src/app/components/custom-circle-progress/custom-circle-progress.component';
 import { StepComponent } from 'src/app/components/stepper/step/step.component';
 import { StepperComponent } from 'src/app/components/stepper/stepper.component';
 import { Step } from 'src/app/components/stepper/stepper.model';
@@ -24,6 +33,7 @@ import { Assessment, RenderAssessment, Section } from '../render-assessment.mode
     AssessmentHeaderComponent,
     StepperComponent,
     StepComponent,
+    CustomCircleProgressComponent,
   ],
   templateUrl: './assessment-stepper.component.html',
   styleUrls: ['./assessment-stepper.component.scss'],
@@ -45,9 +55,12 @@ export class AssessmentStepperComponent implements OnChanges {
   activeSectionIndex: number = 0;
   activeQuestionIndex: number = 0;
 
-  private activeAssessment!: Assessment;
+  activeAssessment!: Assessment;
+  assessmentFormGroupArr: FormGroup[] = [];
+  activeSectionFormGroup!: FormGroup;
   private domSanitizer = inject(DomSanitizer);
   private fb = inject(FormBuilder);
+  private cd = inject(ChangeDetectorRef);
 
   ngOnInit() {}
 
@@ -61,10 +74,84 @@ export class AssessmentStepperComponent implements OnChanges {
     }
   }
 
-  onAnswerSelection() {
+  onAnswerSelection(questionIndex: number) {
+    this.setSkippedCtrlVal(questionIndex, false);
+    this.modifyQuestionCount(true);
+  }
+
+  onBack() {
+    this.modifyQuestionCount(false);
+  }
+
+  onSkip(activeQuestionIndex: number) {
+    this.setSkippedCtrlVal(activeQuestionIndex, true);
+    this.modifyQuestionCount(true);
+  }
+
+  isAnswered(questionIndex: number): boolean {
+    const questionFormCtrl = <FormControl>(
+      this.getActiveQuestionFormGroup(questionIndex).get('selectedOption')
+    );
+    return questionFormCtrl ? questionFormCtrl.valid : false;
+  }
+
+  isSkipped(questionIndex: number): boolean {
+    const questionFormCtrl = <FormControl>(
+      this.getActiveQuestionFormGroup(questionIndex).get('isSkipped')
+    );
+    if (questionFormCtrl) {
+      return questionFormCtrl.value;
+    }
+    return false;
+  }
+
+  onInstructionsSubmit() {
+    this.showInstructions = false;
+    this.showStepper = true;
+    this.activeStepIndex = 1; // mark instructions step as completed
+    this.activeSectionIndex = 0;
+    this.activeAssessmentIndex = 0;
+    this.steps = [
+      {
+        title: 'Instructions',
+        subTitle: this.getSectionSubtitle(),
+        showSubTitle: false,
+        completed: true,
+        stepControl: this.fb.group({}),
+      },
+      ...this.getSteps(),
+    ];
+    this.activeSectionFormGroup = this.assessmentFormGroupArr[0];
+    console.info(this.steps);
+    console.info(this.assessmentFormGroupArr);
+  }
+
+  getSteps(): Step[] {
+    return this.sections.map((section, index) => {
+      const itemAspectsFormArray = this.fb.array([]);
+      this.addQuestionsInSection(section, itemAspectsFormArray);
+      const sectionFormGrp = this.fb.group({
+        itemAspectsFormArray: itemAspectsFormArray,
+      });
+      this.assessmentFormGroupArr.push(sectionFormGrp);
+      return {
+        title: 'Sub-Test: ' + (index + 1), //section.name,
+        subTitle: this.getSectionSubtitle(section),
+        showSubTitle: true,
+        stepControl: sectionFormGrp,
+        completed: sectionFormGrp.valid,
+      };
+    });
+  }
+
+  private modifyQuestionCount(isForward: boolean) {
     if (this.activeSectionIndex < this.sections.length) {
       if (this.activeQuestionIndex < this.itemAspects.length) {
-        this.activeQuestionIndex += 1;
+        if (isForward) {
+          this.activeQuestionIndex += 1;
+        } else {
+          this.activeQuestionIndex -= 1;
+        }
       }
       //  else {
       //   this.activeSectionIndex += 1;
@@ -78,58 +165,25 @@ export class AssessmentStepperComponent implements OnChanges {
     // }
   }
 
-  onInstructionsSubmit() {
-    this.showInstructions = false;
-    this.showStepper = true;
-    this.activeStepIndex = 1; // mark instructions step as completed
-    this.activeSectionIndex = 0;
-    this.activeAssessmentIndex = 0;
-    this.steps = [
-      {
-        title: 'Instructions',
-        completed: true,
-        stepControl: this.fb.group({}),
-      },
-      ...this.getSteps(),
-    ];
-    console.info(this.steps);
-  }
-
-  getSteps(): Step[] {
-    return this.sections.map((section, index) => {
-      const sectionFormGrp = this.getSectionFormGroup(section);
-      return {
-        title: 'Sub-Test: ' + (index + 1), //section.name,
-        subTitle: this.getSectionSubtitle(section),
-        stepControl: sectionFormGrp,
-        completed: sectionFormGrp.valid,
-      };
-    });
-  }
-
-  private getSectionFormGroup(section: Section): FormGroup<any> {
-    const itemAspectsFormArray = this.fb.array<FormGroup>([]);
-    const formGroup = this.fb.group<any>({
-      assessmentId: this.activeAssessment.assessmentId,
-      itemAspectsFormArray: itemAspectsFormArray,
-    });
-    section.itemAspects.forEach(item => {
-      itemAspectsFormArray.push(
+  private addQuestionsInSection(section: Section, formArray: FormArray) {
+    section.itemAspects.forEach(_ => {
+      formArray.push(
         this.fb.group({
-          itemAspectId: [item.itemAspectId],
-          itemKey: [item.itemKey],
-          selectedQuestion: [item.language[this.selectedLanguage]],
-          selectedOption: [null, [Validators.required]],
+          selectedOption: [null, Validators.required],
+          isSkipped: [false],
         })
       );
     });
-
-    // formGroup.valueChanges.subscribe(v => console.log(v));
-    return formGroup;
   }
 
-  private getSectionSubtitle(section: Section): string {
-    return `Contains ${section.itemAspects.length} questions`;
+  private getSectionSubtitle(section?: Section): string {
+    const subTitleStr = (val: number) => `Contains ${val} questions`;
+    return section ? subTitleStr(section.itemAspects.length) : subTitleStr(0);
+  }
+
+  private setSkippedCtrlVal(questionIndex: number, value: boolean) {
+    const questFormGrp = this.getActiveQuestionFormGroup(questionIndex);
+    questFormGrp.get('isSkipped')?.setValue(value);
   }
 
   private getInstructionsUrl() {
@@ -137,6 +191,16 @@ export class AssessmentStepperComponent implements OnChanges {
       this.activeAssessment?.instructionPage[this.selectedLanguage]
     );
   }
+
+  private getActiveQuestionFormGroup(questionIndex: number): FormGroup {
+    return <FormGroup>(
+      (<FormArray>this.activeSectionFormGroup.get('itemAspectsFormArray')).at(questionIndex)
+    );
+  }
+
+  // get activeFormGroup():FormGroup {
+  //   return this.activeFormGroup[this.activeSectionIndex]
+  // }
 
   get itemAspects() {
     return this.sections[this.activeSectionIndex].itemAspects;

@@ -17,5 +17,7 @@ export class StepComponent extends CdkStep {
   @Input()
   subTitle?: string = '';
   @Input()
+  showSubTitle: boolean = false;
+  @Input()
   icon: string = '';
 }

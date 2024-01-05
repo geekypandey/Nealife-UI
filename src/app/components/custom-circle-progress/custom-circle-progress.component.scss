@@ -1,0 +1,19 @@
+.outer-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-image: conic-gradient(#0062f8 36deg, rgb(238, 237, 237) 0deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.inner-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

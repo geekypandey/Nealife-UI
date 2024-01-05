@@ -11,6 +11,10 @@ import { StepComponent } from './step/step.component';
   styleUrls: ['./stepper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: CdkStepper, useExisting: StepperComponent }],
+  animations: [
+    // matStepperAnimations.horizontalStepTransition,
+    // matStepperAnimations.verticalStepTransition,
+  ],
 })
 export class StepperComponent extends CdkStepper {
   override readonly steps: QueryList<StepComponent> = new QueryList<StepComponent>();

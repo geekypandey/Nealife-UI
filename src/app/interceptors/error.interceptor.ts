@@ -26,6 +26,15 @@ export function ErrorInterceptor(request: HttpRequest<unknown>, next: HttpHandle
           id: 'sessionExpired',
         });
       }
+      if (error.status === HttpStatusCode.BadGateway) {
+        toastService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: '502 Bad Gateway. Please contact administrator.',
+          sticky: true,
+          id: 'badGateway',
+        });
+      }
       return throwError(() => error);
     })
   );

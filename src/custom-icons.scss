@@ -1,12 +1,22 @@
 .nl-icon {
   //   display: inline-block;
   //   background-size: 1rem 1rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
   &.left-arrow {
     content: url('./assets/render-assessment/left-arrow.svg');
-    // background-repeat: no-repeat;
   }
   &.right-arrow {
     content: url('./assets/render-assessment/right-arrow.svg');
+  }
+  &.up-arrow {
+    background-image: url('./assets/render-assessment/up-arrow.svg');
+  }
+  &.down-arrow {
+    background-image: url('./assets/render-assessment/down-arrow.svg');
     // background-repeat: no-repeat;
+    // background-position: center;
+    // background-size: auto;
   }
 }

@@ -1,6 +1,6 @@
 $stepper-icon-width: 40px;
 $stepper-icon-height: 40px;
-$stepper-color: rgba(46, 49, 146, 1);
+$stepper-color: var(--nl-primary-color);
 
 .nl-stepper-icon {
   width: $stepper-icon-width;
@@ -22,7 +22,29 @@ $stepper-color: rgba(46, 49, 146, 1);
     color: $stepper-color;
     opacity: 1;
   }
+
+  // ::before {
+  //   content: '';
+  //   position: absolute;
+  //   display: block;
+  //   top: calc($stepper-icon-width / 2);
+  //   right: calc(50% + $stepper-icon-width / 2);
+  //   border: 2px solid $stepper-color;
+  //   width: 50%;
+  //   // width: calc(100% - $stepper-icon-width);
+  // }
+  // ::after {
+  //   content: '';
+  //   position: absolute;
+  //   display: block;
+  //   top: calc($stepper-icon-width / 2);
+  //   left: calc(50% + $stepper-icon-width / 2);
+  //   border: 2px solid $stepper-color;
+  //   width: 50%;
+  //   // width: calc(100% - $stepper-icon-width);
+  // }
 }
+
 .nl-step-bar {
   position: absolute;
   top: calc($stepper-icon-width / 2);
