@@ -5,6 +5,21 @@ $bg-color: rgba(235, 237, 249, 1);
   background-color: var(--nl-body-bg-color);
 }
 
+.box {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background: rgba(124, 131, 141, 1);
+}
+
+.attempted .box {
+  background: rgba(3, 201, 136, 1);
+}
+
+.skipped .box {
+  background: rgba(255, 203, 91, 1);
+}
+
 .assessment-timer-section {
   box-shadow: -4px 0px 10px 0px rgba(0, 0, 0, 0.1);
 }
@@ -18,14 +33,12 @@ $bg-color: rgba(235, 237, 249, 1);
 }
 
 .section-card {
-  border: 1px solid #cbdbf3;
   border-radius: 4px;
   .section-card-header {
     height: 44px;
     border-radius: 4px 4px 0px 0px;
     background: #e9f2ff;
     .nl-icon {
-      cursor: pointer;
       width: 24px;
       height: 24px;
     }
@@ -36,7 +49,7 @@ $bg-color: rgba(235, 237, 249, 1);
   }
   .section-card-body {
     .count {
-      border: 1px solid #cbdbf3;
+      cursor: pointer;
       background-color: #e2e8f0;
       border-radius: 3px;
       height: 29px;

@@ -61,6 +61,7 @@ export class AssessmentStepperComponent implements OnChanges {
   private domSanitizer = inject(DomSanitizer);
   private fb = inject(FormBuilder);
   private cd = inject(ChangeDetectorRef);
+  readonly SUB_TEST_LABEL: string = 'Sub-Test: ';
 
   ngOnInit() {}
 
@@ -78,6 +79,8 @@ export class AssessmentStepperComponent implements OnChanges {
     this.setSkippedCtrlVal(questionIndex, false);
     this.modifyQuestionCount(true);
   }
+
+  onSubmit() {}
 
   onBack() {
     this.modifyQuestionCount(false);
@@ -135,7 +138,7 @@ export class AssessmentStepperComponent implements OnChanges {
       });
       this.assessmentFormGroupArr.push(sectionFormGrp);
       return {
-        title: 'Sub-Test: ' + (index + 1), //section.name,
+        title: this.SUB_TEST_LABEL + (index + 1), //section.name,
         subTitle: this.getSectionSubtitle(section),
         showSubTitle: true,
         stepControl: sectionFormGrp,
@@ -146,14 +149,17 @@ export class AssessmentStepperComponent implements OnChanges {
 
   private modifyQuestionCount(isForward: boolean) {
     if (this.activeSectionIndex < this.sections.length) {
-      if (this.activeQuestionIndex < this.itemAspects.length) {
+      if (this.activeQuestionIndex < this.itemAspects.length - 1) {
         if (isForward) {
           this.activeQuestionIndex += 1;
         } else {
           this.activeQuestionIndex -= 1;
         }
+      } else if (this.activeQuestionIndex === this.itemAspects.length - 1 && !isForward) {
+        // if it's last question of itemAspects
+        this.activeQuestionIndex -= 1;
       }
-      //  else {
+      // else {
       //   this.activeSectionIndex += 1;
       //   this.activeQuestionIndex = 0;
       // }

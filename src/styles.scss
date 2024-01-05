@@ -8,12 +8,16 @@
 
 :root {
   --nl-primary-color: #0062f8;
-  --nl-secondary-color: #898989;
+  --nl-secondary-color: #e2e8f0;
   --nl-success-color: #03c988;
   --nl-warning-color: #e8c31b;
 
   --nl-text-warning-color: #ffcb5b;
   --nl-text-warning-dark-color: #fd9801;
+
+  --nl-border-color: #cbdbf3;
+
+  --nl-border-style: solid;
 
   --nl-body-bg-color: #fafcff;
 }
@@ -47,4 +51,17 @@ body {
 
 .p-dropdown-items {
   padding: 0 !important; // required as reboot.scss overrided
+}
+
+.nl-border {
+  border: var(--nl-border-width) var(--nl-border-style) var(--nl-border-color);
+}
+.nl-border-top {
+  border-top: var(--nl-border-width) var(--nl-border-style) var(--nl-border-color);
+}
+.nl-border-1 {
+  --nl-border-width: 1px;
+}
+.nl-border-2 {
+  --nl-border-width: 2px;
 }
