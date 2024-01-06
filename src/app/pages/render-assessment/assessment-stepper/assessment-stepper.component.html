@@ -94,6 +94,10 @@
                                 Back
                               </button>
                               <button
+                                *ngIf="
+                                  activeQuestionIndex !==
+                                  sections[activeSectionIndex].itemAspects.length - 1
+                                "
                                 type="button"
                                 class="p-button p-button-warning gap-2"
                                 (click)="onSkip(activeQuestionIndex)">
@@ -120,11 +124,11 @@
                                   </div>
                                   <div class="attempted d-flex gap-2 align-items-center">
                                     <div class="box"></div>
-                                    <div>Not Attempted</div>
+                                    <div>Attempted</div>
                                   </div>
                                   <div class="skipped d-flex gap-2 align-items-center">
                                     <div class="box"></div>
-                                    <div>Not Attempted</div>
+                                    <div>Skipped</div>
                                   </div>
                                 </div>
                               </div>

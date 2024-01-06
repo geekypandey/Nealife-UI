@@ -158,11 +158,12 @@ export class AssessmentStepperComponent implements OnChanges {
       } else if (this.activeQuestionIndex === this.itemAspects.length - 1 && !isForward) {
         // if it's last question of itemAspects
         this.activeQuestionIndex -= 1;
+      } else {
+        this.activeStepIndex += 1;
+        this.activeSectionIndex += 1;
+        this.activeQuestionIndex = 0;
+        this.activeSectionFormGroup = this.assessmentFormGroupArr[this.activeSectionIndex];
       }
-      // else {
-      //   this.activeSectionIndex += 1;
-      //   this.activeQuestionIndex = 0;
-      // }
     }
     // else {
     //   this.activeAssessmentIndex += 1;
