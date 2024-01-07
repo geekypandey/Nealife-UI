@@ -1,9 +1,12 @@
 <!--Horizontal-->
 <div class="nl-stepper-container d-none d-sm-block">
   <div class="nl-stepper container">
-    <div class="row flex-nowrap gx-2 overflow-x-auto">
+    <div class="row flex-nowrap gx-2 overflow-x-hidden">
       <ng-container *ngFor="let step of steps; index as i; first as isFirst; last as isLast">
-        <div class="col nl-step position-relative" [class.active]="selectedIndex === i">
+        <div
+          [id]="getStepId(i)"
+          class="col-lg-3 nl-step position-relative"
+          [class.active]="selectedIndex === i">
           <div class="nl-step-bar" *ngIf="!isLast"></div>
           <div class="w-100 d-flex flex-column align-items-center text-center">
             <!--(click)="onClick(i)" -->

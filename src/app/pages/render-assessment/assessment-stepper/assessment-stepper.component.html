@@ -156,19 +156,22 @@
                 </div>
                 <div class="col overflow-auto sub-test-container">
                   <div class="row gy-3">
-                    <div class="col-lg-12" *ngFor="let section of sections; index as i">
+                    <div
+                      [id]="SUB_TEST_CARD_LABEL + i"
+                      class="col-lg-12"
+                      *ngFor="let section of sections; index as i">
                       <div class="row">
                         <div class="col-lg-12">
                           <div class="section-card nl-border nl-border-1">
                             <div class="section-card-header p-2 d-flex align-items-center">
-                              <span>{{ SUB_TEST_LABEL + (i + 1) }}</span>
+                              <span class="col-auto">{{ SUB_TEST_LABEL + (i + 1) }}</span>
                               <span
                                 class="nl-icon mx-3 d-inline-block"
                                 [ngClass]="{
                                   'up-arrow': i === activeSectionIndex,
                                   'down-arrow': i !== activeSectionIndex
                                 }"></span>
-                              <span class="status" *ngIf="i === activeSectionIndex"
+                              <span class="status text-truncate" *ngIf="i === activeSectionIndex"
                                 >In Progress</span
                               >
                             </div>

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,6 +21,7 @@ import { CustomCircleProgressComponent } from 'src/app/components/custom-circle-
 import { StepComponent } from 'src/app/components/stepper/step/step.component';
 import { StepperComponent } from 'src/app/components/stepper/stepper.component';
 import { Step } from 'src/app/components/stepper/stepper.model';
+import { scrollIntoView } from 'src/app/util/util';
 import { AssessmentHeaderComponent } from '../assessment-header/assessment-header.component';
 import { Assessment, RenderAssessment, Section } from '../render-assessment.model';
 
@@ -60,10 +61,10 @@ export class AssessmentStepperComponent implements OnChanges {
   activeSectionFormGroup!: FormGroup;
   private domSanitizer = inject(DomSanitizer);
   private fb = inject(FormBuilder);
+  private doc = inject(DOCUMENT);
   private cd = inject(ChangeDetectorRef);
   readonly SUB_TEST_LABEL: string = 'Sub-Test: ';
-
-  ngOnInit() {}
+  readonly SUB_TEST_CARD_LABEL: string = 'sub-test-';
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes['selectedLanguage'] && changes['assessmentsData']) {
@@ -125,8 +126,8 @@ export class AssessmentStepperComponent implements OnChanges {
       ...this.getSteps(),
     ];
     this.activeSectionFormGroup = this.assessmentFormGroupArr[0];
-    console.info(this.steps);
-    console.info(this.assessmentFormGroupArr);
+    // console.info(this.steps);
+    // console.info(this.assessmentFormGroupArr);
   }
 
   getSteps(): Step[] {
@@ -156,13 +157,17 @@ export class AssessmentStepperComponent implements OnChanges {
           this.activeQuestionIndex -= 1;
         }
       } else if (this.activeQuestionIndex === this.itemAspects.length - 1 && !isForward) {
-        // if it's last question of itemAspects
+        // if it's last question of itemAspects and user clicked Back button
         this.activeQuestionIndex -= 1;
       } else {
         this.activeStepIndex += 1;
         this.activeSectionIndex += 1;
         this.activeQuestionIndex = 0;
         this.activeSectionFormGroup = this.assessmentFormGroupArr[this.activeSectionIndex];
+        const targetEle = this.doc.getElementById(
+          this.SUB_TEST_CARD_LABEL + this.activeSectionIndex
+        );
+        scrollIntoView(targetEle);
       }
     }
     // else {

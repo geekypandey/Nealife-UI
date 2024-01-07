@@ -6,6 +6,7 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormControl,
@@ -79,7 +80,7 @@ export class RenderAssessmentComponent implements OnInit {
   constructor() {
     this.assessmentAnswer = new AssessmentAnswer();
     this.landingPage = true;
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(takeUntilDestroyed()).subscribe(params => {
       this.queryParamau = params['AU'];
       this.queryParamaa = params['AA'];
       this.assessmentAnswer.companyId = params['C'];
@@ -95,11 +96,37 @@ export class RenderAssessmentComponent implements OnInit {
       }
 
       this.validateCreditCode(this.queryParamcc);
+      // this.isCreditUsedBefore(this.queryParamcc);
     });
 
     this.assessmentForm = this.fb.group({
       code: [{ value: null, disabled: true }, [Validators.required]],
       language: [null, [Validators.required]],
+    });
+  }
+
+  private isCreditUsedBefore(creditCode: string) {
+    this.assementService.isCreditUsedBefore(creditCode).subscribe({
+      next: (resp: any) => {
+        this.toastService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: resp ? resp.data : '',
+          sticky: false,
+          id: 'isCreditUsedBefore',
+        });
+        this.cd.markForCheck();
+      },
+      error: _ => {
+        console.error(_);
+        this.toastService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Invalid credit code or credit code already in use,Please contact administrator',
+          sticky: false,
+          id: 'isCreditUsedBefore',
+        });
+      },
     });
   }
 

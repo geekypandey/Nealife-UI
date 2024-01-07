@@ -37,64 +37,10 @@ export class MinuteSecondsPipe implements PipeTransform {
   templateUrl: './custom-circle-progress.component.html',
   styleUrls: ['./custom-circle-progress.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    // (
-    //   NgCircleProgressModule.forRoot({
-    //     radius: 60,
-    //     space: -10,
-    //     outerStrokeGradient: true,
-    //     outerStrokeWidth: 10,
-    //     outerStrokeColor: '#4882c2',
-    //     outerStrokeGradientStopColor: '#53a9ff',
-    //     innerStrokeColor: '#e7e8ea',
-    //     innerStrokeWidth: 10,
-    //     animationDuration: 1000,
-    //     startFromZero: true,
-    //   }) as ModuleWithProviders<NgCircleProgressModule>
-    // ).providers!,
-  ],
 })
 export class CustomCircleProgressComponent {
-  cd = inject(ChangeDetectorRef);
-  // options = new CircleProgressOptions();
-  // optionsA: CircleProgressOptions = {
-  //   ...this.options,
-  //   radius: 60,
-  //   percent: 90,
-  //   space: -10,
-  //   outerStrokeGradient: true,
-  //   outerStrokeWidth: 10,
-  //   outerStrokeColor: '#4882c2',
-  //   outerStrokeGradientStopColor: '#53a9ff',
-  //   innerStrokeColor: '#e7e8ea',
-  //   innerStrokeWidth: 10,
-  //   title: 'UI2',
-  //   animateTitle: false,
-  //   animationDuration: 1000,
-  //   showUnits: false,
-  //   showBackground: false,
-  //   clockwise: true,
-  //   startFromZero: false,
-  //   lazy: true,
-  // };
+  private cd = inject(ChangeDetectorRef);
 
-  // @ViewChild(CircleProgressComponent, { static: true }) circleProgress!: CircleProgressComponent;
-
-  // ngOnInit() {
-  //   this.options = Object.assign({}, this.circleProgress.defaultOptions, this.optionsA);
-  //   // this.cd.markForCheck();
-  //   // this.cd.detectChanges();
-  //   // this.circleProgress.ch
-  // }
-
-  // ngAfterViewInit(): void {
-  //   this.options = Object.assign({}, this.circleProgress.defaultOptions, this.optionsA);
-  //   this.cd.markForCheck();
-  // }
-
-  // copyOptions = (event: any, options: any) => {
-  //   this.options = Object.assign({}, this.circleProgress.defaultOptions, options);
-  // };
   private totalTimeInSeconds: number = 0;
 
   @Input()
