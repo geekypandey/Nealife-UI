@@ -1,4 +1,4 @@
-<nl-spinner [name]="'assessment-test'"></nl-spinner>
+<nl-spinner [name]="spinnerName"></nl-spinner>
 <ng-container *ngIf="landingPage">
   <div class="render-assessment">
     <h3 class="assess-welcome">Welcome to Assess</h3>
@@ -48,6 +48,7 @@
   <nl-personal-info
     [fields]="personalInfofields"
     [queryParamcc]="queryParamcc"
+    [demographics]="preAssessmentDemographics"
     (onSubmitForm)="onSubmitPersonalInfoForm($event)"></nl-personal-info>
 </ng-container>
 

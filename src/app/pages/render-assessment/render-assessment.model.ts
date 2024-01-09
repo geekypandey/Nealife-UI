@@ -1,4 +1,4 @@
-export interface RenderAssessment {
+export interface RenderAssessmentResponse {
   companyId: number;
   companyAssessmentGroupId: number;
   companyAssessmentGroupBranchMappingId?: any;
@@ -107,6 +107,7 @@ export class AssessmentAnswer {
   answers: any[];
   emailReport: null;
   language: null;
+  creditCode: string | null;
   constructor() {
     this.companyId = null;
     this.assessmentGroupId = null;
@@ -119,5 +120,78 @@ export class AssessmentAnswer {
     this.answers = [];
     this.emailReport = null;
     this.language = null;
+    this.creditCode = null;
   }
+}
+
+export interface PreAssessmentDetailsResponse {
+  id: number;
+  creditCode: string;
+  companyId: number;
+  assessmentGroupId: number;
+  companyAssessmentId?: any;
+  companyAssessmentGroupId: number;
+  companyAssessmentGroupBranchMappingId?: any;
+  isGroup: string;
+  reportType?: any;
+  assessmentUUID: string;
+  assessmentId?: any;
+  emailReport?: any;
+  language?: any;
+  assessmentDate: string;
+  demographics: PreAssessmentDetailsDemographics;
+  sectionDetails?: any;
+}
+
+export interface PreAssessmentDetailsDemographics {
+  id?: any;
+  code: string;
+  userName?: any;
+  firstName: string;
+  lastName: string;
+  email: string;
+  address?: any;
+  contactNumber1?: any;
+  contactNumber2?: any;
+  langKey?: any;
+  status?: any;
+  dateOfBirth: string;
+  company?: any;
+  companyName?: any;
+  manager?: any;
+  managerName?: any;
+  gender: number;
+  genderName?: any;
+  education?: any;
+  educationName?: any;
+  occupation?: any;
+  occupationName?: any;
+  experience?: any;
+  experienceName?: any;
+  designation?: any;
+  designationName?: any;
+  ethnicity?: any;
+  ethnicityName?: any;
+  career?: any;
+  careerName?: any;
+  nationality?: any;
+  nationalityName?: any;
+  income?: any;
+  incomeName?: any;
+  location: number;
+  locationName?: any;
+  age?: any;
+  ageName?: any;
+  isGroup: string;
+  groupSequence?: any;
+  fullName?: any;
+  place: string;
+  standard: number;
+  educationEditable?: any;
+  instituteName?: any;
+  sectors?: any;
+  engBranch?: any;
+  mbaBranch?: any;
+  designationEditable?: any;
+  qualification?: any;
 }

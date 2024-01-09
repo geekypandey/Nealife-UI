@@ -1,18 +1,23 @@
 <!--Horizontal-->
-<div class="nl-stepper-container d-none d-sm-block">
-  <div class="nl-stepper container">
-    <div class="row flex-nowrap gx-2 overflow-x-hidden">
+<div class="nl-stepper-container">
+  <div class="d-none d-lg-block nl-stepper container-fluid">
+    <div
+      class="row flex-nowrap gx-2 overflow-x-hidden"
+      [class.justify-content-center]="steps.length < 4">
       <ng-container *ngFor="let step of steps; index as i; first as isFirst; last as isLast">
         <div
           [id]="getStepId(i)"
-          class="col-lg-3 nl-step position-relative"
+          class="col-sm-3 nl-step position-relative"
           [class.active]="selectedIndex === i">
           <div class="nl-step-bar" *ngIf="!isLast"></div>
           <div class="w-100 d-flex flex-column align-items-center text-center">
             <!--(click)="onClick(i)" -->
             <div
               class="nl-stepper-icon"
-              [ngClass]="{ 'stepper-tick': step.completed, 'stepper-dot': !step.completed }"></div>
+              [ngClass]="{
+                'stepper-tick': step.completed,
+                'stepper-dot': !step.completed
+              }"></div>
             <div class="nl-stepper-title pt-2 w-100 fw-semibold text-truncate">
               {{ step.title }}
               <br />
@@ -28,15 +33,15 @@
     </div>
   </div>
   <!-- [@horizontalStepTransition]="{ value: _getAnimationDirection(i) }" -->
-  <div
-    *ngFor="let step of steps; index as i"
-    class="nl-step-content"
-    [id]="_getStepContentId(i)"
-    [attr.aria-labelledby]="_getStepLabelId(i)">
-    <ng-container
+  <ng-container *ngFor="let step of steps; index as i">
+    <div
       *ngIf="selectedIndex === i && step.content"
-      [ngTemplateOutlet]="step.content"></ng-container>
-  </div>
+      class="nl-step-content"
+      [id]="_getStepContentId(i)"
+      [attr.aria-labelledby]="_getStepLabelId(i)">
+      <ng-container [ngTemplateOutlet]="step.content"></ng-container>
+    </div>
+  </ng-container>
 </div>
 
 <!--Vertical-->

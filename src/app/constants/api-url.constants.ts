@@ -1,4 +1,4 @@
-export const BASE_URL = '/nealife/api';
+export const BASE_URL = '/nealife-qa/api';
 export const API_URL = {
   login: BASE_URL + '/authenticate',
   getLoggedInUser: BASE_URL + '/users/getLoggedInUser',
@@ -15,4 +15,6 @@ export const API_URL = {
   checkCreditCode: BASE_URL + '/checkCreditUsed',
   isCreditUsedBefore: BASE_URL + '/pre-assessment-details',
   branchAssessmentCourseFitURL: BASE_URL + '/assessments/renderNewAssesmentForCourseFit',
+
+  preAssessmentDetails: BASE_URL + '/pre-assessment-details',
 };

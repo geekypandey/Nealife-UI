@@ -3,7 +3,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
+  Output,
   Pipe,
   PipeTransform,
   inject,
@@ -55,12 +57,15 @@ export class CustomCircleProgressComponent {
   @Input()
   stopTimer: boolean = false;
 
+  @Output()
+  onTimeover = new EventEmitter<boolean>();
+
   secondsLeft: number = 0;
   private destroyRef = new Subject();
 
   private startTimer() {
     const countdown$ = timer(0, 1000).pipe(
-      take(this.totalTimeInSeconds),
+      take(this.totalTimeInSeconds + 1),
       map(secondsElapsed => this.totalTimeInSeconds - secondsElapsed),
       takeUntil(this.destroyRef)
     );
@@ -68,6 +73,7 @@ export class CustomCircleProgressComponent {
     countdown$.subscribe(secondsLeft => {
       this.secondsLeft = secondsLeft;
       if (this.secondsLeft === 0) {
+        this.onTimeover.emit(true);
         this.destroyRef.complete();
       }
       this.cd.markForCheck();

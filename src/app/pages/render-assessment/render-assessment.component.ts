@@ -24,7 +24,12 @@ import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
 import { AssessmentStepperComponent } from './assessment-stepper/assessment-stepper.component';
 import { PersonalInfoComponent } from './personal-info/personal-info.component';
-import { AssessmentAnswer, Demographic, RenderAssessment } from './render-assessment.model';
+import {
+  AssessmentAnswer,
+  Demographic,
+  PreAssessmentDetailsDemographics,
+  RenderAssessmentResponse,
+} from './render-assessment.model';
 import { RenderAssessmentService } from './render-assessment.service';
 
 @Component({
@@ -53,7 +58,7 @@ export class RenderAssessmentComponent implements OnInit {
   groupSequence!: number;
   paramAssessmentId: string = '';
 
-  renderAssessmentData: RenderAssessment | null = null;
+  renderAssessmentData: RenderAssessmentResponse | null = null;
   languagesOptions: DropdownOption[] = [];
   assessmentForm: FormGroup;
   landingPage: boolean = false;
@@ -76,6 +81,7 @@ export class RenderAssessmentComponent implements OnInit {
   private companyAssessmentGroupId: number | null = null;
   private assessmentGroupId: number | null = null;
   private reportType: string | null = null;
+  preAssessmentDemographics?: PreAssessmentDetailsDemographics;
 
   constructor() {
     this.assessmentAnswer = new AssessmentAnswer();
@@ -96,7 +102,6 @@ export class RenderAssessmentComponent implements OnInit {
       }
 
       this.validateCreditCode(this.queryParamcc);
-      // this.isCreditUsedBefore(this.queryParamcc);
     });
 
     this.assessmentForm = this.fb.group({
@@ -105,33 +110,7 @@ export class RenderAssessmentComponent implements OnInit {
     });
   }
 
-  private isCreditUsedBefore(creditCode: string) {
-    this.assementService.isCreditUsedBefore(creditCode).subscribe({
-      next: (resp: any) => {
-        this.toastService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: resp ? resp.data : '',
-          sticky: false,
-          id: 'isCreditUsedBefore',
-        });
-        this.cd.markForCheck();
-      },
-      error: _ => {
-        console.error(_);
-        this.toastService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Invalid credit code or credit code already in use,Please contact administrator',
-          sticky: false,
-          id: 'isCreditUsedBefore',
-        });
-      },
-    });
-  }
-
   ngOnInit() {
-    // localStorage.removeItem('assessmentAnswer'); // TODO uncomment line
     this.spinner.show(this.spinnerName);
     this.assementService.renderAssessment(this.queryParamaa).subscribe({
       next: resp => {
@@ -145,6 +124,52 @@ export class RenderAssessmentComponent implements OnInit {
   }
 
   onSubmit() {
+    this.assessmentAnswer.language = this.languageCtrl.value;
+    this.spinner.show(this.spinnerName);
+    this.assementService.isCreditUsedBefore(this.queryParamcc).subscribe({
+      next: resp => {
+        this.preAssessmentDemographics = resp && resp.demographics ? resp.demographics : undefined;
+        // this.assessmentAnswer.demographics = this.preAssessmentDemographics
+        this.spinner.hide(this.spinnerName);
+        this.navigateToDemographicsPage();
+      },
+      error: _ => {
+        console.info('No demographics details');
+        this.spinner.hide(this.spinnerName);
+        this.navigateToDemographicsPage();
+      },
+    });
+  }
+
+  onSubmitPersonalInfoForm(value: any) {
+    // this.saveAssessmentAnswer(this.assessmentAnswer);
+    if (this.reportType === 'ECFEREPORT') {
+      // this.getAssessmentCourseFit(this.assessmentAnswer);
+      // TODO
+    } else {
+      console.info('assessmentAnswer ', this.assessmentAnswer);
+      if (!this.preAssessmentDemographics) {
+        const reqPayload = {
+          ...this.assessmentAnswer,
+          demographics: value,
+        };
+        this.spinner.show(this.spinnerName);
+        this.assementService.submitPersonalInfo(reqPayload).subscribe({
+          next: resp => {
+            this.preAssessmentDemographics =
+              resp && resp.demographics ? resp.demographics : undefined;
+            this.spinner.hide(this.spinnerName);
+            this.navigateToAssessmentPage();
+          },
+          error: () => this.spinner.hide(this.spinnerName),
+        });
+      } else {
+        this.navigateToAssessmentPage();
+      }
+    }
+  }
+
+  private navigateToDemographicsPage() {
     this.landingPage = false;
     this.personalInfoPage = true;
     if (this.renderAssessmentData) {
@@ -152,32 +177,16 @@ export class RenderAssessmentComponent implements OnInit {
         (obj: Demographic) => obj['language'] === this.languageCtrl.value
       );
     }
+    this.cd.markForCheck();
   }
 
-  onSubmitPersonalInfoForm(value: any) {
-    this.assessmentAnswer.demographics = value;
-    this.saveAssessmentAnswer(this.assessmentAnswer);
-    if (this.reportType === 'ECFEREPORT') {
-      // this.getAssessmentCourseFit(this.assessmentAnswer);
-      // TODO
-    } else {
-      this.personalInfoPage = false;
-      this.assessmentPage = true;
-    }
+  private navigateToAssessmentPage() {
+    this.personalInfoPage = false;
+    this.assessmentPage = true;
+    this.cd.markForCheck();
   }
 
-  private saveAssessmentAnswer(value: any, keyName?: string) {
-    let assessmentAnswerStr = localStorage.getItem('assessmentAnswer');
-    if (assessmentAnswerStr && keyName) {
-      let assessmentAnswer = JSON.parse(assessmentAnswerStr);
-      assessmentAnswer = { ...assessmentAnswer, [keyName]: value };
-      localStorage.setItem('assessmentAnswer', JSON.stringify(assessmentAnswer));
-    } else {
-      localStorage.setItem('assessmentAnswer', JSON.stringify(value));
-    }
-  }
-
-  private initialiseFields(renderAssessmentData: RenderAssessment) {
+  private initialiseFields(renderAssessmentData: RenderAssessmentResponse) {
     if (renderAssessmentData) {
       const { demographics, reportType, assessmentGroupId, companyAssessmentGroupId } =
         renderAssessmentData;
@@ -185,6 +194,7 @@ export class RenderAssessmentComponent implements OnInit {
       this.assessmentAnswer.companyAssessmentGroupId = companyAssessmentGroupId;
       this.assessmentAnswer.isGroup = this.isGroup;
       this.assessmentAnswer.assessmentUUID = this.queryParamaa;
+      this.assessmentAnswer.creditCode = this.queryParamcc;
       this.reportType = reportType;
       this.getbranches(reportType);
       this.languages = this.getLanguages(demographics);

@@ -21,9 +21,10 @@ import { CustomCircleProgressComponent } from 'src/app/components/custom-circle-
 import { StepComponent } from 'src/app/components/stepper/step/step.component';
 import { StepperComponent } from 'src/app/components/stepper/stepper.component';
 import { Step } from 'src/app/components/stepper/stepper.model';
+import { LayoutService } from 'src/app/services/layout.service';
 import { scrollIntoView } from 'src/app/util/util';
 import { AssessmentHeaderComponent } from '../assessment-header/assessment-header.component';
-import { Assessment, RenderAssessment, Section } from '../render-assessment.model';
+import { Assessment, RenderAssessmentResponse, Section } from '../render-assessment.model';
 
 @Component({
   selector: 'nl-assessment-stepper',
@@ -45,7 +46,7 @@ export class AssessmentStepperComponent implements OnChanges {
   selectedLanguage: string = 'English';
 
   @Input()
-  assessmentsData: RenderAssessment | null = null;
+  assessmentsData: RenderAssessmentResponse | null = null;
 
   showInstructions: boolean = false;
   showStepper: boolean = false;
@@ -65,6 +66,7 @@ export class AssessmentStepperComponent implements OnChanges {
   private cd = inject(ChangeDetectorRef);
   readonly SUB_TEST_LABEL: string = 'Sub-Test: ';
   readonly SUB_TEST_CARD_LABEL: string = 'sub-test-';
+  layoutService = inject(LayoutService);
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes['selectedLanguage'] && changes['assessmentsData']) {

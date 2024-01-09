@@ -17,8 +17,9 @@ import { tap } from 'rxjs/operators';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
+import { DateToString, StringToDate } from 'src/app/util/util';
 import { AssessmentHeaderComponent } from '../assessment-header/assessment-header.component';
-import { Demographic } from '../render-assessment.model';
+import { Demographic, PreAssessmentDetailsDemographics } from '../render-assessment.model';
 
 @Component({
   selector: 'nl-personal-info',
@@ -62,28 +63,37 @@ export class PersonalInfoComponent {
   private fb = inject(FormBuilder);
   private cd = inject(ChangeDetectorRef);
 
-  @Input()
+  readonly spinnerName: string = 'personal-info';
+
+  @Input({ required: true })
   set fields(fields: Demographic[]) {
     this.personalInfoFields = fields && fields.length ? fields : [];
     this.initForm();
   }
 
-  @Input()
+  @Input({ required: true })
   set queryParamcc(cc: string) {
     setTimeout(() => this.basicInfoForm.get('code')?.setValue(cc));
+  }
+
+  @Input()
+  set demographics(value: PreAssessmentDetailsDemographics | undefined) {
+    if (value) {
+      this.initDemographics(value);
+    }
   }
 
   @Output()
   onSubmitForm = new EventEmitter();
 
   ngOnInit() {
-    this.spinner.show('personal-info');
+    this.spinner.show(this.spinnerName);
     forkJoin(this.lookupObsArr()).subscribe({
       next: _ => {
         this.cd.markForCheck();
-        this.spinner.hide('personal-info');
+        this.spinner.hide(this.spinnerName);
       },
-      error: _ => this.spinner.hide('personal-info'),
+      error: _ => this.spinner.hide(this.spinnerName),
     });
   }
 
@@ -92,7 +102,10 @@ export class PersonalInfoComponent {
   }
 
   submit() {
-    this.onSubmitForm.emit(this.basicInfoForm.value);
+    this.onSubmitForm.emit({
+      ...this.basicInfoForm.value,
+      dateOfBirth: DateToString(this.basicInfoForm.value.dateOfBirth),
+    });
   }
 
   isRequired(key: string) {
@@ -168,26 +181,15 @@ export class PersonalInfoComponent {
         this.basicInfoForm.get('stream')?.setValue('');
       }
     });
-
-    // TODO added to avoid refill details
-    const assessmentAnswer = localStorage.getItem('assessmentAnswer');
-    if (assessmentAnswer) {
-      const assessmentAnswerObj = JSON.parse(assessmentAnswer);
-      const demographics = assessmentAnswerObj.demographics;
-      if (demographics) {
-        this.basicInfoForm.patchValue({
-          ...demographics,
-          dateOfBirth: this.getFormattedDate(demographics.dateOfBirth),
-        });
-      }
-    }
-
-    // this.cd.markForCheck();
   }
 
-  private getFormattedDate(dateStr: string) {
-    var d = new Date(dateStr);
-    return d.toJSON().slice(0, 10);
+  private initDemographics(demographicsValue: PreAssessmentDetailsDemographics) {
+    if (this.basicInfoForm) {
+      this.basicInfoForm.patchValue({
+        ...demographicsValue,
+        dateOfBirth: StringToDate(demographicsValue.dateOfBirth),
+      });
+    }
   }
 
   private lookupObsArr() {
