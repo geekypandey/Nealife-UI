@@ -1,3 +1,4 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
 <div class="d-flex flex-column h-100">
   <nl-assessment-header></nl-assessment-header>
   <div class="col overflow-auto">
@@ -58,9 +59,8 @@
                             let itemAspect of sections[activeSectionIndex].itemAspects;
                             index as itemAspectIndex
                           ">
-                          <div
-                            class="assessment-section d-sm-flex gap-sm-2 align-items-sm-baseline justify-content-sm-center"
-                            *ngIf="itemAspectIndex === activeQuestionIndex">
+                          <!-- class="assessment-section d-sm-flex gap-sm-2 align-items-sm-baseline justify-content-sm-center" -->
+                          <ng-container *ngIf="itemAspectIndex === activeQuestionIndex">
                             <!-- <div class="question-number col-auto mt-4">
                               {{ itemAspectIndex + 1 }}
                             </div> -->
@@ -91,14 +91,14 @@
                                       let answer of itemAspect.answerOptions;
                                       index as ansIndex
                                     ">
-                                    <div class="col-12 col-sm-6 col-md-4">
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                       <div class="form-check">
                                         <input
-                                          formControlName="selectedOption"
+                                          formControlName="selectedAnswer"
                                           (change)="onAnswerSelection(activeQuestionIndex)"
                                           class="form-check-input"
                                           type="radio"
-                                          [value]="answer.choice"
+                                          [value]="answer"
                                           [id]="'ans-' + activeQuestionIndex + '-' + ansIndex" />
                                         <label
                                           class="form-check-label"
@@ -113,6 +113,7 @@
                               <div
                                 class="d-flex justify-content-around pt-4 nl-border-top nl-border-1">
                                 <button
+                                  *ngIf="assessmentsData?.showBackButton"
                                   type="button"
                                   class="p-button p-button-secondary text-black fw-bold"
                                   [disabled]="activeQuestionIndex === 0"
@@ -122,8 +123,9 @@
                                 </button>
                                 <button
                                   *ngIf="
+                                    assessmentsData?.showSkipButton &&
                                     activeQuestionIndex !==
-                                    sections[activeSectionIndex].itemAspects.length - 1
+                                      sections[activeSectionIndex].itemAspects.length - 1
                                   "
                                   type="button"
                                   class="p-button p-button-warning gap-2"
@@ -136,14 +138,15 @@
                                     activeQuestionIndex ===
                                     sections[activeSectionIndex].itemAspects.length - 1
                                   "
+                                  [disabled]="activeSectionFormGroup.invalid"
                                   type="button"
                                   class="p-button p-button-primary"
-                                  (click)="onSubmit()">
+                                  (click)="submitSectionDetails()">
                                   Submit
                                 </button>
                               </div>
                             </div>
-                          </div>
+                          </ng-container>
                         </ng-container>
                       </form>
                       <!-- <div>{{ activeSectionFormGroup.value | json }}</div> -->

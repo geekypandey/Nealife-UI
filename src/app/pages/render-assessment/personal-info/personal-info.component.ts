@@ -55,6 +55,10 @@ export class PersonalInfoComponent {
   standard: DropdownOption[] = [];
   stream: DropdownOption[] = [];
   board: DropdownOption[] = [];
+  sectors: DropdownOption[] = [];
+  engBranches: DropdownOption[] = [];
+  mbaBranches: DropdownOption[] = [];
+
   basicInfoForm!: FormGroup;
   todaysDate: Date = new Date();
 
@@ -209,6 +213,9 @@ export class PersonalInfoComponent {
       this.sharedApiService.lookup('STANDARD').pipe(tap(res => (this.standard = res))),
       this.sharedApiService.lookup('STREAM').pipe(tap(res => (this.stream = res))),
       this.sharedApiService.lookup('BOARD').pipe(tap(res => (this.board = res))),
+      this.sharedApiService.lookup('SECTORS').pipe(tap(res => (this.sectors = res))),
+      this.sharedApiService.lookup('ENGINEERING_BRANCH').pipe(tap(res => (this.engBranches = res))),
+      this.sharedApiService.lookup('MBA_BRANCH').pipe(tap(res => (this.mbaBranches = res))),
     ];
   }
 

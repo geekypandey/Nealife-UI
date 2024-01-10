@@ -13,8 +13,9 @@ export const API_URL = {
   assessment: BASE_URL + '/assessments/renderNewAssesment',
   assessmentJson: BASE_URL + '/assessments/getAssessmentJson',
   checkCreditCode: BASE_URL + '/checkCreditUsed',
-  isCreditUsedBefore: BASE_URL + '/pre-assessment-details',
   branchAssessmentCourseFitURL: BASE_URL + '/assessments/renderNewAssesmentForCourseFit',
 
   preAssessmentDetails: BASE_URL + '/pre-assessment-details',
+  preAssessmentSectionDetails: BASE_URL + '/pre-assessment-section-details',
+  submitGroupResult: BASE_URL + '/submitGroupResult',
 };

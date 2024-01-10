@@ -28,6 +28,7 @@ import {
   AssessmentAnswer,
   Demographic,
   PreAssessmentDetailsDemographics,
+  PreAssessmentDetailsResponse,
   RenderAssessmentResponse,
 } from './render-assessment.model';
 import { RenderAssessmentService } from './render-assessment.service';
@@ -68,6 +69,8 @@ export class RenderAssessmentComponent implements OnInit {
   branchesList: DropdownOption[] = [];
   assessmentPage: boolean = false;
   readonly spinnerName = 'assessment-test';
+  preAssessmentDemographics?: PreAssessmentDetailsDemographics;
+  preAssessmentDetailsResponse!: PreAssessmentDetailsResponse;
 
   private languages: string[] = [];
   private route = inject(ActivatedRoute);
@@ -81,7 +84,6 @@ export class RenderAssessmentComponent implements OnInit {
   private companyAssessmentGroupId: number | null = null;
   private assessmentGroupId: number | null = null;
   private reportType: string | null = null;
-  preAssessmentDemographics?: PreAssessmentDetailsDemographics;
 
   constructor() {
     this.assessmentAnswer = new AssessmentAnswer();
@@ -128,8 +130,11 @@ export class RenderAssessmentComponent implements OnInit {
     this.spinner.show(this.spinnerName);
     this.assementService.isCreditUsedBefore(this.queryParamcc).subscribe({
       next: resp => {
-        this.preAssessmentDemographics = resp && resp.demographics ? resp.demographics : undefined;
-        // this.assessmentAnswer.demographics = this.preAssessmentDemographics
+        if (resp) {
+          this.preAssessmentDetailsResponse = resp;
+          this.preAssessmentDemographics =
+            resp && resp.demographics ? resp.demographics : undefined;
+        }
         this.spinner.hide(this.spinnerName);
         this.navigateToDemographicsPage();
       },
@@ -142,24 +147,29 @@ export class RenderAssessmentComponent implements OnInit {
   }
 
   onSubmitPersonalInfoForm(value: any) {
-    // this.saveAssessmentAnswer(this.assessmentAnswer);
     if (this.reportType === 'ECFEREPORT') {
       // this.getAssessmentCourseFit(this.assessmentAnswer);
       // TODO
     } else {
-      console.info('assessmentAnswer ', this.assessmentAnswer);
       if (!this.preAssessmentDemographics) {
         const reqPayload = {
           ...this.assessmentAnswer,
+          contactNumber1: value.contactNumber,
           demographics: value,
         };
         this.spinner.show(this.spinnerName);
         this.assementService.submitPersonalInfo(reqPayload).subscribe({
           next: resp => {
-            this.preAssessmentDemographics =
-              resp && resp.demographics ? resp.demographics : undefined;
+            if (resp) {
+              this.preAssessmentDetailsResponse = resp;
+              this.preAssessmentDemographics =
+                resp && resp.demographics ? resp.demographics : undefined;
+            } else {
+              console.error('pre-assessment-details is null');
+            }
             this.spinner.hide(this.spinnerName);
             this.navigateToAssessmentPage();
+            this.cd.markForCheck();
           },
           error: () => this.spinner.hide(this.spinnerName),
         });
@@ -183,7 +193,6 @@ export class RenderAssessmentComponent implements OnInit {
   private navigateToAssessmentPage() {
     this.personalInfoPage = false;
     this.assessmentPage = true;
-    this.cd.markForCheck();
   }
 
   private initialiseFields(renderAssessmentData: RenderAssessmentResponse) {

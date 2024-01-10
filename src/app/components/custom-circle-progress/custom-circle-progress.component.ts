@@ -11,16 +11,8 @@ import {
   inject,
 } from '@angular/core';
 import { Subject, map, take, takeUntil, timer } from 'rxjs';
+import { padStart } from 'src/app/util/util';
 
-/**
- * Add 0 as prefix to number if it's single digit.
- *
- * @param value number
- * @returns string
- */
-const padStart = (value: number): string => {
-  return `${value}`.padStart(2, '0');
-};
 @Pipe({
   name: 'minuteSeconds',
   standalone: true,

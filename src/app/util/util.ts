@@ -11,23 +11,25 @@ export function scrollIntoView(target: HTMLElement | null) {
 }
 
 /**
+ * Add prefix to number if it's single digit.
+ *
+ * @param value number
+ * @returns string
+ */
+export function padStart(value: number, maxLength: number = 2, prefix: string = '0') {
+  return `${value}`.padStart(maxLength, prefix);
+}
+
+/**
  * Returns date in dd/mm/yyyy format
  *
  * @param value Date
  * @returns string
  */
 export function DateToString(value: Date): string {
-  let dd = value.getDate();
-  let date = '';
-  if (dd < 10) {
-    date = '0' + dd;
-  }
-  let month = '';
-  let mm = value.getMonth() + 1; // Months start at 0!
-  if (mm < 10) {
-    month = '0' + mm;
-  }
-  return date + '/' + month + '/' + value.getFullYear();
+  const dd = padStart(value.getDate());
+  const mm = padStart(value.getMonth() + 1); // Months start at 0!
+  return `${dd}/${mm}/${value.getFullYear()}`;
 }
 
 /**
@@ -40,4 +42,17 @@ export function StringToDate(value: string): Date {
   const [dd, mm, yyyy] = value.split('/');
   const dateString = [mm, dd, yyyy].join('/');
   return new Date(dateString);
+}
+
+/**
+ * Returns current date and time in dd/mm/yyyy hh:mm:ss format
+ *
+ * @returns string
+ */
+export function getCurrentTime(): string {
+  const d = new Date();
+  const hh = d.getHours();
+  const mm = d.getMinutes();
+  const ss = d.getSeconds();
+  return `${DateToString(d)} ${padStart(hh)}:${padStart(mm)}:${padStart(ss)}`;
 }

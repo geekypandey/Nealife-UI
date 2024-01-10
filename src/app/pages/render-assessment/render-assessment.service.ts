@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { API_URL } from 'src/app/constants/api-url.constants';
+import { PreAssessmentSectionDetailsRequest } from './assessment-stepper/assessment-section.model';
 import {
   AssessmentAnswer,
   PreAssessmentDetailsResponse,
@@ -22,9 +23,10 @@ export class RenderAssessmentService {
   }
 
   isCreditUsedBefore(queryParamcc: string) {
-    return this.http.get<PreAssessmentDetailsResponse>(
-      `${API_URL.isCreditUsedBefore}?creditCode=${queryParamcc}`
-    );
+    const params = new HttpParams().append('creditCode', queryParamcc);
+    return this.http.get<PreAssessmentDetailsResponse>(API_URL.preAssessmentDetails, {
+      params,
+    });
   }
 
   assessmentCourseFit(ids: number[], params: string) {
@@ -34,5 +36,18 @@ export class RenderAssessmentService {
 
   submitPersonalInfo(payload: AssessmentAnswer) {
     return this.http.post<PreAssessmentDetailsResponse>(API_URL.preAssessmentDetails, payload);
+  }
+
+  submitSectionDetails(payload: PreAssessmentSectionDetailsRequest) {
+    return this.http.post<PreAssessmentDetailsResponse>(
+      API_URL.preAssessmentSectionDetails,
+      payload
+    );
+  }
+
+  submitFinalAssessment(payload: AssessmentAnswer) {
+    return this.http.get<PreAssessmentDetailsResponse>(
+      `${API_URL.submitGroupResult}/${payload.assessmentGroupId}`
+    );
   }
 }
