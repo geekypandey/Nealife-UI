@@ -4,6 +4,7 @@ import { API_URL } from 'src/app/constants/api-url.constants';
 import { PreAssessmentSectionDetailsRequest } from './assessment-stepper/assessment-section.model';
 import {
   AssessmentAnswer,
+  CheckCreditUsed,
   PreAssessmentDetailsResponse,
   RenderAssessmentResponse,
 } from './render-assessment.model';
@@ -19,7 +20,7 @@ export class RenderAssessmentService {
   }
 
   checkCreditUsed(queryParamcc: string) {
-    return this.http.get(`${API_URL.checkCreditCode}?creditCode=${queryParamcc}`);
+    return this.http.get<CheckCreditUsed>(`${API_URL.checkCreditCode}?creditCode=${queryParamcc}`);
   }
 
   isCreditUsedBefore(queryParamcc: string) {

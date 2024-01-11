@@ -195,3 +195,10 @@ export interface PreAssessmentDetailsDemographics {
   designationEditable?: any;
   qualification?: any;
 }
+
+export interface CheckCreditUsed {
+  type?: any;
+  key: string;
+  message?: any;
+  data: string;
+}

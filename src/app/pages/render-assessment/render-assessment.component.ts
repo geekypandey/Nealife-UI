@@ -217,12 +217,12 @@ export class RenderAssessmentComponent implements OnInit {
 
   private validateCreditCode(creditCode: string) {
     this.assementService.checkCreditUsed(creditCode).subscribe({
-      next: _ => {
+      next: resp => {
         this.isValidCreditCode = true;
         this.toastService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Valid credit code',
+          detail: resp.data,
           sticky: false,
           id: 'creditCode',
         });

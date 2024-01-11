@@ -4,7 +4,7 @@ export function getDropdownOptions<T>(arr: T[], label: keyof T, value: keyof T) 
 
 export function scrollIntoView(target: HTMLElement | null) {
   if (target) {
-    target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'start' });
+    target.scrollIntoView({ behavior: 'smooth' });
   } else {
     console.error('target element is null : ', target);
   }

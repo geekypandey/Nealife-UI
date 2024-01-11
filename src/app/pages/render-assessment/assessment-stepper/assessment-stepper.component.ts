@@ -140,6 +140,7 @@ export class AssessmentStepperComponent implements OnChanges {
           this.activeStepIndex += 1;
           this.activeSectionIndex += 1;
           this.activeQuestionIndex = 0;
+          this.markSectionCompleted();
           this.activeSectionFormGroup = this.assessmentFormGroupArr[this.activeSectionIndex];
           const targetEle = this.doc.getElementById(
             this.SUB_TEST_CARD_LABEL + this.activeSectionIndex
@@ -203,8 +204,17 @@ export class AssessmentStepperComponent implements OnChanges {
         subTitle: this.getSectionSubtitle(section),
         showSubTitle: true,
         stepControl: sectionFormGrp,
-        completed: sectionFormGrp.valid,
+        completed: false,
       };
+    });
+  }
+
+  private markSectionCompleted() {
+    this.steps = this.steps.map((step, index) => {
+      if (index === this.activeSectionIndex) {
+        return { ...step, completed: true };
+      }
+      return step;
     });
   }
 
