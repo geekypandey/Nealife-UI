@@ -17,6 +17,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { REPORT_TYPE } from 'src/app/constants/assessment.constants';
@@ -39,6 +41,8 @@ import { RenderAssessmentService } from './render-assessment.service';
   imports: [
     CommonModule,
     DropdownModule,
+    CheckboxModule,
+    DialogModule,
     SpinnerComponent,
     ReactiveFormsModule,
     PersonalInfoComponent,
@@ -58,6 +62,7 @@ export class RenderAssessmentComponent implements OnInit {
   hideBasicInfo: string = '';
   groupSequence!: number;
   paramAssessmentId: string = '';
+  showTerms: boolean = false;
 
   renderAssessmentData: RenderAssessmentResponse | null = null;
   languagesOptions: DropdownOption[] = [];
@@ -109,6 +114,7 @@ export class RenderAssessmentComponent implements OnInit {
     this.assessmentForm = this.fb.group({
       code: [{ value: null, disabled: true }, [Validators.required]],
       language: [null, [Validators.required]],
+      isChecked: [null, [Validators.required]],
     });
   }
 
@@ -208,7 +214,7 @@ export class RenderAssessmentComponent implements OnInit {
       this.getbranches(reportType);
       this.languages = this.getLanguages(demographics);
       this.languagesOptions = this.languages.map(v => ({ label: v, value: v }));
-      this.assessmentForm.setValue({
+      this.assessmentForm.patchValue({
         code: this.queryParamcc,
         language: this.languages.length ? this.languages[0] : null,
       });
@@ -283,5 +289,9 @@ export class RenderAssessmentComponent implements OnInit {
   }
   get languageCtrl() {
     return this.assessmentForm.get('language') as FormControl;
+  }
+
+  get isCheckedCtrl() {
+    return this.assessmentForm.get('isChecked') as FormControl;
   }
 }

@@ -24,10 +24,20 @@ export class MinuteSecondsPipe implements PipeTransform {
   }
 }
 
+@Pipe({
+  name: 'circleProgressPercentage',
+  standalone: true,
+})
+export class CircleProgressPercentagePipe implements PipeTransform {
+  transform(secondsLeft: any, totalTimeInSeconds: number): string {
+    return Number((secondsLeft / totalTimeInSeconds) * 100).toFixed(2);
+  }
+}
+
 @Component({
   selector: 'nl-circle-progress',
   standalone: true,
-  imports: [CommonModule, MinuteSecondsPipe],
+  imports: [CommonModule, MinuteSecondsPipe, CircleProgressPercentagePipe],
   templateUrl: './custom-circle-progress.component.html',
   styleUrls: ['./custom-circle-progress.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,7 +45,7 @@ export class MinuteSecondsPipe implements PipeTransform {
 export class CustomCircleProgressComponent {
   private cd = inject(ChangeDetectorRef);
 
-  private totalTimeInSeconds: number = 0;
+  totalTimeInSeconds: number = 0;
 
   @Input()
   set timeInMinutes(value: number) {
@@ -72,11 +82,11 @@ export class CustomCircleProgressComponent {
     });
   }
 
-  getBgImg() {
-    return (
-      'background-image: conic-gradient(#0062f8 ' +
-      Number((this.secondsLeft / this.totalTimeInSeconds) * 100).toFixed(2) +
-      '%, rgb(238, 237, 237) 0deg)'
-    );
-  }
+  // getBgImg() {
+  //   return (
+  //     'background-image: conic-gradient(#0062f8 ' +
+  //     Number((this.secondsLeft / this.totalTimeInSeconds) * 100).toFixed(2) +
+  //     '%, rgb(238, 237, 237) 0deg)'
+  //   );
+  // }
 }

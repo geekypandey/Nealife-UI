@@ -1,6 +1,6 @@
 <!--Horizontal-->
-<div class="nl-stepper-container">
-  <div class="d-none d-lg-block nl-stepper container-fluid">
+<div class="nl-stepper-container d-flex flex-column h-100">
+  <div class="d-none d-lg-block pt-4 nl-stepper container-fluid">
     <div
       class="row flex-nowrap gx-2 overflow-x-hidden"
       [class.justify-content-center]="steps.length < 4">
@@ -22,11 +22,11 @@
               {{ step.title }}
               <br />
             </div>
-            <div
+            <!-- <div
               class="nl-stepper-subtitle w-100 text-truncate"
               [class.invisible]="!step.showSubTitle">
               {{ step.subTitle }}
-            </div>
+            </div> -->
           </div>
         </div>
       </ng-container>
@@ -36,7 +36,7 @@
   <ng-container *ngFor="let step of steps; index as i">
     <div
       *ngIf="selectedIndex === i && step.content"
-      class="nl-step-content"
+      class="nl-step-content col"
       [id]="_getStepContentId(i)"
       [attr.aria-labelledby]="_getStepLabelId(i)">
       <ng-container [ngTemplateOutlet]="step.content"></ng-container>

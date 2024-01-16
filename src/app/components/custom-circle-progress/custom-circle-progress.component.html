@@ -1,5 +1,13 @@
 <div class="circle-progress-bar">
-  <div class="outer-circle" [style]="getBgImg()">
+  <!-- <div class="outer-circle" [style]="getBgImg()"> -->
+  <div
+    class="outer-circle"
+    [ngStyle]="{
+      'background-image':
+        'conic-gradient(#0062f8 ' +
+        (secondsLeft | circleProgressPercentage: totalTimeInSeconds) +
+        '%, rgb(238, 237, 237) 0deg)'
+    }">
     <div class="inner-circle">
       <div class="fw-bold">{{ secondsLeft | minuteSeconds }}</div>
       <div class="text">Minutes</div>

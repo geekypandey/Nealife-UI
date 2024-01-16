@@ -27,6 +27,8 @@ export interface Assessment {
   instructionPage: Language;
 }
 
+export type TotalAssessments = Assessment & { itemAspects: ItemAspect[] };
+
 export interface Section {
   id?: any;
   name: string;
@@ -42,7 +44,7 @@ export interface Section {
 
 interface Languages {}
 
-interface ItemAspect {
+export interface ItemAspect {
   question: string;
   itemKey: string;
   answerOptions: AnswerOption[];

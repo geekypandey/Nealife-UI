@@ -46,9 +46,7 @@ export class RenderAssessmentService {
     );
   }
 
-  submitFinalAssessment(payload: AssessmentAnswer) {
-    return this.http.get<PreAssessmentDetailsResponse>(
-      `${API_URL.submitGroupResult}/${payload.assessmentGroupId}`
-    );
+  submitFinalAssessment(id: number) {
+    return this.http.get<PreAssessmentDetailsResponse>(`${API_URL.submitGroupResult}/${id}`);
   }
 }

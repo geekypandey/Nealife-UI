@@ -27,3 +27,10 @@
 .company-logo {
   cursor: pointer;
 }
+.terms-link {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    color: var(--nl-primary-color);
+  }
+}
