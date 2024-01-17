@@ -27,7 +27,7 @@ export class StepperComponent extends CdkStepper {
     this.selectionChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(v => {
       const stepId = this.getStepId(v.selectedIndex);
       const el = this.doc.getElementById(stepId);
-      scrollIntoView(el);
+      scrollIntoView(el, { inline: 'center' });
     });
   }
 

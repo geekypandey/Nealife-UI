@@ -78,7 +78,7 @@
                             <div
                               [formArrayName]="'itemAspectsFormArray'"
                               class="question-section d-flex flex-column gap-4">
-                              <div class="question border border-1 p-2 shadow">
+                              <div class="question border border-1 shadow">
                                 <ng-container
                                   *ngIf="
                                     itemAspect.questionImage &&
@@ -86,12 +86,15 @@
                                     else questionTpl
                                   ">
                                   <img
+                                    style="display: inline-block; max-height: 250px"
                                     [src]="itemAspect.questionImage[selectedLanguage]"
                                     alt="question-img"
                                     width="100%" />
                                 </ng-container>
                                 <ng-template #questionTpl>
-                                  {{ itemAspect.language[selectedLanguage].split('. ')[1] }}
+                                  <div class="p-2">
+                                    {{ itemAspect.language[selectedLanguage].split('. ')[1] }}
+                                  </div>
                                 </ng-template>
                               </div>
                               <div [formGroupName]="activeQuestionIndex" class="container-fluid">
@@ -177,7 +180,9 @@
 </div>
 
 <ng-template #circleProgressTpl>
-  <nl-circle-progress [timeInMinutes]="activeAssessment.timeLimit"></nl-circle-progress>
+  <nl-circle-progress
+    [timeInMinutes]="activeAssessment.timeLimit"
+    (onTimeover)="timeOver()"></nl-circle-progress>
 </ng-template>
 
 <ng-template #choicesTpl>
@@ -261,3 +266,12 @@
     </div>
   </div>
 </ng-template>
+
+<ng-container *ngIf="freezeNextAssessement">
+  <div class="freeze-backdrop" *ngIf="freezeAssessment$ | async as timeLeftInSeconds">
+    <strong class="d-flex justify-content-center align-items-center fs-4 h-100 text-white"
+      >Your Next assessement will start after
+      {{ timeLeftInSeconds | minuteSeconds }} minutes..</strong
+    >
+  </div>
+</ng-container>

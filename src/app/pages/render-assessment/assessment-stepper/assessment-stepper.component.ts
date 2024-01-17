@@ -19,11 +19,15 @@ import {
 } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { CustomCircleProgressComponent } from 'src/app/components/custom-circle-progress/custom-circle-progress.component';
+import { Observable, map, take, tap, timer } from 'rxjs';
+import {
+  CustomCircleProgressComponent,
+} from 'src/app/components/custom-circle-progress/custom-circle-progress.component';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { StepComponent } from 'src/app/components/stepper/step/step.component';
 import { StepperComponent } from 'src/app/components/stepper/stepper.component';
 import { Step } from 'src/app/components/stepper/stepper.model';
+import { MinuteSecondsPipe } from 'src/app/pipes/seconds-to-minutes.pipe';
 import { LayoutService } from 'src/app/services/layout.service';
 import { getCurrentTime, scrollIntoView } from 'src/app/util/util';
 import { AssessmentHeaderComponent } from '../assessment-header/assessment-header.component';
@@ -48,6 +52,7 @@ import { PreAssessmentSectionDetailsRequest, Stat } from './assessment-section.m
     StepComponent,
     CustomCircleProgressComponent,
     SpinnerComponent,
+    MinuteSecondsPipe,
   ],
   templateUrl: './assessment-stepper.component.html',
   styleUrls: ['./assessment-stepper.component.scss'],
@@ -80,6 +85,7 @@ export class AssessmentStepperComponent implements OnChanges {
   readonly SUB_TEST_CARD_LABEL: string = 'sub-test-';
   readonly spinnerName = 'assessment-stepper';
   totalAssessments: TotalAssessments[] = [];
+  freezeNextAssessement: boolean = false;
 
   private startTime: string = '';
   private domSanitizer = inject(DomSanitizer);
@@ -89,6 +95,7 @@ export class AssessmentStepperComponent implements OnChanges {
   private assementService = inject(RenderAssessmentService);
   private spinner = inject(NgxSpinnerService);
   private destroyRef = inject(DestroyRef);
+  freezeAssessment$!: Observable<number>;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes['selectedLanguage'] && changes['assessmentsData']) {
@@ -120,6 +127,10 @@ export class AssessmentStepperComponent implements OnChanges {
   onSkip(activeQuestionIndex: number) {
     this.setSkippedCtrlVal(activeQuestionIndex, true);
     this.modifyQuestionCount(true);
+  }
+
+  timeOver() {
+    console.info('timeOver ');
   }
 
   submitSectionDetails() {
@@ -167,7 +178,13 @@ export class AssessmentStepperComponent implements OnChanges {
 
   private nextAssessment() {
     if (this.activeAssessmentIndex < this.totalAssessments.length - 1) {
-      this.activeStepIndex += 1;
+      // show freeze assessment message
+      const nextAssessment = this.totalAssessments[this.activeAssessmentIndex + 1];
+      if (nextAssessment.pauseTime) {
+        this.showFreezeScreen(nextAssessment);
+      } else {
+        this.activeStepIndex += 1;
+      }
     } else {
       this.spinner.show(this.spinnerName);
       this.assementService
@@ -180,6 +197,22 @@ export class AssessmentStepperComponent implements OnChanges {
           error: _ => this.spinner.hide(this.spinnerName),
         });
     }
+  }
+
+  private showFreezeScreen(nextAssessment: TotalAssessments) {
+    this.freezeNextAssessement = true;
+    const totalTimeInSeconds = nextAssessment.pauseTime * 60;
+    this.freezeAssessment$ = timer(0, 1000).pipe(
+      take(totalTimeInSeconds + 1),
+      map(secondsElapsed => totalTimeInSeconds - secondsElapsed),
+      tap({
+        complete: () => {
+          this.freezeNextAssessement = false;
+          this.activeStepIndex += 1;
+          this.cd.markForCheck();
+        },
+      })
+    );
   }
 
   isAnswered(questionIndex: number): boolean {
