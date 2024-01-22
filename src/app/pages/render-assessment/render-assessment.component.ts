@@ -20,6 +20,7 @@ import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { forkJoin } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { REPORT_TYPE } from 'src/app/constants/assessment.constants';
 import { DropdownOption } from 'src/app/models/common.model';
@@ -27,8 +28,8 @@ import { SharedApiService } from 'src/app/services/shared-api.service';
 import { AssessmentStepperComponent } from './assessment-stepper/assessment-stepper.component';
 import { PersonalInfoComponent } from './personal-info/personal-info.component';
 import {
-  AssessmentAnswer,
   Demographic,
+  PreAssessDetailsReqPayload,
   PreAssessmentDetailsDemographics,
   PreAssessmentDetailsResponse,
   RenderAssessmentResponse,
@@ -85,18 +86,16 @@ export class RenderAssessmentComponent implements OnInit {
   private fb = inject(FormBuilder);
   private cd = inject(ChangeDetectorRef);
   private toastService = inject(MessageService);
-  private assessmentAnswer: AssessmentAnswer;
-  private companyAssessmentGroupId: number | null = null;
-  private assessmentGroupId: number | null = null;
+  private preAssessDetailsReqPayload: PreAssessDetailsReqPayload;
   private reportType: string | null = null;
 
   constructor() {
-    this.assessmentAnswer = new AssessmentAnswer();
+    this.preAssessDetailsReqPayload = new PreAssessDetailsReqPayload();
     this.landingPage = true;
     this.route.queryParams.pipe(takeUntilDestroyed()).subscribe(params => {
       this.queryParamau = params['AU'];
       this.queryParamaa = params['AA'];
-      this.assessmentAnswer.companyId = params['C'];
+      this.preAssessDetailsReqPayload.companyId = params['C'];
       this.isGroup = params['G'];
       this.emailReport = params['ER'] || 'N';
       this.queryParamcc = params['CC'] || '';
@@ -114,7 +113,7 @@ export class RenderAssessmentComponent implements OnInit {
     this.assessmentForm = this.fb.group({
       code: [{ value: null, disabled: true }, [Validators.required]],
       language: [null, [Validators.required]],
-      isChecked: [null, [Validators.required]],
+      isChecked: [{ value: null, disabled: true }, [Validators.required]],
     });
   }
 
@@ -132,7 +131,7 @@ export class RenderAssessmentComponent implements OnInit {
   }
 
   onSubmit() {
-    this.assessmentAnswer.language = this.languageCtrl.value;
+    this.preAssessDetailsReqPayload.language = this.languageCtrl.value;
     this.spinner.show(this.spinnerName);
     this.assementService.isCreditUsedBefore(this.queryParamcc).subscribe({
       next: resp => {
@@ -145,7 +144,7 @@ export class RenderAssessmentComponent implements OnInit {
         this.navigateToDemographicsPage();
       },
       error: _ => {
-        console.info('No demographics details');
+        console.error('No demographics details');
         this.spinner.hide(this.spinnerName);
         this.navigateToDemographicsPage();
       },
@@ -153,35 +152,36 @@ export class RenderAssessmentComponent implements OnInit {
   }
 
   onSubmitPersonalInfoForm(value: any) {
-    if (this.reportType === 'ECFEREPORT') {
-      // this.getAssessmentCourseFit(this.assessmentAnswer);
-      // TODO
-    } else {
-      if (!this.preAssessmentDemographics) {
-        const reqPayload = {
-          ...this.assessmentAnswer,
-          contactNumber1: value.contactNumber,
-          demographics: value,
-        };
-        this.spinner.show(this.spinnerName);
-        this.assementService.submitPersonalInfo(reqPayload).subscribe({
-          next: resp => {
-            if (resp) {
-              this.preAssessmentDetailsResponse = resp;
-              this.preAssessmentDemographics =
-                resp && resp.demographics ? resp.demographics : undefined;
-            } else {
-              console.error('pre-assessment-details is null');
-            }
-            this.spinner.hide(this.spinnerName);
-            this.navigateToAssessmentPage();
-            this.cd.markForCheck();
-          },
-          error: () => this.spinner.hide(this.spinnerName),
-        });
-      } else {
-        this.navigateToAssessmentPage();
+    if (!this.preAssessmentDemographics) {
+      const reqPayload = {
+        ...this.preAssessDetailsReqPayload,
+        demographics: value,
+      };
+      const apiCalls = [this.assementService.submitPersonalInfo(reqPayload)];
+      if (this.reportType === 'ECFEREPORT') {
+        apiCalls.push(this.assementService.assessmentCourseFit(value.sectors, this.queryParamaa));
       }
+      this.spinner.show(this.spinnerName);
+      forkJoin<any[]>(apiCalls).subscribe({
+        next: ([preAssessDetailsResp, assessData]) => {
+          if (preAssessDetailsResp) {
+            this.preAssessmentDetailsResponse = preAssessDetailsResp;
+            this.preAssessmentDemographics =
+              preAssessDetailsResp && preAssessDetailsResp.demographics
+                ? preAssessDetailsResp.demographics
+                : undefined;
+          }
+          if (assessData && this.reportType === 'ECFEREPORT') {
+            this.renderAssessmentData = assessData;
+          }
+          this.spinner.hide(this.spinnerName);
+          this.navigateToAssessmentPage();
+          this.cd.markForCheck();
+        },
+        error: () => this.spinner.hide(this.spinnerName),
+      });
+    } else {
+      this.navigateToAssessmentPage();
     }
   }
 
@@ -199,17 +199,31 @@ export class RenderAssessmentComponent implements OnInit {
   private navigateToAssessmentPage() {
     this.personalInfoPage = false;
     this.assessmentPage = true;
+    // Remove already submitted assessments
+    if (
+      this.renderAssessmentData &&
+      this.preAssessmentDetailsResponse &&
+      this.preAssessmentDetailsResponse.sectionDetails
+    ) {
+      const alreadySubmittedAssesIds = this.preAssessmentDetailsResponse.sectionDetails.map(
+        section => section.assessmentId
+      );
+      const assessmentPending = this.renderAssessmentData.assessments.filter(
+        assessment => !alreadySubmittedAssesIds.includes(assessment.assessmentId)
+      );
+      this.renderAssessmentData.assessments = assessmentPending;
+    }
   }
 
   private initialiseFields(renderAssessmentData: RenderAssessmentResponse) {
     if (renderAssessmentData) {
       const { demographics, reportType, assessmentGroupId, companyAssessmentGroupId } =
         renderAssessmentData;
-      this.assessmentAnswer.assessmentGroupId = assessmentGroupId;
-      this.assessmentAnswer.companyAssessmentGroupId = companyAssessmentGroupId;
-      this.assessmentAnswer.isGroup = this.isGroup;
-      this.assessmentAnswer.assessmentUUID = this.queryParamaa;
-      this.assessmentAnswer.creditCode = this.queryParamcc;
+      this.preAssessDetailsReqPayload.assessmentGroupId = assessmentGroupId;
+      this.preAssessDetailsReqPayload.companyAssessmentGroupId = companyAssessmentGroupId;
+      this.preAssessDetailsReqPayload.isGroup = this.isGroup;
+      this.preAssessDetailsReqPayload.assessmentUUID = this.queryParamaa;
+      this.preAssessDetailsReqPayload.creditCode = this.queryParamcc;
       this.reportType = reportType;
       this.getbranches(reportType);
       this.languages = this.getLanguages(demographics);
@@ -253,25 +267,21 @@ export class RenderAssessmentComponent implements OnInit {
     return [...uniqueLang];
   }
 
-  private getAssessmentCourseFit(data: any): void {
-    // this.spinner.show(this.spinnerName);
-    // this.assementService.assessmentCourseFit(this.selectedBranches, this.queryParamaa).subscribe(
-    //   response => {
-    //     if (response.body) {
-    //       this.assessments = response.body.assessments;
-    //       this.basicInfoSumbmitted = true;
-    //       this.isValidForm = true;
-    //       this.hasErrorAfterSubmitted = false;
-    //       this.onStepNext(false, true, true);
-    //     }
-    //     this.spinner.hide(this.spinnerName);
-    //   },
-    //   error => {
-    //     this.spinner.hide(this.spinnerName);
-    //     alert('Server Error');
-    //   }
-    // );
-  }
+  // private getAssessmentCourseFit(branchIds: number[]): void {
+  //   this.spinner.show(this.spinnerName);
+  //   this.assementService.assessmentCourseFit(branchIds, this.queryParamaa).subscribe({
+  //     next: res => {
+  //       if (res) {
+  //         this.renderAssessmentData = res;
+  //         this.spinner.hide(this.spinnerName);
+  //         this.navigateToAssessmentPage();
+  //         this.cd.markForCheck();
+  //       }
+  //       this.spinner.hide(this.spinnerName);
+  //     },
+  //     error: _ => this.spinner.hide(this.spinnerName),
+  //   });
+  // }
 
   private getbranches(reportType: string | null): void {
     if (reportType === REPORT_TYPE.engReport || reportType === REPORT_TYPE.mbaReport) {

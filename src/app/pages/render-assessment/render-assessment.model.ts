@@ -1,3 +1,5 @@
+import { PreAssessmentSectionDetailsRequest } from './assessment-stepper/assessment-section.model';
+
 export interface RenderAssessmentResponse {
   companyId: number;
   companyAssessmentGroupId: number;
@@ -97,7 +99,7 @@ export interface Demographic {
   value2?: any;
 }
 
-export class AssessmentAnswer {
+export class PreAssessDetailsReqPayload {
   companyId: string | null;
   assessmentGroupId: number | null;
   companyAssessmentGroupId: number | null;
@@ -142,7 +144,7 @@ export interface PreAssessmentDetailsResponse {
   language?: any;
   assessmentDate: string;
   demographics: PreAssessmentDetailsDemographics;
-  sectionDetails?: any;
+  sectionDetails?: PreAssessmentSectionDetailsRequest[];
 }
 
 export interface PreAssessmentDetailsDemographics {

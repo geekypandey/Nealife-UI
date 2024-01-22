@@ -19,10 +19,9 @@ import {
 } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MessageService } from 'primeng/api';
 import { Observable, map, take, tap, timer } from 'rxjs';
-import {
-  CustomCircleProgressComponent,
-} from 'src/app/components/custom-circle-progress/custom-circle-progress.component';
+import { CustomCircleProgressComponent } from 'src/app/components/custom-circle-progress/custom-circle-progress.component';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { StepComponent } from 'src/app/components/stepper/step/step.component';
 import { StepperComponent } from 'src/app/components/stepper/stepper.component';
@@ -86,6 +85,7 @@ export class AssessmentStepperComponent implements OnChanges {
   readonly spinnerName = 'assessment-stepper';
   totalAssessments: TotalAssessments[] = [];
   freezeNextAssessement: boolean = false;
+  showAssessmentLastPage: boolean = false;
 
   private startTime: string = '';
   private domSanitizer = inject(DomSanitizer);
@@ -95,6 +95,7 @@ export class AssessmentStepperComponent implements OnChanges {
   private assementService = inject(RenderAssessmentService);
   private spinner = inject(NgxSpinnerService);
   private destroyRef = inject(DestroyRef);
+  private toastService = inject(MessageService);
   freezeAssessment$!: Observable<number>;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -186,15 +187,34 @@ export class AssessmentStepperComponent implements OnChanges {
         this.activeStepIndex += 1;
       }
     } else {
+      // if it's last assessment
+      this.showStepper = false;
       this.spinner.show(this.spinnerName);
       this.assementService
         .submitFinalAssessment(this.preAssessmentDetailsResponse.id)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: _ => {
+            this.showAssessmentLastPage = true;
             this.spinner.hide(this.spinnerName);
+            this.toastService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Assessment Submitted Successfully !',
+              sticky: false,
+              id: 'assessmentSubmit',
+            });
           },
-          error: _ => this.spinner.hide(this.spinnerName),
+          error: _ => {
+            this.spinner.hide(this.spinnerName);
+            this.toastService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Something went wrong with assessment submit',
+              sticky: true,
+              id: 'assessmentSubmit',
+            });
+          },
         });
     }
   }
@@ -313,6 +333,10 @@ export class AssessmentStepperComponent implements OnChanges {
       } else if (this.activeQuestionIndex === itemAspectsLength - 1 && !isForward) {
         // if it's last question of itemAspects and user clicked Back button
         this.activeQuestionIndex -= 1;
+      } else {
+        // if it's last question then submit section
+        // this.submitSectionDetails();
+        console.info('last question of assessment');
       }
     }
     // else {

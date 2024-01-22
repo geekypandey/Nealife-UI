@@ -65,7 +65,8 @@
   <nl-personal-info
     [fields]="personalInfofields"
     [queryParamcc]="queryParamcc"
-    [demographics]="preAssessmentDemographics"
+    [preAssessmentDemographics]="preAssessmentDemographics"
+    [reportType]="(renderAssessmentData && renderAssessmentData.reportType) || ''"
     (onSubmitForm)="onSubmitPersonalInfoForm($event)"></nl-personal-info>
 </ng-container>
 
@@ -82,471 +83,517 @@
   [modal]="true"
   [breakpoints]="{ '960px': '85vw' }"
   [style]="{ width: '50vw' }"
+  contentStyleClass="custom-style"
   [draggable]="false"
   [resizable]="false">
-  <p class="m-0">
-    YOUR USE OF OUR PLATFORM (DEFINED HEREAFTER) IS SUBJECT TO THESE TERMS OF USE ENTAILED
-    HEREUNDER. BY USING ASSESS, THE PLATFORM OF NEA LIFE PRIVATE LIMITED, YOU ACKNOWLEDGE AND AGREE
-    TO BE BOUND BY THIS TERMS OF USE, AS UPDATED FROM TIME TO TIME AND WHICH ARE INCORPORATED
-    HEREIN. IF YOU CHOOSE TO NOT AGREE WITH ANY OF THESE TERMS, YOU MAY NOT USE ASSESS.
-  </p>
-  <p class="mt-2">
-    This Terms of Use (“TOU”) is a binding legal agreement between Nea Life Private Limited
-    (“NLPL/Us/Our/We/Company”), a Company incorporated under the Companies Act, 2013, having its
-    registered office at A-1 First Floor, Minar Apartment CTS No 124, Plot No 83, Law College Road,
-    Erandwane, Pune-411004, Maharashtra, India, the owner and operator of
-    <a href="https://nealife.in/">https://nealife.in/</a>
-    (“Website”) and the mobile application, NEA Life (“App”), and you (“you/your/user/viewer/
-    Client/Candidate”), a user of the Platform.
-  </p>
-  <h5 class="mt-2">PLATFORM AND PLATFORM SERVICES</h5>
-  <ol class="list-group list-group-numbered">
-    <li>
-      The term “Platform” includes the content on NLPL’s portal Assess, its Websites, Apps, media
-      content, assessment tools, profile registration of Candidates, Client accounts, and all other
-      services provided and content displayed on the Website and App (the “Platform Services“).
-    </li>
-    <li>
-      Your use of certain Platform Services, features, functionality or programs offered on or
-      through the Platform may be subject to additional terms and conditions, and before you use any
-      such Platform Services, features, functionality or other programs you may be required to
-      indicate your acceptance of such additional terms and conditions.
-    </li>
-    <li>
-      The information which is displayed on the Platform shall be treated as general information
-      which can be accessed as per the terms of this TOU.
-    </li>
-    <li>
-      Any individual who has not attained the age of majority, i.e., 18 years, shall be considered
-      as a minor for the purposes of this TOU (“Minor”) and shall be prohibited from accessing the
-      Platform, except without parental consent and guidance.
-    </li>
-    <li>
-      For the purposes of this TOU, all companies, firms, institutions which register their accounts
-      on the Platform for the purpose of conducting psychometric assessment of their candidates,
-      shall be referred to as “Client”.
-    </li>
-    <li>
-      For the purposes of this TOU every candidate who registers their profiles on the Platform, for
-      the purpose of undertaking psychometric evaluation by Clients and undergoes assessments
-      through the assessment tools/ tests designed on the Platform by NLPL, shall be referred to as
-      “Candidate”.
-    </li>
-    <li>
-      Every Candidate and Client, shall, for the purposes of this TOU, together be referred to as
-      “user”.
-    </li>
-  </ol>
-  <h5 class="mt-2">CONSENT</h5>
-  <p>
-    By accessing and using the Platform, you provide your specific consent to the Platform to use
-    and collect the information provided by you. Please note that for any information provided by
-    you on the Platform, it will be deemed that:
-  </p>
-  <ol class="list-group list-group-numbered">
-    <li>You are above 18 years of age;</li>
-    <li>
-      If you are a Minor, that you are using the Platform under parental supervision and/or consent.
-      The parents/ legal guardians with whose consent and parents/ legal guardians/ school
-      authorities/ school faculties (as may be applicable) under whose guidance a Minor is accessing
-      the Platform represent and warrant that the implications of the usage of the Platform and the
-      Platform Services have been explained to the Minor in a comprehensive manner;
-    </li>
-    <li>
-      You understand that you have provided specific consent to NLPL to lawfully collect and process
-      your submissions and share your profile/ results of psychometric assessments, if and as
-      applicable;
-    </li>
-    <li>
-      If you are a Candidate, you agree that you have voluntarily shared your Personal Information
-      and other details (including without limitation your present professional status and allied
-      information) with us for the purpose of assessments through psychometric tests, alerts for
-      career, mental health and wellbeing, career guidance on and through the Platform;
-    </li>
-    <li>
-      You have read and understood the provisions of the TOU and are aware that the collection and
-      processing of your submissions will be subject to the same, along with the Privacy Policy.
-    </li>
-  </ol>
-  <h5 class="mt-2">INTELLECTUAL PROPERTY</h5>
-  <ol class="list-group list-group-numbered">
-    <li>
-      The assessment modules, Platform designed for assessment of the Candidates and any material
-      circulated or shared or uploaded pursuant to or in connection with the same, shall be the sole
-      and absolute ownership of NLPL. With respect to Clients for whom NLPL designs tailor-made
-      assessment modules, the same shall be the sole and absolute ownership of NLPL. Users, in any
-      of the cases, shall not claim or attain ownership of the same.
-    </li>
-    <li>
-      The ownership of the content of the Platform and the Platform Services, along with all text,
-      graphics, audios, videos, designs, screen shots, logos, images, copyrights, patents,
-      trademarks, service marks, trade names and all other intellectual property rights are vested
-      in NLPL unless otherwise indicated. All rights in relation to such works shall be reserved
-      with NLPL and shall be its sole property.
-    </li>
-    <li>
-      Content on the Platform and Platform Services is for personal use only and may be downloaded
-      provided the material so downloaded, is kept intact, and there is no violation of the
-      copyrights, trademarks, and other proprietary rights. Any alteration of the material or use of
-      the material contained on the Platform, for any other purposes shall constitute a violation of
-      the copyright of NLPL and / or its affiliates or associates or of its third-party information
-      providers.
-    </li>
-    <li>
-      Unless you have otherwise obtained NLPL&apos;s written permission, you agree not to copy,
-      reproduce, stream, capture, record, access through technology in the form of capturing
-      photographs/ screenshots through the mobile/ laptop/ desktop or any other technology used to
-      access the Platform, transfer, sell, resell, upload, archive, license to others, edit, modify,
-      reverse engineer, decode, manipulate, create derivative works from or based upon, publish,
-      republish, post, transmit, publicly display, frame, link from or to, distribute, share, embed,
-      translate, decompile, translate, incorporate into any hardware or software application, use
-      for commercial purposes, or otherwise use or exploit the Platform, its content, Platform
-      Services or any component or part thereof. Any of the unauthorized uses referred to above
-      would constitute an infringement of the copyrights and other proprietary rights of NLPL and/or
-      its licensors and a violation of these TOU and may subject you to civil and/or criminal
-      liability under applicable laws.
-    </li>
-  </ol>
-  <h5 class="mt-2">LICENSES GRANTED TO YOU</h5>
-  <p>
-    Subject to the provisions of the TOU (including, without limitation to the Intellectual Property
-    Rights set forth), NLPL hereby grants you, if and only to the extent the necessary functionality
-    is provided to you, on or through the Platform, the following limited, revocable, non-exclusive,
-    non-transferable, non-assignable, worldwide, royalty-free rights and licenses (each a “License”
-    and collectively “Licenses”):
-  </p>
-  <ol class="list-group list-group-numbered">
-    <li>
-      the License to access, view and otherwise use the Platform for your personal, non-commercial,
-      purposes, for lawful use only, as intended through the normal Platform Services and in
-      accordance with the TOU and subject to the Privacy Policy;
-    </li>
-    <li>
-      License to access the Platform Services, as per their account type, whether Client/ Candidate/
-      otherwise, as applicable;
-    </li>
-    <li>
-      License to use any other functionality expressly provided by NLPL on or through the Platform
-      Services, for use by users, subject to this TOU.
-    </li>
-  </ol>
-  <h5 class="mt-2">YOUR RESPONSIBILITY</h5>
-  <p>
-    Your rights under any one or more of the Licenses set forth above and under this TOU are
-    conditioned upon your compliance, with each of the following:
-  </p>
-  <ol class="list-group list-group-numbered">
-    <li>
-      You shall not display, upload, modify, edit, delete, publish, transmit, update or share any
-      information that –
-      <ul>
-        <li>belongs to another person and to which the user does not have any right to;</li>
-        <li>
-          is grossly harmful, harassing, blasphemous, defamatory, obscene, pornographic,
-          paedophilic, libellous, invasive of another’s privacy, hateful, or racially, ethnically
-          objectionable, disparaging, relating or encouraging money laundering or gambling, or
-          otherwise unlawful in any manner whatever;
-        </li>
-        <li>harm Minors in any way;</li>
-        <li>infringes any person’s intellectual property rights and/ or proprietary rights;</li>
-        <li>violates any law for the time being in force;</li>
-        <li>
-          deceives or misleads the addressee about the origin of such messages or communicates any
-          information which is grossly offensive or menacing in nature;
-        </li>
-        <li>impersonates another person or constitutes to be identity theft;</li>
-        <li>
-          contains software viruses or any other computer code, files or programs designed to
-          interrupt, destroy or limit the functionality of any computer resource;
-        </li>
-        <li>
-          threatens the unity, integrity, defence, security or sovereignty of India, friendly
-          relations with foreign states, or public order or causes incitement to the commission of
-          any cognizable offence or prevents investigation of any offence or is insulting any other
-          nation.
-        </li>
-      </ul>
-    </li>
-    <li>
-      You will not use, remove, alter, interfere with or circumvent any of copyright, trademark,
-      watermark, Platform Services, or other proprietary notices marked/displayed on the Platform.
-    </li>
-    <li>
-      You will not use any contents included on the Platform/ Platform Services, including but not
-      limited to, text, graphics, logos, button icons, images, audio clips, trademarks, service
-      marks, domain names, designs, software, etc., to create a unique end product.
-    </li>
-    <li>
-      You will not use any of the rights granted to you under this TOU, or any of the content on the
-      Platform, in a manner that suggests an association with NLPL, unless otherwise specifically
-      permitted by NLPL.
-    </li>
-    <li>
-      You will not transmit any material that contains adware, malware, spyware, software viruses,
-      time-bombs, cancel-bots, worms, trojan horses, or any other computer code, files, or programs
-      designed to interrupt, destroy, or limit the functionality of any computer software or
-      hardware or tele-communications equipment.
-    </li>
-    <li>
-      You will not do anything that is likely to adversely affect or reflect negatively upon or harm
-      the goodwill or reputation of NLPL, its affiliates (whether existing currently or is
-      incorporated in the future), directors, officers, employees, or the Platform, or the Platform
-      Services.
-    </li>
-    <li>
-      You will not do anything on the Platform that would prevent other user’ access to or use of
-      the Platform, or any part thereof, and/or Platform Services.
-    </li>
-  </ol>
-  <h5 class="mt-2">REPRESENTATIONS AND WARRANTIES</h5>
-  <ol>
-    <li>You are 18 years or above, in age,</li>
-    <li>
-      In the event you are a Minor, that you have obtained the consent of your parents/ legal
-      guardians and thereby accessed the Platform or Platform Services under their guidance or the
-      guidance of school authorities/ school faculties;
-    </li>
-    <li>
-      If you are the parents/ legal guardians/ school authorities/ school faculties of any Minors
-      accessing the Platform under your guidance, you shall be liable for explaining the provisions
-      of this TOU and the process and significance of the psychometric tests under the Platform, to
-      the Minors and thereby ensuring their comprehension of and compliance with the same;
-    </li>
-    <li>
-      You agree and confirm that NLPL does not control any direct users’ actions on the Platform and
-      are not responsible for the content, information, documents (academic/ professional/
-      identification/ etc.) users transmit or share on the Platform. NLPL is not responsible for any
-      offensive, obscene, unlawful, false or otherwise objectionable content/ information that you
-      may encounter on the Platform. We are not responsible for the conduct, whether online or
-      offline, of any user.
-    </li>
-    <li>
-      This TOU along with the Privacy Policy, available at
-      <a href="https://nealife.in/privacy-policy/">Privacy Policy</a>, makes up the entire agreement
-      between you and NLPL and supersedes any prior agreements, arrangements and understanding
-      regarding the contents of the TOU.
-    </li>
-    <li>
-      You will not transfer any of your rights or obligations under this TOU to anyone else without
-      our consent.
-    </li>
-    <li>
-      You will not misrepresent any information/ association, and/ or impersonate any person, and/
-      or forge any documents in order to disguise any user information/ its origin/ employment
-      opportunity, as may be applicable, depending upon the case.
-    </li>
-    <li>
-      You shall not use the content/ Platform Services, or modify/ copy/ sell/ use them for any
-      commercial purposes, for the benefit of yourself or any other, without the prior written
-      consent of NLPL.
-    </li>
-    <li>
-      You shall not use any device/ software (malicious/ malware) to interfere with the working of
-      the Platform or breach the Platform Services, or the data of any other user.
-    </li>
-    <li>
-      If you are a Candidate, you shall not allow any other individual to appear for the assessments
-      on the Platform, on your behalf.
-    </li>
-    <li>
-      You shall not appear for assessments on the Platform, on behalf of any Candidate, other than
-      for yourself, if and where applicable.
-    </li>
-    <li>
-      You shall not reverse engineer, copy or imitate the Platform Services/ features/ etc. or
-      attempt to breach the intellectual property rights of NLPL, with respect to the Platform and
-      Platform Services, to set up a business/ platform/ render services, that are similar or
-      equivalent in nature, to that of the Platform and Platform Services.
-    </li>
-    <li>
-      All our rights and obligations under this TOU are freely assignable by us in connection with a
-      merger, acquisition, or sale of assets, or by operation of law or otherwise.
-    </li>
-    <li>Nothing in this TOU shall prevent us from complying with the law.</li>
-    <li>This TOU do not confer any third party beneficiary rights on anyone.</li>
-    <li>We reserve all rights not expressly granted to you.</li>
-    <li>
-      You will comply with the responsibilities vested on you, under the clause ‘Your
-      Responsibility’, of this TOU.
-    </li>
-  </ol>
-  <h5 class="mt-2">DISCLAIMER OF WARRANTIES</h5>
-  <p>
-    By using the Platform, you agree and understand that such use is at your own risk and that there
-    is no warranty that this Platform will be free of any computer/ application viruses. The
-    Platform (and any portion thereof) is provided “as is”, “with all faults” and “as available” to
-    the fullest extent permitted by law. NLPL and its affiliates, directors, officers, employees,
-    clients, agents expressly disclaim any and all warranties of any kind, whether express or
-    implied (including, without limitation, the implied warranties of merchantability,
-    non-infringement). Neither NLPL nor any of its affiliates, directors, officers, employees,
-    clients, and agents make any warranties or representations about the accuracy or completeness of
-    information available on or through the Platform or other internet resources linked to the
-    Platform and assume no liability or responsibility for any:
-  </p>
-  <ol>
-    <li>
-      errors, mistakes, or inaccuracies of content/ assessments/ interpretation by Platform designed
-      by NLPL, or otherwise;
-    </li>
-    <li>
-      decisions that you may take as a Candidate, or as a Client, based upon the assessments or
-      remarks shared by the Platform and or other assessments tools, on the Platform;
-    </li>
-    <li>
-      personal injury or property damage, of any nature whatsoever, resulting from your access to or
-      use of the platform and the Platform Services;
-    </li>
-    <li>
-      rejection/ deletion of information, in the event NLPL receives any compliant with respect to
-      the genuineness of the same, or itself has reason to doubt the genuineness of the same;
-    </li>
-    <li>
-      background verification of Candidates, before employment by Client, and/ or the verification
-      of workplace culture/ benefits offered by Client, as the case may be;
-    </li>
-    <li>
-      collection, processing, storage of information by NLPL, through its Platform, of personal data
-      or information (including without limitation, Personal Information), shared by users, in
-      accordance with the terms of the Privacy Policy;
-    </li>
-    <li>
-      collection or processing of information, from your social media accounts, if and when you
-      specifically and voluntarily consent to link such accounts on the Platform, for verification;
-    </li>
-    <li>any unauthorized access to any and all personal information stored in the Website;</li>
-    <li>any interruption or cessation of transmission to or from the Website;</li>
-    <li>
-      any bugs, viruses, trojan horses, or the like which may be transmitted to or through the
-      Website (or any parts thereof) by any third party;
-    </li>
-  </ol>
-  <h5 class="mt-2">LIMITATION OF LIABILITY</h5>
-  <p>
-    THIS PLATFORM AND THE PLATFORM SERVICES HAVE BEEN CREATED IN ACCORDANCE WITH THE OPINIONS OF
-    PSYCHOMETRIC EXPERTS AND PROVEN AND ESTABLISHED PSYCHOMETRIC NORMS. YOU UNDERSTAND THAT TO THE
-    EXTENT PERMITTED UNDER APPLICABLE LAWS, IN NO EVENT WILL NLPL OR ANY OF ITS AFFILIATES OR ANY OF
-    THEIR RESPECTIVE OFFICERS, EMPLOYEES, DIRECTORS, SHAREHOLDERS, AGENTS, PSYCHOMETRIC EXPERTS OR
-    LICENSORS BE LIABLE TO YOU OR ANYONE ELSE UNDER ANY THEORY OF LIABILITY (WHETHER IN CONTRACT,
-    TORT, STATUTORY, OR OTHERWISE) FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR
-    EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF REVENUES, PROFITS,
-    GOODWILL, USE, DATA OR OTHER INTANGIBLE LOSSES (EVEN IF SUCH PARTIES WERE ADVISED OF, KNEW OF OR
-    SHOULD HAVE KNOWN OF THE POSSIBILITY OF SUCH DAMAGES), RESULTING FROM YOUR USE (OR THE USE OF
-    ANYONE ON YOUR BEHALF) OF THE PALTFORM/ PLATFORM SERVICES OR ANY PARTS THEREOF OR RELATED TO
-    YOUR COMMISSIONS OR OMISSIONS BASED UPON SUCH PLATFROM SERVICES, INCLUDING WITHOUT LIMITATION
-    THE RESULTS OF PSYCHOMETRIC ASSESSMENTS AND THE LIKE.
-  </p>
-  <h5 class="mt-2">NO PROFESSIONAL ADVICE</h5>
-  <p>
-    Material, content, assessments, or information contained on or made available through the
-    Platform, is not intended to and does not constitute any legal, professional, financial, advice
-    nor does it, in any manner establish a Professional – Client relationship.
-  </p>
-  <h5 class="mt-2">INDEMNIFICATION</h5>
-  <ol>
-    <li>
-      You agree to indemnify, keep indemnified and hold harmless NLPL and its affiliates (whether
-      existing presently or incorporated in future) and their respective officers, directors,
-      employees, representatives, licensees, authorized designees, successors, assigns, clients,
-      from any and all claims, liabilities, damages, losses, costs, expenses, fees (including
-      reasonable outside attorneys’ fees and costs) that such parties may incur as a result of or
-      arising from:
-      <ul>
-        <li>
-          any of your wrong/false user information, including without limitation the corporate or
-          individual identity (as applicable);
-        </li>
-        <li>
-          the breach of any of your warranties, representations, covenants, responsibilities or
-          other obligations set forth in this TOU;
-        </li>
-        <li>your violation of any person’s intellectual property, privacy or other right;</li>
-        <li>
-          the violation of any applicable laws and/or any of your obligations under this TOU by you;
-        </li>
-        <li>
-          misconduct or negligence by you and/or your use of the Platform (in whole or in part);
-        </li>
-        <li>
-          breach of any Applicable Laws, and/ or the terms of this TOU, and/or third-party claims,
-          resulting from the usage of the Platform.
-        </li>
-      </ul>
-    </li>
-    <li>
-      NLPL reserves the right to assume the exclusive defence and control of any matter otherwise
-      subject to indemnification by you, in which event you will cooperate with NLPL in asserting
-      any available defences. This provision shall remain in full force and effect notwithstanding
-      any termination of your use of the Platform.
-    </li>
-    <li>
-      If you are a Candidate and anyone brings a claim against us related to your actions
-      (misrepresentation of identity, etc.), information, documents (including without limitation
-      academic qualifications, professional experience, identity, etc.), assessments on the
-      Platform, or regarding information and documents shared by you during the background
-      verification by the corporates/ employers offering employment opportunities, you will
-      indemnify and hold NLPL and its directors, agents, representatives, partners, employees and
-      consultants, clients harmless from and against all damages, losses, and expenses of any kind
-      (including reasonable legal fees and costs) related to such claim.
-    </li>
-    <li>
-      If you are a Client and anyone, including without limitation the Candidates, governmental
-      authorities, etc., bring a claim against us related to your actions, information on the
-      Platform, or regarding your workplace culture or compliance with applicable laws as an
-      employer/ corporate entity, you will indemnify and hold NLPL and its directors, agents,
-      representatives, partners, employees and consultants harmless from and against all damages,
-      losses, and expenses of any kind (including reasonable legal fees and costs) related to such
-      claim.
-    </li>
-  </ol>
-  <h5 class="mt-2">SEVERABILITY AND WAIVER</h5>
-  <p>
-    If any provision of the TOU shall be held unlawful, void, or for any reason unenforceable, then
-    that provision shall be deemed severable from this TOU and shall not affect the validity and
-    enforceability of any of the remaining provisions. The failure of NLPL to exercise or enforce
-    any right or provision of this TOU, shall not constitute a waiver of such right or provision,
-    and shall not be construed as modifications of the provisions contained herein.
-  </p>
-  <h5 class="mt-2">MODIFICATIONS</h5>
-  <p>
-    This TOU may be updated from time to time, at the sole and absolute discretion of NLPL, without
-    notice of any kinds to the users. Please check our Platform periodically, for updates and
-    amendments to the TOU, and each time while accessing the Platform and the Platform Services, to
-    remain updated.
-  </p>
-  <h5 class="mt-2">FORCE MAJEURE</h5>
-  <p>
-    NLPL’s performance under this TOU is subject to interruption and delay due to causes beyond its
-    reasonable control such as acts of God, epidemic, pandemic, acts of any Government including
-    without limitation lockdown or restriction on movement/ transportation, war or other hostility,
-    civil disorder, the elements, fire, explosion, power failure, failure of the Internet, network
-    intrusion and other circumstances beyond the control of NLPL, equipment failure, industrial or
-    labour dispute, and the like. NLPL shall not be held liable if services with respect to the
-    Platform are interrupted or become improper at any point of time due to Force Majeure events
-    specified above.
-  </p>
-  <h5 class="mt-2">ARBITRATION AND GOVERNING LAW</h5>
-  <ol>
-    <li>
-      You will resolve any claim, cause of action or dispute (claim) you have with NLPL, arising out
-      of or relating to this TOU document exclusively in India, regardless of where you reside. The
-      laws of the Republic of India will govern this TOU document, as well as any claim that might
-      arise between you and NLPL, without regard to conflict of law provisions.
-    </li>
-    <li>
-      All disputes or differences of any nature whatsoever, arising between you and NLPL shall be
-      settled by mutual discussion, failing which, upon the expiry of 30 days, shall be referred to
-      arbitration under the provisions of the Arbitration and Conciliation Act, 1996 (as amended) to
-      a sole arbitrator. The venue of the arbitration shall be at Pune, India and the language of
-      the arbitration shall be English. The decision of the Arbitrator shall be final and binding on
-      you and NLPL. The Arbitration proceedings shall be subject to the jurisdiction of the Courts
-      in Pune.
-    </li>
-  </ol>
-  <h5 class="mt-2">DISCLAIMER</h5>
-  <p>
-    This TOU is an electronic agreement between you and NLPL, with respect to access to the Platform
-    and availing the Platform Services, and may not be signed physically, in order for the same to
-    be binding. The user agrees and understands that their use of the Platform shall be construed to
-    their agreement with this TOU and Privacy Policy.
-  </p>
+  <div class="container-fluid overflow-y-auto mb-3">
+    <div class="row">
+      <div class="col-12">
+        <p class="m-0">
+          YOUR USE OF OUR PLATFORM (DEFINED HEREAFTER) IS SUBJECT TO THESE TERMS OF USE ENTAILED
+          HEREUNDER. BY USING ASSESS, THE PLATFORM OF NEA LIFE PRIVATE LIMITED, YOU ACKNOWLEDGE AND
+          AGREE TO BE BOUND BY THIS TERMS OF USE, AS UPDATED FROM TIME TO TIME AND WHICH ARE
+          INCORPORATED HEREIN. IF YOU CHOOSE TO NOT AGREE WITH ANY OF THESE TERMS, YOU MAY NOT USE
+          ASSESS.
+        </p>
+        <p class="mt-2">
+          This Terms of Use (“TOU”) is a binding legal agreement between Nea Life Private Limited
+          (“NLPL/Us/Our/We/Company”), a Company incorporated under the Companies Act, 2013, having
+          its registered office at A-1 First Floor, Minar Apartment CTS No 124, Plot No 83, Law
+          College Road, Erandwane, Pune-411004, Maharashtra, India, the owner and operator of
+          <a href="https://nealife.in/">https://nealife.in/</a>
+          (“Website”) and the mobile application, NEA Life (“App”), and you (“you/your/user/viewer/
+          Client/Candidate”), a user of the Platform.
+        </p>
+        <h5 class="mt-2">PLATFORM AND PLATFORM SERVICES</h5>
+        <ol class="list-group list-group-numbered">
+          <li>
+            The term “Platform” includes the content on NLPL’s portal Assess, its Websites, Apps,
+            media content, assessment tools, profile registration of Candidates, Client accounts,
+            and all other services provided and content displayed on the Website and App (the
+            “Platform Services“).
+          </li>
+          <li>
+            Your use of certain Platform Services, features, functionality or programs offered on or
+            through the Platform may be subject to additional terms and conditions, and before you
+            use any such Platform Services, features, functionality or other programs you may be
+            required to indicate your acceptance of such additional terms and conditions.
+          </li>
+          <li>
+            The information which is displayed on the Platform shall be treated as general
+            information which can be accessed as per the terms of this TOU.
+          </li>
+          <li>
+            Any individual who has not attained the age of majority, i.e., 18 years, shall be
+            considered as a minor for the purposes of this TOU (“Minor”) and shall be prohibited
+            from accessing the Platform, except without parental consent and guidance.
+          </li>
+          <li>
+            For the purposes of this TOU, all companies, firms, institutions which register their
+            accounts on the Platform for the purpose of conducting psychometric assessment of their
+            candidates, shall be referred to as “Client”.
+          </li>
+          <li>
+            For the purposes of this TOU every candidate who registers their profiles on the
+            Platform, for the purpose of undertaking psychometric evaluation by Clients and
+            undergoes assessments through the assessment tools/ tests designed on the Platform by
+            NLPL, shall be referred to as “Candidate”.
+          </li>
+          <li>
+            Every Candidate and Client, shall, for the purposes of this TOU, together be referred to
+            as “user”.
+          </li>
+        </ol>
+        <h5 class="mt-2">CONSENT</h5>
+        <p>
+          By accessing and using the Platform, you provide your specific consent to the Platform to
+          use and collect the information provided by you. Please note that for any information
+          provided by you on the Platform, it will be deemed that:
+        </p>
+        <ol class="list-group list-group-numbered">
+          <li>You are above 18 years of age;</li>
+          <li>
+            If you are a Minor, that you are using the Platform under parental supervision and/or
+            consent. The parents/ legal guardians with whose consent and parents/ legal guardians/
+            school authorities/ school faculties (as may be applicable) under whose guidance a Minor
+            is accessing the Platform represent and warrant that the implications of the usage of
+            the Platform and the Platform Services have been explained to the Minor in a
+            comprehensive manner;
+          </li>
+          <li>
+            You understand that you have provided specific consent to NLPL to lawfully collect and
+            process your submissions and share your profile/ results of psychometric assessments, if
+            and as applicable;
+          </li>
+          <li>
+            If you are a Candidate, you agree that you have voluntarily shared your Personal
+            Information and other details (including without limitation your present professional
+            status and allied information) with us for the purpose of assessments through
+            psychometric tests, alerts for career, mental health and wellbeing, career guidance on
+            and through the Platform;
+          </li>
+          <li>
+            You have read and understood the provisions of the TOU and are aware that the collection
+            and processing of your submissions will be subject to the same, along with the Privacy
+            Policy.
+          </li>
+        </ol>
+        <h5 class="mt-2">INTELLECTUAL PROPERTY</h5>
+        <ol class="list-group list-group-numbered">
+          <li>
+            The assessment modules, Platform designed for assessment of the Candidates and any
+            material circulated or shared or uploaded pursuant to or in connection with the same,
+            shall be the sole and absolute ownership of NLPL. With respect to Clients for whom NLPL
+            designs tailor-made assessment modules, the same shall be the sole and absolute
+            ownership of NLPL. Users, in any of the cases, shall not claim or attain ownership of
+            the same.
+          </li>
+          <li>
+            The ownership of the content of the Platform and the Platform Services, along with all
+            text, graphics, audios, videos, designs, screen shots, logos, images, copyrights,
+            patents, trademarks, service marks, trade names and all other intellectual property
+            rights are vested in NLPL unless otherwise indicated. All rights in relation to such
+            works shall be reserved with NLPL and shall be its sole property.
+          </li>
+          <li>
+            Content on the Platform and Platform Services is for personal use only and may be
+            downloaded provided the material so downloaded, is kept intact, and there is no
+            violation of the copyrights, trademarks, and other proprietary rights. Any alteration of
+            the material or use of the material contained on the Platform, for any other purposes
+            shall constitute a violation of the copyright of NLPL and / or its affiliates or
+            associates or of its third-party information providers.
+          </li>
+          <li>
+            Unless you have otherwise obtained NLPL&apos;s written permission, you agree not to
+            copy, reproduce, stream, capture, record, access through technology in the form of
+            capturing photographs/ screenshots through the mobile/ laptop/ desktop or any other
+            technology used to access the Platform, transfer, sell, resell, upload, archive, license
+            to others, edit, modify, reverse engineer, decode, manipulate, create derivative works
+            from or based upon, publish, republish, post, transmit, publicly display, frame, link
+            from or to, distribute, share, embed, translate, decompile, translate, incorporate into
+            any hardware or software application, use for commercial purposes, or otherwise use or
+            exploit the Platform, its content, Platform Services or any component or part thereof.
+            Any of the unauthorized uses referred to above would constitute an infringement of the
+            copyrights and other proprietary rights of NLPL and/or its licensors and a violation of
+            these TOU and may subject you to civil and/or criminal liability under applicable laws.
+          </li>
+        </ol>
+        <h5 class="mt-2">LICENSES GRANTED TO YOU</h5>
+        <p>
+          Subject to the provisions of the TOU (including, without limitation to the Intellectual
+          Property Rights set forth), NLPL hereby grants you, if and only to the extent the
+          necessary functionality is provided to you, on or through the Platform, the following
+          limited, revocable, non-exclusive, non-transferable, non-assignable, worldwide,
+          royalty-free rights and licenses (each a “License” and collectively “Licenses”):
+        </p>
+        <ol class="list-group list-group-numbered">
+          <li>
+            the License to access, view and otherwise use the Platform for your personal,
+            non-commercial, purposes, for lawful use only, as intended through the normal Platform
+            Services and in accordance with the TOU and subject to the Privacy Policy;
+          </li>
+          <li>
+            License to access the Platform Services, as per their account type, whether Client/
+            Candidate/ otherwise, as applicable;
+          </li>
+          <li>
+            License to use any other functionality expressly provided by NLPL on or through the
+            Platform Services, for use by users, subject to this TOU.
+          </li>
+        </ol>
+        <h5 class="mt-2">YOUR RESPONSIBILITY</h5>
+        <p>
+          Your rights under any one or more of the Licenses set forth above and under this TOU are
+          conditioned upon your compliance, with each of the following:
+        </p>
+        <ol class="list-group list-group-numbered">
+          <li>
+            You shall not display, upload, modify, edit, delete, publish, transmit, update or share
+            any information that –
+            <ul>
+              <li>belongs to another person and to which the user does not have any right to;</li>
+              <li>
+                is grossly harmful, harassing, blasphemous, defamatory, obscene, pornographic,
+                paedophilic, libellous, invasive of another’s privacy, hateful, or racially,
+                ethnically objectionable, disparaging, relating or encouraging money laundering or
+                gambling, or otherwise unlawful in any manner whatever;
+              </li>
+              <li>harm Minors in any way;</li>
+              <li>
+                infringes any person’s intellectual property rights and/ or proprietary rights;
+              </li>
+              <li>violates any law for the time being in force;</li>
+              <li>
+                deceives or misleads the addressee about the origin of such messages or communicates
+                any information which is grossly offensive or menacing in nature;
+              </li>
+              <li>impersonates another person or constitutes to be identity theft;</li>
+              <li>
+                contains software viruses or any other computer code, files or programs designed to
+                interrupt, destroy or limit the functionality of any computer resource;
+              </li>
+              <li>
+                threatens the unity, integrity, defence, security or sovereignty of India, friendly
+                relations with foreign states, or public order or causes incitement to the
+                commission of any cognizable offence or prevents investigation of any offence or is
+                insulting any other nation.
+              </li>
+            </ul>
+          </li>
+          <li>
+            You will not use, remove, alter, interfere with or circumvent any of copyright,
+            trademark, watermark, Platform Services, or other proprietary notices marked/displayed
+            on the Platform.
+          </li>
+          <li>
+            You will not use any contents included on the Platform/ Platform Services, including but
+            not limited to, text, graphics, logos, button icons, images, audio clips, trademarks,
+            service marks, domain names, designs, software, etc., to create a unique end product.
+          </li>
+          <li>
+            You will not use any of the rights granted to you under this TOU, or any of the content
+            on the Platform, in a manner that suggests an association with NLPL, unless otherwise
+            specifically permitted by NLPL.
+          </li>
+          <li>
+            You will not transmit any material that contains adware, malware, spyware, software
+            viruses, time-bombs, cancel-bots, worms, trojan horses, or any other computer code,
+            files, or programs designed to interrupt, destroy, or limit the functionality of any
+            computer software or hardware or tele-communications equipment.
+          </li>
+          <li>
+            You will not do anything that is likely to adversely affect or reflect negatively upon
+            or harm the goodwill or reputation of NLPL, its affiliates (whether existing currently
+            or is incorporated in the future), directors, officers, employees, or the Platform, or
+            the Platform Services.
+          </li>
+          <li>
+            You will not do anything on the Platform that would prevent other user’ access to or use
+            of the Platform, or any part thereof, and/or Platform Services.
+          </li>
+        </ol>
+        <h5 class="mt-2">REPRESENTATIONS AND WARRANTIES</h5>
+        <ol>
+          <li>You are 18 years or above, in age,</li>
+          <li>
+            In the event you are a Minor, that you have obtained the consent of your parents/ legal
+            guardians and thereby accessed the Platform or Platform Services under their guidance or
+            the guidance of school authorities/ school faculties;
+          </li>
+          <li>
+            If you are the parents/ legal guardians/ school authorities/ school faculties of any
+            Minors accessing the Platform under your guidance, you shall be liable for explaining
+            the provisions of this TOU and the process and significance of the psychometric tests
+            under the Platform, to the Minors and thereby ensuring their comprehension of and
+            compliance with the same;
+          </li>
+          <li>
+            You agree and confirm that NLPL does not control any direct users’ actions on the
+            Platform and are not responsible for the content, information, documents (academic/
+            professional/ identification/ etc.) users transmit or share on the Platform. NLPL is not
+            responsible for any offensive, obscene, unlawful, false or otherwise objectionable
+            content/ information that you may encounter on the Platform. We are not responsible for
+            the conduct, whether online or offline, of any user.
+          </li>
+          <li>
+            This TOU along with the Privacy Policy, available at
+            <a href="https://nealife.in/privacy-policy/">Privacy Policy</a>, makes up the entire
+            agreement between you and NLPL and supersedes any prior agreements, arrangements and
+            understanding regarding the contents of the TOU.
+          </li>
+          <li>
+            You will not transfer any of your rights or obligations under this TOU to anyone else
+            without our consent.
+          </li>
+          <li>
+            You will not misrepresent any information/ association, and/ or impersonate any person,
+            and/ or forge any documents in order to disguise any user information/ its origin/
+            employment opportunity, as may be applicable, depending upon the case.
+          </li>
+          <li>
+            You shall not use the content/ Platform Services, or modify/ copy/ sell/ use them for
+            any commercial purposes, for the benefit of yourself or any other, without the prior
+            written consent of NLPL.
+          </li>
+          <li>
+            You shall not use any device/ software (malicious/ malware) to interfere with the
+            working of the Platform or breach the Platform Services, or the data of any other user.
+          </li>
+          <li>
+            If you are a Candidate, you shall not allow any other individual to appear for the
+            assessments on the Platform, on your behalf.
+          </li>
+          <li>
+            You shall not appear for assessments on the Platform, on behalf of any Candidate, other
+            than for yourself, if and where applicable.
+          </li>
+          <li>
+            You shall not reverse engineer, copy or imitate the Platform Services/ features/ etc. or
+            attempt to breach the intellectual property rights of NLPL, with respect to the Platform
+            and Platform Services, to set up a business/ platform/ render services, that are similar
+            or equivalent in nature, to that of the Platform and Platform Services.
+          </li>
+          <li>
+            All our rights and obligations under this TOU are freely assignable by us in connection
+            with a merger, acquisition, or sale of assets, or by operation of law or otherwise.
+          </li>
+          <li>Nothing in this TOU shall prevent us from complying with the law.</li>
+          <li>This TOU do not confer any third party beneficiary rights on anyone.</li>
+          <li>We reserve all rights not expressly granted to you.</li>
+          <li>
+            You will comply with the responsibilities vested on you, under the clause ‘Your
+            Responsibility’, of this TOU.
+          </li>
+        </ol>
+        <h5 class="mt-2">DISCLAIMER OF WARRANTIES</h5>
+        <p>
+          By using the Platform, you agree and understand that such use is at your own risk and that
+          there is no warranty that this Platform will be free of any computer/ application viruses.
+          The Platform (and any portion thereof) is provided “as is”, “with all faults” and “as
+          available” to the fullest extent permitted by law. NLPL and its affiliates, directors,
+          officers, employees, clients, agents expressly disclaim any and all warranties of any
+          kind, whether express or implied (including, without limitation, the implied warranties of
+          merchantability, non-infringement). Neither NLPL nor any of its affiliates, directors,
+          officers, employees, clients, and agents make any warranties or representations about the
+          accuracy or completeness of information available on or through the Platform or other
+          internet resources linked to the Platform and assume no liability or responsibility for
+          any:
+        </p>
+        <ol>
+          <li>
+            errors, mistakes, or inaccuracies of content/ assessments/ interpretation by Platform
+            designed by NLPL, or otherwise;
+          </li>
+          <li>
+            decisions that you may take as a Candidate, or as a Client, based upon the assessments
+            or remarks shared by the Platform and or other assessments tools, on the Platform;
+          </li>
+          <li>
+            personal injury or property damage, of any nature whatsoever, resulting from your access
+            to or use of the platform and the Platform Services;
+          </li>
+          <li>
+            rejection/ deletion of information, in the event NLPL receives any compliant with
+            respect to the genuineness of the same, or itself has reason to doubt the genuineness of
+            the same;
+          </li>
+          <li>
+            background verification of Candidates, before employment by Client, and/ or the
+            verification of workplace culture/ benefits offered by Client, as the case may be;
+          </li>
+          <li>
+            collection, processing, storage of information by NLPL, through its Platform, of
+            personal data or information (including without limitation, Personal Information),
+            shared by users, in accordance with the terms of the Privacy Policy;
+          </li>
+          <li>
+            collection or processing of information, from your social media accounts, if and when
+            you specifically and voluntarily consent to link such accounts on the Platform, for
+            verification;
+          </li>
+          <li>
+            any unauthorized access to any and all personal information stored in the Website;
+          </li>
+          <li>any interruption or cessation of transmission to or from the Website;</li>
+          <li>
+            any bugs, viruses, trojan horses, or the like which may be transmitted to or through the
+            Website (or any parts thereof) by any third party;
+          </li>
+        </ol>
+        <h5 class="mt-2">LIMITATION OF LIABILITY</h5>
+        <p>
+          THIS PLATFORM AND THE PLATFORM SERVICES HAVE BEEN CREATED IN ACCORDANCE WITH THE OPINIONS
+          OF PSYCHOMETRIC EXPERTS AND PROVEN AND ESTABLISHED PSYCHOMETRIC NORMS. YOU UNDERSTAND THAT
+          TO THE EXTENT PERMITTED UNDER APPLICABLE LAWS, IN NO EVENT WILL NLPL OR ANY OF ITS
+          AFFILIATES OR ANY OF THEIR RESPECTIVE OFFICERS, EMPLOYEES, DIRECTORS, SHAREHOLDERS,
+          AGENTS, PSYCHOMETRIC EXPERTS OR LICENSORS BE LIABLE TO YOU OR ANYONE ELSE UNDER ANY THEORY
+          OF LIABILITY (WHETHER IN CONTRACT, TORT, STATUTORY, OR OTHERWISE) FOR ANY DIRECT,
+          INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, INCLUDING BUT NOT
+          LIMITED TO, DAMAGES FOR LOSS OF REVENUES, PROFITS, GOODWILL, USE, DATA OR OTHER INTANGIBLE
+          LOSSES (EVEN IF SUCH PARTIES WERE ADVISED OF, KNEW OF OR SHOULD HAVE KNOWN OF THE
+          POSSIBILITY OF SUCH DAMAGES), RESULTING FROM YOUR USE (OR THE USE OF ANYONE ON YOUR
+          BEHALF) OF THE PALTFORM/ PLATFORM SERVICES OR ANY PARTS THEREOF OR RELATED TO YOUR
+          COMMISSIONS OR OMISSIONS BASED UPON SUCH PLATFROM SERVICES, INCLUDING WITHOUT LIMITATION
+          THE RESULTS OF PSYCHOMETRIC ASSESSMENTS AND THE LIKE.
+        </p>
+        <h5 class="mt-2">NO PROFESSIONAL ADVICE</h5>
+        <p>
+          Material, content, assessments, or information contained on or made available through the
+          Platform, is not intended to and does not constitute any legal, professional, financial,
+          advice nor does it, in any manner establish a Professional – Client relationship.
+        </p>
+        <h5 class="mt-2">INDEMNIFICATION</h5>
+        <ol>
+          <li>
+            You agree to indemnify, keep indemnified and hold harmless NLPL and its affiliates
+            (whether existing presently or incorporated in future) and their respective officers,
+            directors, employees, representatives, licensees, authorized designees, successors,
+            assigns, clients, from any and all claims, liabilities, damages, losses, costs,
+            expenses, fees (including reasonable outside attorneys’ fees and costs) that such
+            parties may incur as a result of or arising from:
+            <ul>
+              <li>
+                any of your wrong/false user information, including without limitation the corporate
+                or individual identity (as applicable);
+              </li>
+              <li>
+                the breach of any of your warranties, representations, covenants, responsibilities
+                or other obligations set forth in this TOU;
+              </li>
+              <li>your violation of any person’s intellectual property, privacy or other right;</li>
+              <li>
+                the violation of any applicable laws and/or any of your obligations under this TOU
+                by you;
+              </li>
+              <li>
+                misconduct or negligence by you and/or your use of the Platform (in whole or in
+                part);
+              </li>
+              <li>
+                breach of any Applicable Laws, and/ or the terms of this TOU, and/or third-party
+                claims, resulting from the usage of the Platform.
+              </li>
+            </ul>
+          </li>
+          <li>
+            NLPL reserves the right to assume the exclusive defence and control of any matter
+            otherwise subject to indemnification by you, in which event you will cooperate with NLPL
+            in asserting any available defences. This provision shall remain in full force and
+            effect notwithstanding any termination of your use of the Platform.
+          </li>
+          <li>
+            If you are a Candidate and anyone brings a claim against us related to your actions
+            (misrepresentation of identity, etc.), information, documents (including without
+            limitation academic qualifications, professional experience, identity, etc.),
+            assessments on the Platform, or regarding information and documents shared by you during
+            the background verification by the corporates/ employers offering employment
+            opportunities, you will indemnify and hold NLPL and its directors, agents,
+            representatives, partners, employees and consultants, clients harmless from and against
+            all damages, losses, and expenses of any kind (including reasonable legal fees and
+            costs) related to such claim.
+          </li>
+          <li>
+            If you are a Client and anyone, including without limitation the Candidates,
+            governmental authorities, etc., bring a claim against us related to your actions,
+            information on the Platform, or regarding your workplace culture or compliance with
+            applicable laws as an employer/ corporate entity, you will indemnify and hold NLPL and
+            its directors, agents, representatives, partners, employees and consultants harmless
+            from and against all damages, losses, and expenses of any kind (including reasonable
+            legal fees and costs) related to such claim.
+          </li>
+        </ol>
+        <h5 class="mt-2">SEVERABILITY AND WAIVER</h5>
+        <p>
+          If any provision of the TOU shall be held unlawful, void, or for any reason unenforceable,
+          then that provision shall be deemed severable from this TOU and shall not affect the
+          validity and enforceability of any of the remaining provisions. The failure of NLPL to
+          exercise or enforce any right or provision of this TOU, shall not constitute a waiver of
+          such right or provision, and shall not be construed as modifications of the provisions
+          contained herein.
+        </p>
+        <h5 class="mt-2">MODIFICATIONS</h5>
+        <p>
+          This TOU may be updated from time to time, at the sole and absolute discretion of NLPL,
+          without notice of any kinds to the users. Please check our Platform periodically, for
+          updates and amendments to the TOU, and each time while accessing the Platform and the
+          Platform Services, to remain updated.
+        </p>
+        <h5 class="mt-2">FORCE MAJEURE</h5>
+        <p>
+          NLPL’s performance under this TOU is subject to interruption and delay due to causes
+          beyond its reasonable control such as acts of God, epidemic, pandemic, acts of any
+          Government including without limitation lockdown or restriction on movement/
+          transportation, war or other hostility, civil disorder, the elements, fire, explosion,
+          power failure, failure of the Internet, network intrusion and other circumstances beyond
+          the control of NLPL, equipment failure, industrial or labour dispute, and the like. NLPL
+          shall not be held liable if services with respect to the Platform are interrupted or
+          become improper at any point of time due to Force Majeure events specified above.
+        </p>
+        <h5 class="mt-2">ARBITRATION AND GOVERNING LAW</h5>
+        <ol>
+          <li>
+            You will resolve any claim, cause of action or dispute (claim) you have with NLPL,
+            arising out of or relating to this TOU document exclusively in India, regardless of
+            where you reside. The laws of the Republic of India will govern this TOU document, as
+            well as any claim that might arise between you and NLPL, without regard to conflict of
+            law provisions.
+          </li>
+          <li>
+            All disputes or differences of any nature whatsoever, arising between you and NLPL shall
+            be settled by mutual discussion, failing which, upon the expiry of 30 days, shall be
+            referred to arbitration under the provisions of the Arbitration and Conciliation Act,
+            1996 (as amended) to a sole arbitrator. The venue of the arbitration shall be at Pune,
+            India and the language of the arbitration shall be English. The decision of the
+            Arbitrator shall be final and binding on you and NLPL. The Arbitration proceedings shall
+            be subject to the jurisdiction of the Courts in Pune.
+          </li>
+        </ol>
+        <h5 class="mt-2">DISCLAIMER</h5>
+        <p>
+          This TOU is an electronic agreement between you and NLPL, with respect to access to the
+          Platform and availing the Platform Services, and may not be signed physically, in order
+          for the same to be binding. The user agrees and understands that their use of the Platform
+          shall be construed to their agreement with this TOU and Privacy Policy.
+        </p>
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-auto mx-auto">
+        <button
+          type="button"
+          class="p-button"
+          (click)="isCheckedCtrl.setValue(true); showTerms = false">
+          Accept
+        </button>
+      </div>
+    </div> -->
+  </div>
+  <div class="mx-auto">
+    <button
+      type="button"
+      class="p-button"
+      (click)="isCheckedCtrl.setValue(true); showTerms = false">
+      Accept
+    </button>
+  </div>
 </p-dialog>

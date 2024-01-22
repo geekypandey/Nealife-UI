@@ -5,114 +5,163 @@
   <div class="container">
     <div class="personal-info-card">
       <form *ngIf="basicInfoForm" [formGroup]="basicInfoForm">
-        <div class="row mb-3 gy-3 p-fluid">
-          <div
-            class="col-12 col-sm-6"
-            [hidden]="fieldObj.key === 'code' || fieldObj.key === 'sectors'"
-            *ngFor="let fieldObj of personalInfoFields">
-            <ng-container
-              *ngTemplateOutlet="
-                isDropdownField(fieldObj) === 'dropdown'
-                  ? dropdownTpl
-                  : fieldObj.key === 'dateOfBirth'
-                    ? calendarTpl
-                    : fieldObj.key === 'gender'
-                      ? radioTpl
-                      : inputTpl;
-                context: { $implicit: fieldObj }
-              "></ng-container>
+        <ng-container *ngIf="!showAccordion">
+          <div class="row mb-3 gy-3 p-fluid">
+            <div class="col-12 col-sm-6" *ngFor="let fieldObj of personalInfoFields">
+              <ng-container *ngIf="!(fieldObj.key === 'code' || fieldObj.key === 'sectors')">
+                <ng-container
+                  *ngTemplateOutlet="
+                    isDropdownField(fieldObj) === 'dropdown'
+                      ? dropdownTpl
+                      : fieldObj.key === 'dateOfBirth'
+                        ? calendarTpl
+                        : fieldObj.key === 'gender'
+                          ? radioTpl
+                          : inputTpl;
+                    context: { $implicit: fieldObj }
+                  "></ng-container>
 
-            <small
-              *ngIf="
-                basicInfoForm.controls[fieldObj.key].invalid &&
-                basicInfoForm.controls[fieldObj.key].dirty
-              "
-              class="p-error">
-              <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['required']">
-                {{ fieldObj.value | titlecase }} is required.
-              </div>
-              <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['minlength']">
-                {{ fieldObj.value | titlecase }} must be at least
-                {{
-                  basicInfoForm.controls[fieldObj.key].errors?.['minlength']?.requiredLength | json
-                }}
-                characters long.
-              </div>
-              <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['maxlength']">
-                {{ fieldObj.value | titlecase }} must be equal to
-                {{ basicInfoForm.controls[fieldObj.key].errors?.['maxlength']?.requiredLength }}
-                characters long.
-              </div>
-              <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['pattern']">
-                Invalid {{ fieldObj.value | titlecase }}
-              </div>
-            </small>
-          </div>
-        </div>
-
-        <!-- templates start -->
-        <ng-template #inputTpl let-field>
-          <label [for]="field.key"
-            >{{ field.value }}<span class="p-error" *ngIf="isRequired(field.key)">*</span></label
-          >
-          <input
-            type="text"
-            [formControlName]="field.key"
-            name="fname"
-            [id]="field.key"
-            class="p-inputtext p-component" />
-        </ng-template>
-        <ng-template #dropdownTpl let-field>
-          <label [for]="field.key"
-            >{{ field.value }}<span class="p-error" *ngIf="isRequired(field.key)">*</span></label
-          >
-          <p-dropdown
-            [formControlName]="field.key"
-            [attr.id]="field.key"
-            [options]="optionsArray(field.key)"></p-dropdown>
-        </ng-template>
-        <ng-template #calendarTpl let-field>
-          <label [for]="field.key"
-            >{{ field.value }}<span class="p-error" *ngIf="isRequired(field.key)">*</span></label
-          >
-          <p-calendar
-            [maxDate]="todaysDate"
-            dateFormat="yy-mm-dd"
-            [formControlName]="field.key"
-            [showIcon]="true"></p-calendar>
-        </ng-template>
-        <ng-template #radioTpl let-field>
-          <label for="gender"
-            >Gender<span class="p-error" *ngIf="isRequired(field.key)">*</span></label
-          >
-          <div class="d-flex gap-3 mt-2">
-            <div class="form-check" *ngFor="let option of optionsArray(field.key)">
-              <input
-                class="form-check-input"
-                [formControlName]="field.key"
-                type="radio"
-                name="gender"
-                [value]="option.value"
-                [id]="option.label" />
-              <label class="form-check-label" [for]="option.label">{{
-                option.label | titlecase
-              }}</label>
+                <small
+                  *ngIf="
+                    basicInfoForm.controls[fieldObj.key].invalid &&
+                    basicInfoForm.controls[fieldObj.key].dirty
+                  "
+                  class="p-error">
+                  <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['required']">
+                    {{ fieldObj.value | titlecase }} is required.
+                  </div>
+                  <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['minlength']">
+                    {{ fieldObj.value | titlecase }} must be at least
+                    {{
+                      basicInfoForm.controls[fieldObj.key].errors?.['minlength']?.requiredLength
+                        | json
+                    }}
+                    characters long.
+                  </div>
+                  <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['maxlength']">
+                    {{ fieldObj.value | titlecase }} must be equal to
+                    {{ basicInfoForm.controls[fieldObj.key].errors?.['maxlength']?.requiredLength }}
+                    characters long.
+                  </div>
+                  <div *ngIf="basicInfoForm.controls[fieldObj.key].errors?.['pattern']">
+                    Invalid {{ fieldObj.value | titlecase }}
+                  </div>
+                </small>
+              </ng-container>
             </div>
           </div>
-        </ng-template>
-        <!-- templates end -->
+
+          <!-- templates start -->
+          <ng-template #inputTpl let-field>
+            <label [for]="field.key"
+              >{{ field.value }}<span class="p-error" *ngIf="isRequired(field.key)">*</span></label
+            >
+            <input
+              type="text"
+              [formControlName]="field.key"
+              name="fname"
+              [id]="field.key"
+              class="p-inputtext p-component" />
+          </ng-template>
+          <ng-template #dropdownTpl let-field>
+            <label [for]="field.key"
+              >{{ field.value }}<span class="p-error" *ngIf="isRequired(field.key)">*</span></label
+            >
+            <p-dropdown
+              [formControlName]="field.key"
+              [attr.id]="field.key"
+              [options]="optionsArray(field.key)"></p-dropdown>
+          </ng-template>
+          <ng-template #calendarTpl let-field>
+            <label [for]="field.key"
+              >{{ field.value }}<span class="p-error" *ngIf="isRequired(field.key)">*</span></label
+            >
+            <p-calendar
+              [maxDate]="todaysDate"
+              dateFormat="yy-mm-dd"
+              [formControlName]="field.key"
+              [showIcon]="true"></p-calendar>
+          </ng-template>
+          <ng-template #radioTpl let-field>
+            <label for="gender"
+              >Gender<span class="p-error" *ngIf="isRequired(field.key)">*</span></label
+            >
+            <div class="d-flex gap-3 mt-2">
+              <div class="form-check" *ngFor="let option of optionsArray(field.key)">
+                <input
+                  class="form-check-input"
+                  [formControlName]="field.key"
+                  type="radio"
+                  name="gender"
+                  [value]="option.value"
+                  [id]="option.label" />
+                <label class="form-check-label" [for]="option.label">{{
+                  option.label | titlecase
+                }}</label>
+              </div>
+            </div>
+          </ng-template>
+          <!-- templates end -->
+
+          <div class="row mb-3 justify-content-center">
+            <div class="col-auto">
+              <button
+                [disabled]="basicInfoForm.invalid"
+                (click)="reportTypes.includes(reportType) ? next() : submit()"
+                type="button"
+                class="w-100 p-button justify-content-center">
+                {{ reportTypes.includes(reportType) ? 'Next' : 'Start Assessment' }}
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="showAccordion">
+          <div class="p-error" *ngIf="sectorsCtrl && sectorsCtrl.hasError('maxLengthError')">
+            Maximum {{ maxBranchSelection }} branch selection allowed.
+          </div>
+          <div class="row flex-column">
+            <div class="col-12">
+              <strong
+                >{{
+                  reportType === 'NSQFREPORT'
+                    ? 'Sectors'
+                    : reportType === 'ECFEREPORT'
+                      ? 'Engineering Branch'
+                      : 'MBA Branch'
+                }}
+                <span class="p-error" *ngIf="sectorsCtrl.hasError('required')">*</span></strong
+              >
+              <nl-accordion>
+                <nl-accordion-item *ngFor="let accordionItem of accordions">
+                  <ng-template #header>
+                    <p-checkbox
+                      name="sectors"
+                      [value]="accordionItem.id"
+                      [formControl]="sectorsCtrl"></p-checkbox>
+                    <div class="accordion-label">{{ accordionItem.header }}</div>
+                  </ng-template>
+                  <ng-template #body>
+                    {{ accordionItem.body }}
+                  </ng-template>
+                </nl-accordion-item>
+              </nl-accordion>
+            </div>
+            <div class="col-auto m-auto mt-3">
+              <button
+                [disabled]="basicInfoForm.invalid"
+                (click)="submit()"
+                type="button"
+                class="w-100 p-button justify-content-center">
+                Start Assessment
+              </button>
+            </div>
+          </div>
+        </ng-container>
       </form>
-      <div class="row mb-3 justify-content-center">
-        <div class="col-auto">
-          <button
-            [disabled]="basicInfoForm.invalid"
-            (click)="submit()"
-            type="button"
-            class="w-100 p-button justify-content-center">
-            Start Assessment
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 </div>
+
+{{ reportType }}
+{{ basicInfoForm.value.sectors }}

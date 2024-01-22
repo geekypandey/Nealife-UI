@@ -29,8 +29,10 @@
 }
 .terms-link {
   cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-    color: var(--nl-primary-color);
-  }
+  text-decoration: underline;
+  color: var(--nl-primary-color);
+}
+::ng-deep p-dialog .custom-style {
+  display: flex;
+  flex-direction: column;
 }

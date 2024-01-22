@@ -1,0 +1,16 @@
+<div class="accordion">
+  <div class="accordion-item">
+    <div class="accordion-header d-flex align-items-center gap-3">
+      <div
+        class="accordion-custom-button nl-icon chevron-right"
+        [class.open]="toggleAccordion"
+        (click)="toggleAccordion = !toggleAccordion"></div>
+      <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+    </div>
+    <div class="accordion-collapse collapse" [class.show]="toggleAccordion">
+      <div class="accordion-body">
+        <ng-container *ngTemplateOutlet="bodyTemplate"></ng-container>
+      </div>
+    </div>
+  </div>
+</div>

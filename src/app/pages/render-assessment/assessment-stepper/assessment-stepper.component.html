@@ -175,6 +175,10 @@
           </ng-container>
         </div>
       </ng-container>
+
+      <ng-container *ngIf="showAssessmentLastPage">
+        <ng-container *ngTemplateOutlet="lastPageTpl"></ng-container>
+      </ng-container>
     </div>
   </div>
 </div>
@@ -275,3 +279,17 @@
     >
   </div>
 </ng-container>
+
+<ng-template #lastPageTpl>
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col-sm-6">
+      <div class="submitted">Assessment Submitted Successfully</div>
+      <div class="submittedthanku mt-2">THANK YOU!!!</div>
+      <div class="submittedcontent mt-2">
+        Thank you for being one of the first to experience the revolution in online psychometric
+        assessments. Kudos to you for taking the best step towards helping us to enhance personal
+        productivity. We hope you enjoyed taking the test.
+      </div>
+    </div>
+  </div>
+</ng-template>

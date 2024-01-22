@@ -1,0 +1,19 @@
+.accordion-header {
+  width: 100%;
+  border: none;
+  display: flex;
+  padding: 10px;
+  //   background: var(--nl-secondary-color);
+  font-size: 1rem;
+
+  .accordion-custom-button {
+    cursor: pointer;
+    width: var(--bs-accordion-btn-icon-width);
+    height: var(--bs-accordion-btn-icon-width);
+    background-repeat: no-repeat;
+    transition: var(--bs-accordion-btn-icon-transition);
+    &.open {
+      transform: rotate(90deg);
+    }
+  }
+}

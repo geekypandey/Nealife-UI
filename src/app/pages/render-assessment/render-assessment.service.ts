@@ -3,8 +3,8 @@ import { Injectable, inject } from '@angular/core';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { PreAssessmentSectionDetailsRequest } from './assessment-stepper/assessment-section.model';
 import {
-  AssessmentAnswer,
   CheckCreditUsed,
+  PreAssessDetailsReqPayload,
   PreAssessmentDetailsResponse,
   RenderAssessmentResponse,
 } from './render-assessment.model';
@@ -35,7 +35,7 @@ export class RenderAssessmentService {
     return this.http.post<any>(API_URL.branchAssessmentCourseFitURL, payload);
   }
 
-  submitPersonalInfo(payload: AssessmentAnswer) {
+  submitPersonalInfo(payload: PreAssessDetailsReqPayload) {
     return this.http.post<PreAssessmentDetailsResponse>(API_URL.preAssessmentDetails, payload);
   }
 

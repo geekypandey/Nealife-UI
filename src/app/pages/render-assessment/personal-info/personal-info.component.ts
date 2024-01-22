@@ -8,18 +8,42 @@ import {
   Output,
   inject,
 } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { AccordionItemComponent } from 'src/app/components/accordion/accordion-item/accordion-item.component';
+import { Accordion, AccordionComponent } from 'src/app/components/accordion/accordion.component';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
-import { DropdownOption } from 'src/app/models/common.model';
+import { DropdownOption, LookupResponse } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
 import { DateToString, StringToDate } from 'src/app/util/util';
 import { AssessmentHeaderComponent } from '../assessment-header/assessment-header.component';
 import { Demographic, PreAssessmentDetailsDemographics } from '../render-assessment.model';
+
+type CheckboxAccordion = Accordion & { id: number; checked: boolean };
+
+export function ValidateMaxBranchSelection(max: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (!value) {
+      return null;
+    }
+    return value.length > max ? { maxLengthError: true } : null;
+  };
+}
 
 @Component({
   selector: 'nl-personal-info',
@@ -31,6 +55,9 @@ import { Demographic, PreAssessmentDetailsDemographics } from '../render-assessm
     DropdownModule,
     SpinnerComponent,
     ReactiveFormsModule,
+    AccordionComponent,
+    AccordionItemComponent,
+    CheckboxModule,
   ],
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.scss'],
@@ -55,12 +82,13 @@ export class PersonalInfoComponent {
   standard: DropdownOption[] = [];
   stream: DropdownOption[] = [];
   board: DropdownOption[] = [];
-  sectors: DropdownOption[] = [];
-  engBranches: DropdownOption[] = [];
-  mbaBranches: DropdownOption[] = [];
+  sectors: LookupResponse[] = [];
+  engBranches: LookupResponse[] = [];
+  mbaBranches: LookupResponse[] = [];
 
-  basicInfoForm!: FormGroup;
+  basicInfoForm!: FormGroup<any>;
   todaysDate: Date = new Date();
+  accordions: CheckboxAccordion[] = [];
 
   private sharedApiService = inject(SharedApiService);
   private spinner = inject(NgxSpinnerService);
@@ -68,6 +96,7 @@ export class PersonalInfoComponent {
   private cd = inject(ChangeDetectorRef);
 
   readonly spinnerName: string = 'personal-info';
+  showAccordion: boolean = false;
 
   @Input({ required: true })
   set fields(fields: Demographic[]) {
@@ -80,11 +109,39 @@ export class PersonalInfoComponent {
     setTimeout(() => this.basicInfoForm.get('code')?.setValue(cc));
   }
 
+  private _preAssessmentDemographics!: PreAssessmentDetailsDemographics;
   @Input()
-  set demographics(value: PreAssessmentDetailsDemographics | undefined) {
+  set preAssessmentDemographics(value: PreAssessmentDetailsDemographics | undefined) {
     if (value) {
+      this._preAssessmentDemographics = value;
       this.initDemographics(value);
     }
+  }
+
+  get preAssessmentDemographics() {
+    return this._preAssessmentDemographics;
+  }
+
+  reportTypes: string[] = ['NSQFREPORT', 'ECFEREPORT', 'MCFEREPORT'];
+  private _reportType: string = '';
+  maxBranchSelection: number = 10;
+
+  @Input()
+  set reportType(value: string) {
+    this._reportType = value;
+    if (value === 'NSQFREPORT') {
+      this.maxBranchSelection = 5;
+      this.sectorsApiCall().subscribe(resp => {
+        this.accordions = this.getAccordions(resp);
+      });
+    } else if (value === 'ECFEREPORT') {
+      this.engBranchApiCall().subscribe(resp => (this.accordions = this.getAccordions(resp)));
+    } else if (value === 'MCFEREPORT') {
+      this.mbaBranchApiCall().subscribe(resp => (this.accordions = this.getAccordions(resp)));
+    }
+  }
+  get reportType() {
+    return this._reportType;
   }
 
   @Output()
@@ -103,6 +160,23 @@ export class PersonalInfoComponent {
 
   isDropdownField(fieldObj: Demographic): string {
     return this.dropDownFieldsKeys.includes(fieldObj.key) ? 'dropdown' : fieldObj.key;
+  }
+
+  next() {
+    this.showAccordion = true;
+    let sectorsInitialValue = [];
+    if (this._preAssessmentDemographics) {
+      const { sectors } = this._preAssessmentDemographics;
+      sectorsInitialValue = sectors;
+    }
+    this.basicInfoForm.addControl(
+      'sectors',
+      new FormControl(sectorsInitialValue, [
+        Validators.required,
+        // Validators.min(1),
+        ValidateMaxBranchSelection(this.maxBranchSelection),
+      ])
+    );
   }
 
   submit() {
@@ -149,17 +223,21 @@ export class PersonalInfoComponent {
     } else return [];
   }
 
+  private getAccordions(resp: any[]): CheckboxAccordion[] {
+    return resp && resp.length
+      ? resp.map(v => ({ id: v.id, header: v.key, body: v.subType, checked: false }))
+      : [];
+  }
+
   private initForm() {
     const form = {} as any;
     this.personalInfoFields.forEach(obj => {
-      obj['key'] === 'email'
-        ? (form[obj['key']] = [
-            '',
-            [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
-          ])
-        : (form[obj['key']] = ['', [Validators.required]]);
-
-      if (obj['key'] === 'contactNumber') {
+      if (obj['key'] === 'email') {
+        form[obj['key']] = [
+          '',
+          [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
+        ];
+      } else if (obj['key'] === 'contactNumber') {
         form[obj['key']] = [
           '',
           [
@@ -169,10 +247,11 @@ export class PersonalInfoComponent {
             Validators.minLength(10),
           ],
         ];
+      } else if (obj['key'] === 'sectors') {
+        //form['sectors'] = [[], [Validators.required]];
+      } else {
+        form[obj['key']] = ['', [Validators.required]];
       }
-      // if (obj['key'] === 'sectors' || this.reportType === this.engReport || this.reportType === this.mbaReport) {
-      //   form['sectors'] = [[]];
-      // }
     });
     this.basicInfoForm = this.fb.group(form);
 
@@ -213,10 +292,21 @@ export class PersonalInfoComponent {
       this.sharedApiService.lookup('STANDARD').pipe(tap(res => (this.standard = res))),
       this.sharedApiService.lookup('STREAM').pipe(tap(res => (this.stream = res))),
       this.sharedApiService.lookup('BOARD').pipe(tap(res => (this.board = res))),
-      this.sharedApiService.lookup('SECTORS').pipe(tap(res => (this.sectors = res))),
-      this.sharedApiService.lookup('ENGINEERING_BRANCH').pipe(tap(res => (this.engBranches = res))),
-      this.sharedApiService.lookup('MBA_BRANCH').pipe(tap(res => (this.mbaBranches = res))),
     ];
+  }
+
+  private sectorsApiCall() {
+    return this.sharedApiService.lookup('SECTORS', false).pipe(tap(res => (this.sectors = res)));
+  }
+  private engBranchApiCall() {
+    return this.sharedApiService
+      .lookup('ENGINEERING_BRANCH', false)
+      .pipe(tap(res => (this.engBranches = res)));
+  }
+  private mbaBranchApiCall() {
+    return this.sharedApiService
+      .lookup('MBA_BRANCH', false)
+      .pipe(tap(res => (this.mbaBranches = res)));
   }
 
   get dropDownFieldsKeys() {
@@ -235,5 +325,9 @@ export class PersonalInfoComponent {
       'stream',
       'board',
     ];
+  }
+
+  get sectorsCtrl() {
+    return this.basicInfoForm.get('sectors') as FormControl;
   }
 }
