@@ -1,4 +1,6 @@
-export const BASE_URL = '/nealife-qa/api';
+import { environment } from 'src/environments/environment';
+
+export const BASE_URL = environment.API_BASE_URL + '/api';
 export const API_URL = {
   login: BASE_URL + '/authenticate',
   getLoggedInUser: BASE_URL + '/users/getLoggedInUser',

@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve --extra-webpack-config webpack.js",
     "build": "ng build --extra-webpack-config webpack.js",
+    "build:prod": "ng build --extra-webpack-config webpack.js",
+    "build:qa": "ng build --configuration=qa --extra-webpack-config webpack.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "format": "prettier src --write"
@@ -29,6 +31,7 @@
     "primeng": "16.9.1",
     "rxjs": "~7.8.0",
     "tslib": "2.6.2",
+    "webpack-merge": "^5.10.0",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {

@@ -28,7 +28,7 @@ import { StepperComponent } from 'src/app/components/stepper/stepper.component';
 import { Step } from 'src/app/components/stepper/stepper.model';
 import { MinuteSecondsPipe } from 'src/app/pipes/seconds-to-minutes.pipe';
 import { LayoutService } from 'src/app/services/layout.service';
-import { getCurrentTime, scrollIntoView } from 'src/app/util/util';
+import { getCurrentTime } from 'src/app/util/util';
 import { AssessmentHeaderComponent } from '../assessment-header/assessment-header.component';
 import {
   Assessment,
@@ -166,10 +166,10 @@ export class AssessmentStepperComponent implements OnChanges {
           this.markStepCompleted();
           this.activeAssessmentFormGroup = undefined;
           this.nextAssessment();
-          const targetEle = this.doc.getElementById(
-            this.SUB_TEST_CARD_LABEL + this.activeAssessmentIndex
-          );
-          scrollIntoView(targetEle);
+          // const targetEle = this.doc.getElementById(
+          //   this.SUB_TEST_CARD_LABEL + this.activeAssessmentIndex
+          // );
+          // scrollIntoView(targetEle);
           this.spinner.hide(this.spinnerName);
           this.cd.markForCheck();
         },

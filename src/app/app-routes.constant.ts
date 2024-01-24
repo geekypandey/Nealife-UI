@@ -20,7 +20,10 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'render-assessment',
-    loadComponent: ()=> import('./pages/render-assessment/render-assessment.component').then(r=> RenderAssessmentComponent)
+    loadComponent: () =>
+      import('./pages/render-assessment/render-assessment.component').then(
+        r => RenderAssessmentComponent
+      ),
   },
   {
     path: '',
