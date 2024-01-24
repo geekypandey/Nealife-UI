@@ -120,6 +120,11 @@
           <div class="p-error" *ngIf="sectorsCtrl && sectorsCtrl.hasError('maxLengthError')">
             Maximum {{ maxBranchSelection }} branch selection allowed.
           </div>
+          <div
+            class="p-error"
+            *ngIf="sectorsCtrl && sectorsCtrl.dirty && sectorsCtrl.hasError('required')">
+            At least one branch selection is required.
+          </div>
           <div class="row flex-column">
             <div class="col-12">
               <strong
@@ -162,6 +167,3 @@
     </div>
   </div>
 </div>
-
-{{ reportType }}
-{{ basicInfoForm.value.sectors }}

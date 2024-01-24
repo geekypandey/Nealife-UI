@@ -181,7 +181,19 @@ export class RenderAssessmentComponent implements OnInit {
         error: () => this.spinner.hide(this.spinnerName),
       });
     } else {
-      this.navigateToAssessmentPage();
+      if (this.reportType === 'ECFEREPORT') {
+        this.spinner.show(this.spinnerName);
+        this.assementService
+          .assessmentCourseFit(value.sectors, this.queryParamaa)
+          .subscribe(assessData => {
+            this.renderAssessmentData = assessData;
+            this.navigateToAssessmentPage();
+            this.spinner.hide(this.spinnerName);
+            this.cd.markForCheck();
+          });
+      } else {
+        this.navigateToAssessmentPage();
+      }
     }
   }
 
