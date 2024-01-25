@@ -50,6 +50,9 @@
               </ng-container>
             </div>
           </div>
+          <div class="row mb-3" *ngIf="isEmailOrContactEmpty">
+            <small class="p-error">Either Email or Contact Number is required </small>
+          </div>
 
           <!-- templates start -->
           <ng-template #inputTpl let-field>
@@ -105,8 +108,8 @@
 
           <div class="row mb-3 justify-content-center">
             <div class="col-auto">
+              <!-- [disabled]="basicInfoForm.invalid" -->
               <button
-                [disabled]="basicInfoForm.invalid"
                 (click)="reportTypes.includes(reportType) ? next() : submit()"
                 type="button"
                 class="w-100 p-button justify-content-center">

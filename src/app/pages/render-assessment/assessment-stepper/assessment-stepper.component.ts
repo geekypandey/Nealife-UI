@@ -180,7 +180,7 @@ export class AssessmentStepperComponent implements OnChanges {
   private nextAssessment() {
     if (this.activeAssessmentIndex < this.totalAssessments.length - 1) {
       // show freeze assessment message
-      const nextAssessment = this.totalAssessments[this.activeAssessmentIndex + 1];
+      const nextAssessment = this.totalAssessments[this.activeAssessmentIndex];
       if (nextAssessment.pauseTime) {
         this.showFreezeScreen(nextAssessment);
       } else {

@@ -22,8 +22,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
-import { forkJoin } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { combineLatest, forkJoin } from 'rxjs';
+import { map, startWith, tap } from 'rxjs/operators';
 import { AccordionItemComponent } from 'src/app/components/accordion/accordion-item/accordion-item.component';
 import { Accordion, AccordionComponent } from 'src/app/components/accordion/accordion.component';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
@@ -89,6 +89,8 @@ export class PersonalInfoComponent {
   basicInfoForm!: FormGroup<any>;
   todaysDate: Date = new Date();
   accordions: CheckboxAccordion[] = [];
+
+  isEmailOrContactEmpty: boolean = false;
 
   private sharedApiService = inject(SharedApiService);
   private spinner = inject(NgxSpinnerService);
@@ -163,6 +165,10 @@ export class PersonalInfoComponent {
   }
 
   next() {
+    const isValid = this.checkEmailContactNumber();
+    if (!isValid || this.basicInfoForm.invalid) {
+      return;
+    }
     this.showAccordion = true;
     let sectorsInitialValue = [];
     if (this._preAssessmentDemographics) {
@@ -180,6 +186,10 @@ export class PersonalInfoComponent {
   }
 
   submit() {
+    const isValid = this.checkEmailContactNumber();
+    if (!isValid || this.basicInfoForm.invalid) {
+      return;
+    }
     this.onSubmitForm.emit({
       ...this.basicInfoForm.value,
       dateOfBirth: DateToString(this.basicInfoForm.value.dateOfBirth),
@@ -223,6 +233,18 @@ export class PersonalInfoComponent {
     } else return [];
   }
 
+  private checkEmailContactNumber() {
+    const email = this.basicInfoForm.get('email')?.value;
+    const contactNumber1 = this.basicInfoForm.get('contactNumber1')?.value;
+    if (!(email || contactNumber1)) {
+      this.basicInfoForm.markAllAsTouched();
+      this.isEmailOrContactEmpty = true;
+      return false;
+    }
+    this.isEmailOrContactEmpty = false;
+    return true;
+  }
+
   private getAccordions(resp: any[]): CheckboxAccordion[] {
     return resp && resp.length
       ? resp.map(v => ({ id: v.id, header: v.key, body: v.subType, checked: false }))
@@ -233,19 +255,11 @@ export class PersonalInfoComponent {
     const form = {} as any;
     this.personalInfoFields.forEach(obj => {
       if (obj['key'] === 'email') {
+        form[obj['key']] = ['', [Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]];
+      } else if (obj['key'] === 'contactNumber1') {
         form[obj['key']] = [
           '',
-          [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
-        ];
-      } else if (obj['key'] === 'contactNumber') {
-        form[obj['key']] = [
-          '',
-          [
-            Validators.required,
-            Validators.pattern('^[0-9]*$'),
-            Validators.maxLength(10),
-            Validators.minLength(10),
-          ],
+          [Validators.pattern('^[0-9]*$'), Validators.maxLength(10), Validators.minLength(10)],
         ];
       } else if (obj['key'] === 'sectors') {
         //form['sectors'] = [[], [Validators.required]];
@@ -264,6 +278,24 @@ export class PersonalInfoComponent {
         this.basicInfoForm.get('stream')?.setValue('');
       }
     });
+
+    const emailCtrl = this.basicInfoForm.get('email');
+    const contactNumber1Ctrl = this.basicInfoForm.get('contactNumber1');
+    if (emailCtrl && contactNumber1Ctrl) {
+      combineLatest([
+        emailCtrl.valueChanges.pipe(startWith('')),
+        contactNumber1Ctrl.valueChanges.pipe(startWith('')),
+      ])
+        .pipe(
+          map(([email, contactNumber1]) => {
+            return !email && !contactNumber1;
+          })
+        )
+        .subscribe(bothEmpty => {
+          this.isEmailOrContactEmpty = bothEmpty;
+          this.cd.markForCheck()
+        });
+    }
   }
 
   private initDemographics(demographicsValue: PreAssessmentDetailsDemographics) {
