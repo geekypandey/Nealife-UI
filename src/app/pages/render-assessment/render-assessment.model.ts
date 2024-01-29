@@ -7,6 +7,7 @@ export interface RenderAssessmentResponse {
   assessmentGroupId: number;
   uuid: string;
   timeLimit: number;
+  instructionPage: string;
   landingPage: string;
   displayName: string;
   reportType: string | null;

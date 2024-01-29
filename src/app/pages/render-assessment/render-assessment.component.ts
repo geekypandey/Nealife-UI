@@ -28,6 +28,7 @@ import { SharedApiService } from 'src/app/services/shared-api.service';
 import { AssessmentStepperComponent } from './assessment-stepper/assessment-stepper.component';
 import { PersonalInfoComponent } from './personal-info/personal-info.component';
 import {
+  Assessment,
   Demographic,
   PreAssessDetailsReqPayload,
   PreAssessmentDetailsDemographics,
@@ -77,6 +78,7 @@ export class RenderAssessmentComponent implements OnInit {
   readonly spinnerName = 'assessment-test';
   preAssessmentDemographics?: PreAssessmentDetailsDemographics;
   preAssessmentDetailsResponse!: PreAssessmentDetailsResponse;
+  completedAssessments: Assessment[] = [];
 
   private languages: string[] = [];
   private route = inject(ActivatedRoute);
@@ -222,6 +224,9 @@ export class RenderAssessmentComponent implements OnInit {
       );
       const assessmentPending = this.renderAssessmentData.assessments.filter(
         assessment => !alreadySubmittedAssesIds.includes(assessment.assessmentId)
+      );
+      this.completedAssessments = this.renderAssessmentData.assessments.filter(assessment =>
+        alreadySubmittedAssesIds.includes(assessment.assessmentId)
       );
       this.renderAssessmentData.assessments = assessmentPending;
     }

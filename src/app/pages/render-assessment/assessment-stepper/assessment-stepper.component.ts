@@ -67,6 +67,9 @@ export class AssessmentStepperComponent implements OnChanges {
   @Input({ required: true })
   preAssessmentDetailsResponse!: PreAssessmentDetailsResponse;
 
+  @Input({ required: true })
+  completedAssessments: Assessment[] = [];
+
   showGeneralInstructions: boolean = false;
   showStepper: boolean = false;
   steps: Step[] = [];
@@ -110,10 +113,16 @@ export class AssessmentStepperComponent implements OnChanges {
         this.activeAssessment = this.totalAssessments[0];
         this.showGeneralInstructions = true;
         this.generalInstructionsUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-          'https://d2f17thloo9pg4.cloudfront.net/content/prod/images/html/VAEEnglish.html'
+          this.sanitizeGenInsPage(this.assessmentsData.instructionPage)
         );
       }
     }
+  }
+
+  private sanitizeGenInsPage(value: string) {
+    return !value || (typeof value === 'object' && Object.keys(value).length === 0)
+      ? 'about:blank'
+      : value;
   }
 
   onAnswerSelection(questionIndex: number) {
@@ -132,6 +141,7 @@ export class AssessmentStepperComponent implements OnChanges {
 
   timeOver() {
     console.info('timeOver ');
+    this.submitSectionDetails();
   }
 
   submitSectionDetails() {

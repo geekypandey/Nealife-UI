@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
+import { AccordionItemComponent } from '../accordion/accordion-item/accordion-item.component';
+import { AccordionComponent } from '../accordion/accordion.component';
 import { Action, ColDef } from './table.model';
 
 type ExtendedColDef = ColDef & { visible: boolean };
@@ -10,7 +12,14 @@ type ExtendedColDef = ColDef & { visible: boolean };
 @Component({
   selector: 'nl-table',
   standalone: true,
-  imports: [CommonModule, TableModule, FormsModule, FilterPipe],
+  imports: [
+    CommonModule,
+    TableModule,
+    FormsModule,
+    FilterPipe,
+    AccordionComponent,
+    AccordionItemComponent,
+  ],
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

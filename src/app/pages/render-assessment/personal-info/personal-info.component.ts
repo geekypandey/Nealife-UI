@@ -192,7 +192,7 @@ export class PersonalInfoComponent {
     }
     this.onSubmitForm.emit({
       ...this.basicInfoForm.value,
-      dateOfBirth: DateToString(this.basicInfoForm.value.dateOfBirth),
+      dateOfBirth: DateToString(this.basicInfoForm.value && this.basicInfoForm.value.dateOfBirth),
     });
   }
 
@@ -293,7 +293,7 @@ export class PersonalInfoComponent {
         )
         .subscribe(bothEmpty => {
           this.isEmailOrContactEmpty = bothEmpty;
-          this.cd.markForCheck()
+          this.cd.markForCheck();
         });
     }
   }
@@ -304,6 +304,7 @@ export class PersonalInfoComponent {
         ...demographicsValue,
         dateOfBirth: StringToDate(demographicsValue.dateOfBirth),
       });
+      this.basicInfoForm.disable();
     }
   }
 

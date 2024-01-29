@@ -31,6 +31,7 @@ export function padStart(value: number, maxLength: number = 2, prefix: string = 
  * @returns string
  */
 export function DateToString(value: Date): string {
+  if (!value) return '';
   const dd = padStart(value.getDate());
   const mm = padStart(value.getMonth() + 1); // Months start at 0!
   return `${dd}/${mm}/${value.getFullYear()}`;
@@ -59,4 +60,11 @@ export function getCurrentTime(): string {
   const mm = d.getMinutes();
   const ss = d.getSeconds();
   return `${DateToString(d)} ${padStart(hh)}:${padStart(mm)}:${padStart(ss)}`;
+}
+
+/**
+ * To check empty object
+ */
+export function isEmptyObject(obj: Object) {
+  return Object.keys(obj).length === 0;
 }
