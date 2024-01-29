@@ -177,11 +177,17 @@ export class PersonalInfoComponent {
     }
     this.basicInfoForm.addControl(
       'sectors',
-      new FormControl(sectorsInitialValue, [
-        Validators.required,
-        // Validators.min(1),
-        ValidateMaxBranchSelection(this.maxBranchSelection),
-      ])
+      new FormControl(
+        {
+          value: sectorsInitialValue,
+          disabled: sectorsInitialValue.length > 0,
+        },
+        [
+          Validators.required,
+          // Validators.min(1),
+          ValidateMaxBranchSelection(this.maxBranchSelection),
+        ]
+      )
     );
   }
 
