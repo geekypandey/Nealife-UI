@@ -91,6 +91,8 @@ export class RenderAssessmentComponent implements OnInit {
   private preAssessDetailsReqPayload: PreAssessDetailsReqPayload;
   private reportType: string | null = null;
 
+  defaultModelImage = './../../../assets/login/illustration.svg';
+
   constructor() {
     this.preAssessDetailsReqPayload = new PreAssessDetailsReqPayload();
     this.landingPage = true;
@@ -234,13 +236,19 @@ export class RenderAssessmentComponent implements OnInit {
 
   private initialiseFields(renderAssessmentData: RenderAssessmentResponse) {
     if (renderAssessmentData) {
-      const { demographics, reportType, assessmentGroupId, companyAssessmentGroupId } =
-        renderAssessmentData;
+      const {
+        demographics,
+        reportType,
+        assessmentGroupId,
+        companyAssessmentGroupId,
+        companyAssessmentId,
+      } = renderAssessmentData;
       this.preAssessDetailsReqPayload.assessmentGroupId = assessmentGroupId;
       this.preAssessDetailsReqPayload.companyAssessmentGroupId = companyAssessmentGroupId;
       this.preAssessDetailsReqPayload.isGroup = this.isGroup;
       this.preAssessDetailsReqPayload.assessmentUUID = this.queryParamaa;
       this.preAssessDetailsReqPayload.creditCode = this.queryParamcc;
+      this.preAssessDetailsReqPayload.companyAssessmentId = companyAssessmentId;
       this.reportType = reportType;
       this.getbranches(reportType);
       this.languages = this.getLanguages(demographics);
@@ -309,6 +317,21 @@ export class RenderAssessmentComponent implements OnInit {
         this.cd.markForCheck();
       });
     }
+  }
+
+  getModalImage() {
+    return this.renderAssessmentData &&
+      !this.isObjectEmpty(this.renderAssessmentData.landingPage) &&
+      this.renderAssessmentData.landingPage != null
+      ? this.renderAssessmentData.landingPage
+      : this.defaultModelImage;
+  }
+
+  isObjectEmpty(obj: any): boolean {
+    if (obj === null) {
+      return true;
+    }
+    return Object.keys(obj).length === 0;
   }
 
   get codeCtrl() {

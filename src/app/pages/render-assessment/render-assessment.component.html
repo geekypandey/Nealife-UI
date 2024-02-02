@@ -1,63 +1,83 @@
 <nl-spinner [name]="spinnerName"></nl-spinner>
 <ng-container *ngIf="landingPage">
   <div class="render-assessment">
-    <h3 class="assess-welcome">Welcome to Assess</h3>
-    <div class="assess-container">
-      <div class="d-inline-flex justify-content-center">
-        <img
-          routerLink="/"
-          class="company-logo justify-content-center"
-          src="./../../../assets/login/logo.svg"
-          alt="logo-svg"
-          height="60" />
-      </div>
-      <div class="fs-4 fw-bold mt-4">{{ renderAssessmentData?.displayName }}</div>
-      <form [formGroup]="assessmentForm" (ngSubmit)="onSubmit()">
-        <div class="row mt-3 mb-3 p-fluid">
-          <div class="col-12">
-            <label for="cc">Credit Code</label>
-            <input
-              type="text"
-              formControlName="code"
-              name="cc"
-              id="cc"
-              class="p-inputtext p-component" />
-          </div>
-        </div>
-        <div class="row mb-3 p-fluid">
-          <div class="col-12">
-            <label for="lang">Language</label>
-            <p-dropdown
-              [attr.id]="'lang'"
-              formControlName="language"
-              [options]="languagesOptions"
-              placeholder="Select language"></p-dropdown>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="d-flex column-gap-2">
-              <p-checkbox
-                inputId="isChecked"
-                [binary]="true"
-                formControlName="isChecked"></p-checkbox>
-              <!-- <button type="button" (click)="showTerms = true" class="btn btn-link">
-                Terms & Conditions
-              </button> -->
-              <!-- <p> -->
-              <span class="terms-link" (click)="showTerms = true">Terms & Conditions</span>
-              <!-- </p> -->
-              <!-- <label for="isChecked1" ></label> -->
+    <div class="container-fluid h-100">
+      <div class="row h-100 overflow-hidden">
+        <div class="col-md-6">
+          <div class="h-100 d-flex flex-column">
+            <div class="col-auto py-4">
+              <div class="align-items-center d-inline-flex h-100 offset-1 w-100">
+                <h3 class="assess-welcome">Welcome to</h3>
+                <img
+                  routerLink="/"
+                  class="company-logo justify-content-center mx-3 pt-2"
+                  src="./../../../assets/login/logo.svg"
+                  alt="logo-svg"
+                  height="48" />
+              </div>
             </div>
+            <ng-container
+              [ngTemplateOutlet]="modalImgTpl"
+              [ngTemplateOutletContext]="{
+                $implicit: renderAssessmentData ? getModalImage() : defaultModelImage
+              }">
+            </ng-container>
+            <ng-template let-modalImgUrl #modalImgTpl>
+              <div
+                class="col modal-image"
+                [ngStyle]="{
+                  'background-image': 'url(' + modalImgUrl + ')'
+                }"></div>
+            </ng-template>
           </div>
         </div>
-        <button
-          [disabled]="!isValidCreditCode || assessmentForm.invalid || !isCheckedCtrl.value"
-          type="submit"
-          class="w-100 p-button justify-content-center mt-3">
-          Take a Test
-        </button>
-      </form>
+        <div class="col-md-6">
+          <div class="assess-container">
+            <div class="fs-4 fw-bold mt-4">{{ renderAssessmentData?.displayName }}</div>
+            <form [formGroup]="assessmentForm" (ngSubmit)="onSubmit()">
+              <div class="row mt-3 mb-3 p-fluid">
+                <div class="col-12">
+                  <label for="cc">Credit Code</label>
+                  <input
+                    type="text"
+                    formControlName="code"
+                    name="cc"
+                    id="cc"
+                    class="p-inputtext p-component" />
+                </div>
+              </div>
+              <div class="row mb-3 p-fluid">
+                <div class="col-12">
+                  <label for="lang">Language</label>
+                  <p-dropdown
+                    [attr.id]="'lang'"
+                    formControlName="language"
+                    [options]="languagesOptions"
+                    placeholder="Select language"></p-dropdown>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="d-flex column-gap-2">
+                    <p-checkbox
+                      inputId="isChecked"
+                      [binary]="true"
+                      formControlName="isChecked"></p-checkbox>
+
+                    <span class="terms-link" (click)="showTerms = true">Terms & Conditions</span>
+                  </div>
+                </div>
+              </div>
+              <button
+                [disabled]="!isValidCreditCode || assessmentForm.invalid || !isCheckedCtrl.value"
+                type="submit"
+                class="w-100 p-button justify-content-center mt-3">
+                Take a Test
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </ng-container>

@@ -2,12 +2,13 @@ import { PreAssessmentSectionDetailsRequest } from './assessment-stepper/assessm
 
 export interface RenderAssessmentResponse {
   companyId: number;
+  companyAssessmentId: number | null;
   companyAssessmentGroupId: number;
   companyAssessmentGroupBranchMappingId?: any;
   assessmentGroupId: number;
   uuid: string;
   timeLimit: number;
-  instructionPage: string;
+  instructionPage: Language;
   landingPage: string;
   displayName: string;
   reportType: string | null;
@@ -113,6 +114,7 @@ export class PreAssessDetailsReqPayload {
   emailReport: null;
   language: null;
   creditCode: string | null;
+  companyAssessmentId: number | null;
   constructor() {
     this.companyId = null;
     this.assessmentGroupId = null;
@@ -126,6 +128,7 @@ export class PreAssessDetailsReqPayload {
     this.emailReport = null;
     this.language = null;
     this.creditCode = null;
+    this.companyAssessmentId = null;
   }
 }
 

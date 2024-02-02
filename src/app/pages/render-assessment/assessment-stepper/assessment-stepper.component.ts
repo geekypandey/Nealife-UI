@@ -113,7 +113,7 @@ export class AssessmentStepperComponent implements OnChanges {
         this.activeAssessment = this.totalAssessments[0];
         this.showGeneralInstructions = true;
         this.generalInstructionsUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-          this.sanitizeGenInsPage(this.assessmentsData.instructionPage)
+          this.sanitizeGenInsPage(this.assessmentsData.instructionPage[this.selectedLanguage])
         );
       }
     }
