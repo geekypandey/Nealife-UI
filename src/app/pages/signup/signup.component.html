@@ -1,5 +1,5 @@
 <h3 class="signup-welcome">Welcome to Assess</h3>
-<div class="signup-container row">
+<div class="signup-container">
   <div class="d-inline-flex justify-content-center">
     <img
       routerLink="/"
@@ -10,16 +10,48 @@
   </div>
   <h5 class="mt-4 p-0">Sign Up</h5>
   <div class="row mt-2 mb-3">
-    <label for="name" class="px-0">Name</label>
-    <input type="text" name="name" id="name" class="p-inputtext p-component" />
+    <div class="col-12">
+      <label for="name" class="d-block px-0">Name</label>
+      <input type="text" name="name" id="name" class="w-100 p-inputtext p-component" />
+    </div>
   </div>
-  <div class="row mb-3">
-    <label for="email" class="px-0">Email</label>
-    <input type="email" name="email" id="email" class="p-inputtext p-component" />
+
+  <div class="row mb-2">
+    <div class="col-12">
+      <label for="email" class="d-block px-0">Email</label>
+      <input type="email" name="email" id="email" class="w-100 p-inputtext p-component" />
+    </div>
   </div>
-  <div class="row mb-3">
-    <label for="contact" class="px-0">Contact Number</label>
-    <input type="text" name="contact" id="contact" class="p-inputtext p-component" />
+  <div class="row mb-2">
+    <div class="col-12">
+      <label for="contact" class="px-0">Contact Number</label>
+      <input type="text" name="contact" id="contact" class="w-100 p-inputtext p-component" />
+    </div>
   </div>
-  <button type="submit" class="p-button justify-content-center mt-3">Make Payment</button>
+  <div class="row mb-2" *ngIf="assessmentNames$ | async as assessmentNames">
+    <div class="col-12">
+      <label class="d-block" for="parent">Assessment Name</label>
+      <p-dropdown
+        styleClass="w-100"
+        [attr.id]="'assessmentName'"
+        [options]="assessmentNames"
+        optionLabel="displayName"
+        placeholder="Select assessment name"></p-dropdown>
+    </div>
+  </div>
+  <div class="row mb-2">
+    <div class="col-12">
+      <label for="price" class="px-0">Price</label>
+      <input type="text" name="price" id="price" class="w-100 p-inputtext p-component" />
+    </div>
+  </div>
+  <div class="row mb-2">
+    <div class="col-12">
+      <label for="quantity" class="px-0">Quantity</label>
+      <input type="number" name="quantity" id="quantity" class="w-100 p-inputtext p-component" />
+    </div>
+  </div>
+  <button type="submit" class="p-button justify-content-center mt-3" (click)="createRazorPay()">
+    Make Payment
+  </button>
 </div>

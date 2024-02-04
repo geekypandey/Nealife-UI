@@ -1,0 +1,39 @@
+.sidebar {
+  background: #1f2c40;
+  height: 100%;
+  .company-logo {
+    img {
+      margin-left: 15px;
+      cursor: pointer;
+    }
+  }
+  .menus {
+    color: #ffffff;
+    .menu {
+      cursor: pointer;
+      height: 48px;
+      img {
+        margin-left: 20px;
+        margin-right: 10px;
+      }
+      .bar {
+        display: inline-block;
+        width: 5px;
+        height: 100%;
+      }
+      .down-arrow-white {
+        margin-left: auto;
+        padding-right: 20px;
+      }
+      &:hover {
+        background: url('./../../../assets/dashboard/menu-bg.svg');
+      }
+      &.active {
+        color: var(--nl-success-color);
+        .bar {
+          background-color: var(--nl-success-color);
+        }
+      }
+    }
+  }
+}

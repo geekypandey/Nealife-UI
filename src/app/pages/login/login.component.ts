@@ -7,10 +7,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { NavigationService } from 'src/app/services/navigation.service';
 
 @Component({
   selector: 'nl-login',
@@ -26,7 +27,10 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
   private spinner = inject(NgxSpinnerService);
+  private redirectUrl: string | null;
+  private navigationService = inject(NavigationService);
 
   constructor() {
     this.loginForm = this.fb.nonNullable.group({
@@ -34,6 +38,7 @@ export class LoginComponent {
       password: [null, Validators.required],
       isChecked: [null, Validators.requiredTrue],
     });
+    this.redirectUrl = this.activatedRoute.snapshot.queryParamMap.get('redirectUrl');
   }
 
   onSubmit() {
@@ -45,7 +50,11 @@ export class LoginComponent {
     this.spinner.show();
     this.authenticationService.authenticate(request).subscribe({
       next: _ => {
-        this.router.navigate(['/assess']).then(() => this.spinner.hide());
+        if (this.redirectUrl) {
+          this.router.navigate([this.redirectUrl]).then(() => this.spinner.hide());
+        } else {
+          this.router.navigate([this.navigationService.baseRoute]).then(() => this.spinner.hide());
+        }
       },
       error: () => this.spinner.hide(),
     });

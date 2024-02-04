@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TableModule } from 'primeng/table';
+import { TableModule, TableRowSelectEvent } from 'primeng/table';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
 import { AccordionItemComponent } from '../accordion/accordion-item/accordion-item.component';
 import { AccordionComponent } from '../accordion/accordion.component';
@@ -47,6 +47,7 @@ export class TableComponent {
   @Input() currentPageReportTemplate: string =
     'Showing {first} to {last} of {totalRecords} entries';
   @Input() actionsList: Action[] = [];
+  @Output() onRowSelect = new EventEmitter<TableRowSelectEvent>();
 
   toggleColumn: boolean = false;
   toggleFilter: boolean = false;

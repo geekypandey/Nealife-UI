@@ -1,0 +1,36 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<ng-container *ngIf="dashboardDetails$ | async as dashboardDetails">
+  <div class="py-3">
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <div class="d-flex column-gap-2">
+          <strong>Company Name :</strong>
+          <span>{{ dashboardDetails.companyName }}</span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="d-flex column-gap-2">
+          <strong>Total Notification :</strong>
+          <span>{{ dashboardDetails.totalNotification }}</span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="d-flex column-gap-2">
+          <strong>Assessment Taken :</strong>
+          <span>{{ dashboardDetails.assessmentTaken }}</span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="d-flex column-gap-2">
+          <strong>Assessment Remains :</strong>
+          <span>{{ dashboardDetails.assessmentRemains }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <nl-table [cols]="cols" [value]="dashboardDetails.notifications" />
+      </div>
+    </div>
+  </div>
+</ng-container>

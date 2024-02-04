@@ -1,5 +1,5 @@
 <div class="table-container d-flex">
-  <div style="width: 95%" class="" #primengContainer>
+  <div [ngStyle]="{ width: value.length == 0 ? '100%' : '95%' }" #primengContainer>
     <div class="d-flex">
       <div
         [ngClass]="{
@@ -9,12 +9,14 @@
         <p-table
           [columns]="extendedColDefs"
           [value]="value"
+          selectionMode="single"
           [scrollable]="true"
           [paginator]="paginator"
           [showCurrentPageReport]="showCurrentPageReport"
           [rows]="defaultRowCount"
           [currentPageReportTemplate]="currentPageReportTemplate"
-          [rowsPerPageOptions]="rowsPerPageOptions">
+          [rowsPerPageOptions]="rowsPerPageOptions"
+          (onRowSelect)="onRowSelect.emit($event)">
           <ng-template pTemplate="header" let-columns>
             <tr>
               <ng-container *ngFor="let col of columns">
@@ -29,7 +31,7 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr>
+            <tr [pSelectableRow]="rowData">
               <ng-container *ngFor="let col of columns">
                 <td *ngIf="col.visible" [ngStyle]="{ width: col.width || 'auto' }">
                   {{ rowData[col.field] }}
@@ -146,8 +148,11 @@
       </div>
     </div>
   </div>
-
-  <div style="width: 5%" class="table-tool-panel">
+  <!-- *ngIf="value.length > 0" -->
+  <div
+    *ngIf="value.length > 0"
+    [ngStyle]="{ width: value.length == 0 ? '0%' : '5%' }"
+    class="table-tool-panel">
     <div class="">
       <div class="pt-3">
         <div class="d-flex flex-column align-items-center gap-2 side-buttons">

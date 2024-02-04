@@ -1,4 +1,24 @@
 <nl-spinner></nl-spinner>
 <p-toast></p-toast>
 <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+<!-- <div class="h-100" [class.container-fluid]="!showAssessmentPage">
+  <div class="h-100" [class.row]="!showAssessmentPage">
+    <div class="col-2" *ngIf="!showAssessmentPage">
+      <nl-sidebar [menus]="sidebarMenus" defaultRoute="/" />
+    </div>
+    <div class="h-100" [ngClass]="{ 'col overflow-hidden': !showAssessmentPage }">
+      <div class="h-100" [ngClass]="{ 'row flex-column': !showAssessmentPage }">
+        <nl-header
+          *ngIf="!showAssessmentPage"
+          [headerMenus]="headerMenus"
+          [username]="username"
+          [companyName]="companyName" />
+        <div
+          [ngClass]="{ 'col overflow-y-auto': !showAssessmentPage, 'h-100': showAssessmentPage }">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
 <router-outlet></router-outlet>

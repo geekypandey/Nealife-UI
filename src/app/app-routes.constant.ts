@@ -15,9 +15,14 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'assess',
-    loadChildren: () => import('./pages/dashboard/dashboard.routes').then(r => r.DASHBOARD_ROUTES),
+    loadChildren: () => import('./pages/assess/asess.routes').then(r => r.DASHBOARD_ROUTES),
     canActivate: [isAuthenticatedGuard],
   },
+  // {
+  //   path: 'assess',
+  //   loadChildren: () => import('./pages/dashboard/dashboard.routes').then(r => r.DASHBOARD_ROUTES),
+  //   canActivate: [isAuthenticatedGuard],
+  // },
   {
     path: 'render-assessment',
     loadComponent: () =>
@@ -28,11 +33,11 @@ export const APP_ROUTES: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'assess',
+    redirectTo: '/assess',
   },
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: 'assess',
+    redirectTo: '/assess',
   },
 ];

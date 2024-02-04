@@ -1,0 +1,17 @@
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    <div class="col-2 bg-light">
+      <nl-sidebar [menus]="sidebarMenus" defaultRoute="/assess" />
+      <!-- <a routerLinkActive="active" routerLink="/assess/dashboard">Test1</a>
+      <a routerLinkActive="active" routerLink="/assess/test2">Test2</a> -->
+    </div>
+    <div class="col h-100 overflow-hidden bg-gradient">
+      <div class="row flex-column h-100">
+        <nl-header [headerMenus]="headerMenus" [username]="username" [companyName]="companyName" />
+        <div class="col overflow-y-auto">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
