@@ -64,8 +64,8 @@
                       <!-- <ng-container *ngIf="step.stepControl && step.stepControl.get('assessmentId')"> -->
                       <!-- Added above ngIf as instruction page don't have any formGroup controls-->
                       <h5 class="mt-4">
-                        Questions
-                        <span>{{ activeQuestionIndex + 1 }}.</span>
+                        Question
+                        <!-- <span>{{ activeQuestionIndex + 1 }}.</span> -->
                       </h5>
                       <form [formGroup]="activeAssessmentFormGroup">
                         <ng-container
@@ -78,8 +78,21 @@
                             <div
                               [formArrayName]="'itemAspectsFormArray'"
                               class="question-section d-flex flex-column gap-4">
-                              <div class="question border border-1 shadow">
-                                <ng-container
+                              <div class="bg-white question border border-1 shadow">
+                                <div class="p-2">
+                                  {{
+                                    itemAspect.language
+                                      ? itemAspect.language[selectedLanguage]
+                                      : itemAspect.question
+                                  }}
+                                </div>
+                                <img
+                                  *ngIf="!isEmptyObject(itemAspect.questionImage)"
+                                  style="display: inline-block; max-height: 250px"
+                                  [src]="itemAspect.questionImage[selectedLanguage]"
+                                  alt="question-img"
+                                  width="100%" />
+                                <!-- <ng-container
                                   *ngIf="
                                     itemAspect.questionImage &&
                                       itemAspect.questionImage[selectedLanguage];
@@ -95,7 +108,7 @@
                                   <div class="p-2">
                                     {{ itemAspect.language[selectedLanguage].split('. ')[1] }}
                                   </div>
-                                </ng-template>
+                                </ng-template> -->
                               </div>
                               <div [formGroupName]="activeQuestionIndex" class="container-fluid">
                                 <div class="answer row g-2">

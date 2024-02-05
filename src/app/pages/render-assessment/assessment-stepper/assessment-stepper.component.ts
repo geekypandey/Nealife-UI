@@ -435,6 +435,10 @@ export class AssessmentStepperComponent implements OnChanges {
     return item.itemAspectId;
   }
 
+  isEmptyObject(obj: Object) {
+    return Object.keys(obj).length === 0;
+  }
+
   // get activeFormGroup():FormGroup {
   //   return this.activeFormGroup[this.activeSectionIndex]
   // }
