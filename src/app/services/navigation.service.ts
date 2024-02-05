@@ -34,7 +34,7 @@ export class NavigationService {
         privilege: 'result-main',
         label: 'Results',
         icon: 'results',
-        url: this.baseRoute + '/results',
+        url: this.baseRoute + '/assessment-result',
       },
     ];
     const masterMenu: SidebarMenu[] = [
@@ -91,13 +91,10 @@ export class NavigationService {
     const sidebarMenu: SidebarMenu[] = [];
     switch (authorityType) {
       case Authority.ADMIN:
-        this.setMenu(commonMenu, privileges, sidebarMenu);
-        this.setMenu(paymentMenu, privileges, sidebarMenu);
-        this.setMenu(settingsMenu, privileges, sidebarMenu);
+        const menus = commonMenu.concat(paymentMenu, settingsMenu);
+        this.setMenu(menus, privileges, sidebarMenu);
         break;
-      case Authority.ACCOUNT_ADMIN:
-        break;
-      case Authority.NEA_ADMIN:
+      case Authority.USER:
         break;
     }
     return sidebarMenu;

@@ -13,6 +13,9 @@ export const API_URL = {
   accountDashboardDetails: BASE_URL + '/notifications/dashboard',
   companies: BASE_URL + '/companies',
   lookup: BASE_URL + '/lookups',
+  applicationUserAssessment: BASE_URL + '/application-user-assessments',
+  downloadHtmlReportUrl: BASE_URL + '/downloadHtmlReport',
+  downloadPdfReportUrl: BASE_URL + '/downloadPdfReport',
 
   assessment: BASE_URL + '/assessments/renderNewAssesment',
   assessmentJson: BASE_URL + '/assessments/getAssessmentJson',

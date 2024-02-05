@@ -19,6 +19,15 @@ export const DASHBOARD_ROUTES: Route[] = [
         path: 'company',
         loadChildren: () => import('./company/company.route').then(c => c.companyRoute),
       },
+      {
+        path: 'assessment-result',
+        loadComponent: () => import('./results/results.component').then(c => c.ResultsComponent),
+      },
+      {
+        path: 'application-user',
+        loadChildren: () =>
+          import('./application-user/application-user.route').then(c => c.applicationUserRoute),
+      },
     ],
   },
 ];

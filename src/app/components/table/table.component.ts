@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TableModule, TableRowSelectEvent } from 'primeng/table';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
@@ -48,6 +56,8 @@ export class TableComponent {
     'Showing {first} to {last} of {totalRecords} entries';
   @Input() actionsList: Action[] = [];
   @Output() onRowSelect = new EventEmitter<TableRowSelectEvent>();
+
+  @ContentChild('customBodyTpl') customBodyTpl!: TemplateRef<any>;
 
   toggleColumn: boolean = false;
   toggleFilter: boolean = false;

@@ -126,3 +126,24 @@ export interface SidebarMenu {
   privilege: string;
   children?: SidebarMenu[];
 }
+
+export interface IApplicationUserAssessment {
+  id?: number;
+  activationkey?: string;
+  rawScore?: number;
+  activated?: boolean;
+  userResponse?: any;
+  status?: AssesmentStatus;
+  reportId?: number;
+  userId?: number;
+  assessmentId?: number;
+  companyName?: string;
+  companyId?: number;
+}
+
+export const enum AssesmentStatus {
+  SCHEDULED = 'SCHEDULED',
+  INPROGRESS = 'INPROGRESS',
+  COMPLETED = 'COMPLETED',
+  INVALID = 'INVALID',
+}

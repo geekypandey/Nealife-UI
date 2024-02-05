@@ -1,0 +1,23 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="row flex-column py-3">
+  <strong class="col-12 mb-3">Assessment Result</strong>
+  <ng-container *ngIf="result$ | async as result">
+    <nl-table [cols]="cols" [value]="result" [actionsList]="actionsList">
+      <ng-template #customBodyTpl let-rowData>
+        <td *ngFor="let col of cols">
+          <ng-container [ngSwitch]="col.field">
+            <ng-container *ngSwitchCase="'userName'">
+              <span
+                class="link-primary nl-cursor-pointer"
+                [routerLink]="['/application-user/', rowData['id'], '/view']"
+                [relativeTo]="activatedRoute"
+                >{{ rowData[col.field] }}</span
+              >
+            </ng-container>
+            <ng-container *ngSwitchDefault>{{ rowData[col.field] }}</ng-container>
+          </ng-container>
+        </td>
+      </ng-template>
+    </nl-table>
+  </ng-container>
+</div>

@@ -10,6 +10,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { SidebarMenu } from './assess.model';
 import { CompanyService } from './company/company.service';
+import { AppAssessmentService } from './services/app-assessment.service';
 import { AssessService } from './services/assess.service';
 import { ProfileService } from './services/profile.service';
 
@@ -27,7 +28,7 @@ import { ProfileService } from './services/profile.service';
   templateUrl: './assess.component.html',
   styleUrls: ['./assess.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ProfileService, AssessService, CompanyService],
+  providers: [ProfileService, AssessService, CompanyService, AppAssessmentService],
 })
 export class AssessComponent {
   sidebarMenus: SidebarMenu[] = [];

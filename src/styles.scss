@@ -54,6 +54,10 @@ body {
   padding: 0 !important; // required as reboot.scss overrided
 }
 
+.nl-cursor-pointer {
+  cursor: pointer;
+}
+
 .nl-border {
   border: var(--nl-border-width) var(--nl-border-style) var(--nl-border-color);
 }
