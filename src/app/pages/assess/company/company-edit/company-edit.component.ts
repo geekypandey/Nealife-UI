@@ -43,16 +43,20 @@ export class CompanyEditComponent {
   @Input()
   set id(id: string) {
     this.spinner.show('register-edit');
-    this.companyService.getCompanies(id).subscribe({
-      next: resp => {
-        if (resp && resp.length) {
-          this.company = resp[0];
-          this.editForm = this.getEditForm(this.company);
-          this.cdRef.markForCheck();
-        }
-      },
-      complete: () => this.spinner.hide('register-edit'),
-    });
+    if (id) {
+      this.companyService.getCompanies(id).subscribe({
+        next: resp => {
+          if (resp && resp.length) {
+            this.company = resp[0];
+            this.editForm = this.getEditForm(this.company);
+            this.cdRef.markForCheck();
+          }
+        },
+        complete: () => this.spinner.hide('register-edit'),
+      });
+    } else {
+      this.editForm = this.getEditForm(<Company>{});
+    }
   }
 
   parentCompanies: DropdownOption[] = [];
