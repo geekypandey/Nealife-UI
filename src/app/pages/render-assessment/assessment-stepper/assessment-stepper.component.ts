@@ -214,6 +214,7 @@ export class AssessmentStepperComponent implements OnChanges {
               sticky: false,
               id: 'assessmentSubmit',
             });
+            this.cd.markForCheck();
           },
           error: _ => {
             this.spinner.hide(this.spinnerName);
@@ -224,6 +225,7 @@ export class AssessmentStepperComponent implements OnChanges {
               sticky: true,
               id: 'assessmentSubmit',
             });
+            this.cd.markForCheck();
           },
         });
     }

@@ -79,3 +79,19 @@ $bg-color: rgba(235, 237, 249, 1);
   background-color: #000;
   opacity: 0.5;
 }
+
+.last-page {
+  background-image: url('./../.././../../assets/render-assessment/celebration.jpg');
+  background-size: contain;
+}
+.thanks-container {
+  margin: auto;
+  min-height: 50vh;
+  box-shadow: 0px 0px 10px 0px #cbdbf340;
+  border: 1px solid #cbdbf3;
+}
+.thanks-img {
+  background-image: url('./../.././../../assets/render-assessment/thanks.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
