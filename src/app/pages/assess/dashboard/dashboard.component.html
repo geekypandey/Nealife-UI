@@ -3,6 +3,10 @@
   <strong class="col-12 mb-3">Assessment Dashboard</strong>
   <ng-container *ngIf="accounts$ | async as accounts">
     <nl-assess-cards [assessCards]="assessCards"></nl-assess-cards>
-    <nl-table [cols]="cols" [value]="accounts.assessments" (onRowSelect)="onRowSelect($event)" />
+    <nl-table
+      [cols]="cols"
+      [value]="accounts.assessments"
+      [selectionMode]="'single'"
+      (onRowSelect)="onRowSelect($event)" />
   </ng-container>
 </div>

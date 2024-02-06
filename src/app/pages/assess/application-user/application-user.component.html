@@ -1,1 +1,7 @@
-<p>application-user works!</p>
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="row flex-column py-3">
+  <strong class="col-12 mb-3">User</strong>
+  <ng-container *ngIf="users$ | async as users">
+    <nl-table [cols]="cols" [value]="users" />
+  </ng-container>
+</div>

@@ -15,6 +15,7 @@
           [rows]="defaultRowCount"
           [currentPageReportTemplate]="currentPageReportTemplate"
           [rowsPerPageOptions]="rowsPerPageOptions"
+          [selectionMode]="selectionMode"
           (onRowSelect)="onRowSelect.emit($event)">
           <ng-template pTemplate="header" let-columns>
             <tr>

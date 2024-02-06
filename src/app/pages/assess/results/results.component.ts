@@ -6,8 +6,10 @@ import { Observable, finalize, switchMap, tap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
+import { API_URL } from 'src/app/constants/api-url.constants';
 import { IApplicationUserAssessment } from '../assess.model';
-import { AppAssessmentService } from '../services/app-assessment.service';
+import { saveFile } from '../assess.util';
+import { CRUDService } from '../services/crud.service';
 import { ProfileService } from '../services/profile.service';
 
 @Component({
@@ -34,15 +36,16 @@ export class ResultsComponent {
 
   readonly spinnerName = 'results-spinner';
   private profileService = inject(ProfileService);
-  private appAssessment = inject(AppAssessmentService);
+  private crudService = inject(CRUDService);
   private spinner = inject(NgxSpinnerService);
   activatedRoute = inject(ActivatedRoute);
   result$: Observable<IApplicationUserAssessment[]>;
 
   constructor() {
+    this.spinner.show(this.spinnerName);
     this.result$ = this.profileService.account$.pipe(
       switchMap(account =>
-        this.appAssessment.query({
+        this.crudService.query<IApplicationUserAssessment[]>(API_URL.applicationUserAssessment, {
           [`companyId.equals`]: account.companyId,
         })
       ),
@@ -57,11 +60,24 @@ export class ResultsComponent {
     this.actionsList = [
       {
         icon: ACTION_ICON.DOWNLOAD,
-        field: 'id',
-        onClick: (value: string) => {
-          console.info(value);
+        field: 'reportUrl',
+        onClick: (reportUrl: string) => {
+          console.info(reportUrl);
+          this.downloadPdfReport(reportUrl);
         },
       },
     ];
+  }
+
+  downloadPdfReport(reportUrl: string): any {
+    this.spinner.show(this.spinnerName);
+    this.crudService.downloadPdfReport(reportUrl).subscribe({
+      next: (response: Blob) => {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        saveFile(blob, 'report.pdf');
+        this.spinner.hide(this.spinnerName);
+      },
+      error: _ => this.spinner.hide(this.spinnerName),
+    });
   }
 }

@@ -28,6 +28,11 @@ export const DASHBOARD_ROUTES: Route[] = [
         loadChildren: () =>
           import('./application-user/application-user.route').then(c => c.applicationUserRoute),
       },
+      {
+        path: 'assessment-group',
+        loadChildren: () =>
+          import('./assessment-group/assessment-group.route').then(c => c.assessmentGroupRoute),
+      },
     ],
   },
 ];

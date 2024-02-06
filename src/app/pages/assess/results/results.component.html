@@ -9,7 +9,15 @@
             <ng-container *ngSwitchCase="'userName'">
               <span
                 class="link-primary nl-cursor-pointer"
-                [routerLink]="['/assess/application-user/', rowData['id'], 'view']"
+                [routerLink]="['/assess/application-user/', rowData['userId'], 'view']"
+                >{{ rowData[col.field] }}</span
+              >
+            </ng-container>
+            <ng-container *ngSwitchCase="'assessmentGroupName'">
+              <span
+                class="link-primary nl-cursor-pointer"
+                [routerLink]="['/assess/assessment-group/assessmnet-group-details']"
+                [queryParams]="{ assessmentGroupId: rowData['assessmentGroupId'] }"
                 >{{ rowData[col.field] }}</span
               >
             </ng-container>

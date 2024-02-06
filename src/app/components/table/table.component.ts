@@ -55,6 +55,7 @@ export class TableComponent {
   @Input() currentPageReportTemplate: string =
     'Showing {first} to {last} of {totalRecords} entries';
   @Input() actionsList: Action[] = [];
+  @Input() selectionMode: 'single' | 'multiple' | undefined | null;
   @Output() onRowSelect = new EventEmitter<TableRowSelectEvent>();
 
   @ContentChild('customBodyTpl') customBodyTpl!: TemplateRef<any>;

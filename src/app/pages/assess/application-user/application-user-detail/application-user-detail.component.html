@@ -1,0 +1,45 @@
+<div class="row mt-3">
+  <!-- ({{ applicationUser.id }}) -->
+  <strong class="mb-3 col-12">Users</strong>
+  <div class="col-12 mb-3">
+    <div class="nl-card nl-border nl-border-1">
+      <div class="row gy-3">
+        <div class="col-md-4">
+          <strong>User Name</strong>
+          <div>{{ applicationUser.userName }}</div>
+        </div>
+        <div class="col-md-4">
+          <strong>First Name</strong>
+          <div>{{ applicationUser.firstName }}</div>
+        </div>
+        <div class="col-md-4">
+          <strong>Address</strong>
+          <div>{{ applicationUser.address }}</div>
+        </div>
+        <div class="col-md-4">
+          <strong>Contact Number 1</strong>
+          <div>{{ applicationUser.contactNumber1 }}</div>
+        </div>
+        <div class="col-md-4">
+          <strong>Contact Number 2</strong>
+          <div>{{ applicationUser.contactNumber2 }}</div>
+        </div>
+        <div class="col-md-4">
+          <strong>Status</strong>
+          <div>{{ applicationUser.status }}</div>
+        </div>
+        <div class="col-md-4">
+          <strong>Company Name</strong>
+          <div>{{ applicationUser.companyName }}</div>
+        </div>
+        <div class="col-md-4">
+          <strong>Manager Name</strong>
+          <div>{{ applicationUser.managerName }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <button class="p-button" (click)="goBack()">Back</button>
+  </div>
+</div>

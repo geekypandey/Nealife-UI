@@ -14,6 +14,7 @@ export const API_URL = {
   companies: BASE_URL + '/companies',
   lookup: BASE_URL + '/lookups',
   applicationUserAssessment: BASE_URL + '/application-user-assessments',
+  applicationUsers: BASE_URL + '/application-users',
   downloadHtmlReportUrl: BASE_URL + '/downloadHtmlReport',
   downloadPdfReportUrl: BASE_URL + '/downloadPdfReport',
 

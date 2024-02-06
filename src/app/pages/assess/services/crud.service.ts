@@ -4,8 +4,10 @@ import { API_URL } from 'src/app/constants/api-url.constants';
 import { IApplicationUserAssessment } from '../assess.model';
 import { createRequestOption } from '../assess.util';
 
-@Injectable()
-export class AppAssessmentService {
+@Injectable({
+  providedIn: 'root',
+})
+export class CRUDService {
   private http = inject(HttpClient);
 
   create(applicationUserAssessment: IApplicationUserAssessment) {
@@ -22,13 +24,13 @@ export class AppAssessmentService {
     );
   }
 
-  find(id: number) {
-    return this.http.get<IApplicationUserAssessment>(`${API_URL.applicationUserAssessment}/${id}`);
+  find<T>(url: string, id: string) {
+    return this.http.get<T>(`${url}/${id}`);
   }
 
-  query(req?: any) {
+  query<T>(url: string, req?: any) {
     const options = createRequestOption(req);
-    return this.http.get<IApplicationUserAssessment[]>(API_URL.applicationUserAssessment, {
+    return this.http.get<T>(url, {
       params: options,
     });
   }
@@ -37,7 +39,7 @@ export class AppAssessmentService {
     return this.http.delete(`${API_URL.applicationUserAssessment}/${id}`);
   }
 
-  downloadPdfReport(url: string): any {
+  downloadPdfReport(url: string) {
     return this.http.get(url, { responseType: 'blob' });
   }
 
