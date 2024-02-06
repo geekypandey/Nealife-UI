@@ -135,11 +135,18 @@ export class PersonalInfoComponent {
       this.maxBranchSelection = 5;
       this.sectorsApiCall().subscribe(resp => {
         this.accordions = this.getAccordions(resp);
+        this.cd.markForCheck();
       });
     } else if (value === 'ECFEREPORT') {
-      this.engBranchApiCall().subscribe(resp => (this.accordions = this.getAccordions(resp)));
+      this.engBranchApiCall().subscribe(resp => {
+        this.accordions = this.getAccordions(resp);
+        this.cd.markForCheck();
+      });
     } else if (value === 'MCFEREPORT') {
-      this.mbaBranchApiCall().subscribe(resp => (this.accordions = this.getAccordions(resp)));
+      this.mbaBranchApiCall().subscribe(resp => {
+        this.accordions = this.getAccordions(resp);
+        this.cd.markForCheck();
+      });
     }
   }
   get reportType() {
@@ -153,8 +160,8 @@ export class PersonalInfoComponent {
     this.spinner.show(this.spinnerName);
     forkJoin(this.lookupObsArr()).subscribe({
       next: _ => {
-        this.cd.markForCheck();
         this.spinner.hide(this.spinnerName);
+        this.cd.markForCheck();
       },
       error: _ => this.spinner.hide(this.spinnerName),
     });

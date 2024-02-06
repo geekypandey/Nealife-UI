@@ -7,6 +7,7 @@ export function RequestInterceptor(request: HttpRequest<unknown>, next: HttpHand
   if (tokenService.tokenValue) {
     const clonedRequest = request.clone({
       setHeaders: {
+        Accept: 'application/json',
         Authorization: 'Bearer ' + tokenService.tokenValue,
       },
     });

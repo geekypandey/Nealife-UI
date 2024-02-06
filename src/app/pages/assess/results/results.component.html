@@ -9,8 +9,7 @@
             <ng-container *ngSwitchCase="'userName'">
               <span
                 class="link-primary nl-cursor-pointer"
-                [routerLink]="['/application-user/', rowData['id'], '/view']"
-                [relativeTo]="activatedRoute"
+                [routerLink]="['/assess/application-user/', rowData['id'], 'view']"
                 >{{ rowData[col.field] }}</span
               >
             </ng-container>
