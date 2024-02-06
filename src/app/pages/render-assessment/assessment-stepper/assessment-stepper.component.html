@@ -111,7 +111,11 @@
                                 </ng-template> -->
                               </div>
                               <div [formGroupName]="activeQuestionIndex" class="container-fluid">
-                                <div class="answer gy-2 justify-content-between row">
+                                <div
+                                  class="answer gy-2 row"
+                                  [class.justify-content-between]="
+                                    itemAspect.answerOptions.length === 10
+                                  ">
                                   <ng-container
                                     *ngFor="
                                       let answer of itemAspect.answerOptions;
