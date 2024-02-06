@@ -35,7 +35,10 @@
             <tr [pSelectableRow]="rowData">
               <ng-container *ngIf="customBodyTpl; else defaultBodyTpl">
                 <ng-container
-                  *ngTemplateOutlet="customBodyTpl; context: { $implicit: rowData }"></ng-container>
+                  *ngTemplateOutlet="
+                    customBodyTpl;
+                    context: { $implicit: rowData, columns: columns }
+                  "></ng-container>
                 <ng-container *ngTemplateOutlet="actionTpl"></ng-container>
               </ng-container>
               <ng-template #defaultBodyTpl>

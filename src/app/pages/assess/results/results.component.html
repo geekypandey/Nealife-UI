@@ -3,27 +3,29 @@
   <strong class="col-12 mb-3">Assessment Result</strong>
   <ng-container *ngIf="result$ | async as result">
     <nl-table [cols]="cols" [value]="result" [actionsList]="actionsList">
-      <ng-template #customBodyTpl let-rowData>
-        <td *ngFor="let col of cols">
-          <ng-container [ngSwitch]="col.field">
-            <ng-container *ngSwitchCase="'userName'">
-              <span
-                class="link-primary nl-cursor-pointer"
-                [routerLink]="['/assess/application-user/', rowData['userId'], 'view']"
-                >{{ rowData[col.field] }}</span
-              >
+      <ng-template #customBodyTpl let-rowData let-columns="columns">
+        <ng-template ngFor let-col [ngForOf]="columns" let-i="index">
+          <td *ngIf="col.visible">
+            <ng-container [ngSwitch]="col.field">
+              <ng-container *ngSwitchCase="'userName'">
+                <span
+                  class="link-primary nl-cursor-pointer"
+                  [routerLink]="['/assess/application-user/', rowData['userId'], 'view']"
+                  >{{ rowData[col.field] }}</span
+                >
+              </ng-container>
+              <ng-container *ngSwitchCase="'assessmentGroupName'">
+                <span
+                  class="link-primary nl-cursor-pointer"
+                  [routerLink]="['/assess/assessment-group/assessmnet-group-details']"
+                  [queryParams]="{ assessmentGroupId: rowData['assessmentGroupId'] }"
+                  >{{ rowData[col.field] }}</span
+                >
+              </ng-container>
+              <ng-container *ngSwitchDefault>{{ rowData[col.field] }}</ng-container>
             </ng-container>
-            <ng-container *ngSwitchCase="'assessmentGroupName'">
-              <span
-                class="link-primary nl-cursor-pointer"
-                [routerLink]="['/assess/assessment-group/assessmnet-group-details']"
-                [queryParams]="{ assessmentGroupId: rowData['assessmentGroupId'] }"
-                >{{ rowData[col.field] }}</span
-              >
-            </ng-container>
-            <ng-container *ngSwitchDefault>{{ rowData[col.field] }}</ng-container>
-          </ng-container>
-        </td>
+          </td>
+        </ng-template>
       </ng-template>
     </nl-table>
   </ng-container>

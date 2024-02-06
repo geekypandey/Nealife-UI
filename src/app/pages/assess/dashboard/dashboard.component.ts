@@ -34,7 +34,7 @@ export class DashboardComponent {
     { field: 'allocatedCredits', header: 'Allocated credits' },
     { field: 'usedCredits', header: 'Used credits' },
     { field: 'availableCredits', header: 'Balance credits' },
-    { field: 'validFrom', header: 'Valid Form' },
+    { field: 'validFrom', header: 'Valid From' },
     { field: 'validTo', header: 'Valid To' },
   ];
 
