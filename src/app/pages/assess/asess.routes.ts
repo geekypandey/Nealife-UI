@@ -37,6 +37,10 @@ export const DASHBOARD_ROUTES: Route[] = [
         path: 'lookup',
         loadChildren: () => import('./lookup/lookup.route').then(r => r.lookupRoute),
       },
+      {
+        path: 'assign',
+        loadComponent: () => import('./assign/assign.component').then(c => c.AssignComponent),
+      },
     ],
   },
 ];

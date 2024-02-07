@@ -31,4 +31,6 @@ export const API_URL = {
   preAssessmentDetails: BASE_URL + '/pre-assessment-details',
   preAssessmentSectionDetails: BASE_URL + '/pre-assessment-section-details',
   submitGroupResult: BASE_URL + '/submitGroupResult',
+
+  assign: BASE_URL + '/company-assessments',
 };
