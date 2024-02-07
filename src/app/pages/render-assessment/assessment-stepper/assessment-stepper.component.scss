@@ -95,3 +95,7 @@ $bg-color: rgba(235, 237, 249, 1);
   background-size: contain;
   background-repeat: no-repeat;
 }
+
+.form-check-input {
+  --bs-border-color: black;
+}

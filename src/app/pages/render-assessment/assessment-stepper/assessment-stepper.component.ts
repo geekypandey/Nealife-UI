@@ -127,7 +127,10 @@ export class AssessmentStepperComponent implements OnChanges {
 
   onAnswerSelection(questionIndex: number) {
     this.setSkippedCtrlVal(questionIndex, false);
-    this.modifyQuestionCount(true);
+    setTimeout(()=>{
+      this.modifyQuestionCount(true);
+    },500)
+    
   }
 
   onBack() {
