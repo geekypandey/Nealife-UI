@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { Company, CompanyQuery } from '../../assess/assess.model';
@@ -25,6 +26,12 @@ export class CompanyService {
       .pipe(map(resp => (this.companiesData = resp)));
   }
 
+  createCompany(formData: any) {
+    return this.http
+      .post<Company>(API_URL.companies, formData)
+      .pipe(map(res => this.convertDateFromServer(res)));
+  }
+
   updateCompany(formData: any) {
     return this.http
       .put<Company>(API_URL.companies, formData)
@@ -33,8 +40,8 @@ export class CompanyService {
 
   private convertDateFromServer(res: any) {
     if (res.body) {
-      // res.body.validFrom = res.body.validFrom ? moment(res.body.validFrom) : undefined;
-      // res.body.validTo = res.body.validTo ? moment(res.body.validTo) : undefined;
+      res.body.validFrom = res.body.validFrom ? moment(res.body.validFrom) : undefined;
+      res.body.validTo = res.body.validTo ? moment(res.body.validTo) : undefined;
     }
     return res;
   }

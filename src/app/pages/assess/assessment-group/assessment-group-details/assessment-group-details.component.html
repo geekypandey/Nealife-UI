@@ -1,1 +1,10 @@
-<p>assessment-group-details works!</p>
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="row flex-column py-3">
+  <strong class="col-12 mb-3">Assessment Group Details</strong>
+  <div class="col-auto mb-3" style="margin-left: auto">
+    <button type="button" class="p-button" routerLink="/assess/assessment-group">Back</button>
+  </div>
+  <ng-container *ngIf="assessmentByGroup$ | async as assessmentByGroup">
+    <nl-table [cols]="cols" [value]="assessmentByGroup" />
+  </ng-container>
+</div>

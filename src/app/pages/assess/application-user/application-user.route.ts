@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Route, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Observable, finalize } from 'rxjs';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { Authority } from 'src/app/constants/authority.constants';
 import { CRUDService } from '../services/crud.service';
@@ -13,11 +14,12 @@ export const applicationUserResolver: ResolveFn<ApplicationUser> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ): Observable<ApplicationUser> => {
+  const spinnerService = inject(NgxSpinnerService);
   const crudService: CRUDService = inject(CRUDService);
-  return crudService.find<ApplicationUser>(
-    API_URL.applicationUsers,
-    route.paramMap.get('id') || ''
-  );
+  spinnerService.show();
+  return crudService
+    .find<ApplicationUser>(API_URL.applicationUsers, route.paramMap.get('id') || '')
+    .pipe(finalize(() => spinnerService.hide()));
 };
 
 export const applicationUserRoute: Route[] = [

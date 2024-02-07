@@ -19,7 +19,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
 import { CompanyService } from '../company.service';
-import { Company } from './../../assess.model';
+import { Company, ICompany } from './../../assess.model';
 
 @Component({
   selector: 'nl-company-edit',
@@ -39,27 +39,30 @@ import { Company } from './../../assess.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompanyEditComponent {
+  spinnerName = 'register-edit';
   imagesUrl: any;
   @Input()
   set id(id: string) {
     this.spinner.show('register-edit');
     if (id) {
+      this.spinner.show(this.spinnerName);
       this.companyService.getCompanies(id).subscribe({
         next: resp => {
           if (resp && resp.length) {
             this.company = resp[0];
             this.editForm = this.getEditForm(this.company);
+            this.spinner.hide(this.spinnerName);
             this.cdRef.markForCheck();
           }
         },
-        complete: () => this.spinner.hide('register-edit'),
+        complete: () => this.spinner.hide(this.spinnerName),
       });
     } else {
       this.editForm = this.getEditForm(<Company>{});
     }
   }
 
-  parentCompanies: DropdownOption[] = [];
+  parentCompanies: any[] = [];
   statusList: DropdownOption[] = [];
   company!: Company;
   editForm!: FormGroup;
@@ -87,7 +90,7 @@ export class CompanyEditComponent {
   }
 
   ngOnInit() {
-    this.spinner.show('register-edit');
+    this.spinner.show(this.spinnerName);
     forkJoin([
       this.sharedApiService.lookup('COMPANY_TYPE'),
       this.sharedApiService.lookup('PARTNER_TYPE'),
@@ -106,9 +109,10 @@ export class CompanyEditComponent {
         next: resp => {
           this.accountTypes = resp.accountTypes;
           this.partnerTypes = resp.partnerTypes;
+          this.spinner.hide(this.spinnerName);
           this.cdRef.markForCheck();
         },
-        complete: () => this.spinner.hide('register-edit'),
+        complete: () => this.spinner.hide(this.spinnerName),
       });
   }
 
@@ -123,6 +127,7 @@ export class CompanyEditComponent {
       const uploadData = new FormData();
       const companyId = this.editForm.get('id')?.value;
 
+      const company = this.createFromForm();
       uploadData.append('data', JSON.stringify(form));
       if (this.imagesUrl === undefined || this.imagesUrl === 'undefined') {
         uploadData.append('file', '');
@@ -131,12 +136,33 @@ export class CompanyEditComponent {
       }
 
       console.info(uploadData.getAll('data'), uploadData.getAll('file'));
-      if (companyId !== undefined) {
+      this.spinner.show(this.spinnerName);
+      if (company.id !== undefined) {
         this.subscribeToSaveResponse(this.companyService.updateCompany(uploadData));
       } else {
-        // this.subscribeToSaveResponse(this.companyService.createCompany(uploadData));
+        this.subscribeToSaveResponse(this.companyService.createCompany(uploadData));
       }
     }
+  }
+
+  private createFromForm(): ICompany {
+    return {
+      ...new Company(),
+      id: this.editForm.get(['id'])!.value,
+      name: this.editForm.get(['name'])!.value,
+      contactPerson: this.editForm.get(['contactPerson'])!.value,
+      email: this.editForm.get(['email'])!.value,
+      address: this.editForm.get(['address'])!.value,
+      contactNumber1: this.editForm.get(['contactNumber1'])!.value,
+      contactNumber2: this.editForm.get(['contactNumber2'])!.value,
+      status: this.editForm.get(['status'])!.value,
+      validFrom: this.editForm.get(['validFrom'])!.value,
+      validTo: this.editForm.get(['validTo'])!.value,
+      companyType: this.editForm.get('companyType')!.value,
+      partnerType: this.editForm.get('partnerType')!.value,
+      website: this.editForm.get(['website'])!.value,
+      parentId: this.editForm.get(['parentId'])!.value,
+    };
   }
 
   private subscribeToSaveResponse(result: Observable<HttpResponse<Company>>): void {
@@ -147,10 +173,12 @@ export class CompanyEditComponent {
   }
 
   protected onSaveSuccess(): void {
+    this.spinner.hide(this.spinnerName);
     this.goBack();
   }
 
   protected onSaveError(): void {
+    this.spinner.hide(this.spinnerName);
     console.error('error while save');
   }
 
@@ -158,7 +186,7 @@ export class CompanyEditComponent {
     window.history.back();
   }
 
-  getEditForm(company: Company) {
+  getEditForm(company: ICompany) {
     return this.fb.group({
       id: [company.id],
       name: [company.name, [Validators.required, Validators.maxLength(75)]],

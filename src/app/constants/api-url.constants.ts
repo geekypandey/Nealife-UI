@@ -15,6 +15,8 @@ export const API_URL = {
   lookup: BASE_URL + '/lookups',
   applicationUserAssessment: BASE_URL + '/application-user-assessments',
   applicationUsers: BASE_URL + '/application-users',
+  assessmentsByGroup: BASE_URL + '/assessment-groups',
+  assessmentsByGroupDetails: BASE_URL + '/get-assessments-by-assessments-group',
   downloadHtmlReportUrl: BASE_URL + '/downloadHtmlReport',
   downloadPdfReportUrl: BASE_URL + '/downloadPdfReport',
 

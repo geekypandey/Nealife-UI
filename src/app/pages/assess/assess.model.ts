@@ -1,3 +1,6 @@
+import { Moment } from 'moment';
+import { ActivityStatus, ICompanyAssessment } from './assessment-group/assessment-group.model';
+
 export interface AccountDashboardDetails {
   companyName?: any;
   companyId?: any;
@@ -87,30 +90,45 @@ export interface CompetencyAspectItemROCount {
   responseOptionCount: string;
 }
 
-export interface Company {
-  id: number;
-  serialNo: null;
-  name: string;
-  contactPerson: string;
-  email: string;
-  address: string;
-  contactNumber1: string;
-  contactNumber2: null;
-  status: string;
-  emailTemplateId: null;
-  emailTemplateName: null;
-  totalPayment: null;
-  paymentDate: null;
-  companyType: number;
-  partnerType: number;
-  companyTypeName: null;
-  parentId: number;
-  parentName: string;
-  website: string;
-  logoUrl: string;
-  brandingId: null;
-  validFrom?: string;
-  validTo?: string;
+export interface ICompany {
+  id?: number;
+  serialNo?: number;
+  name?: string;
+  contactPerson?: string;
+  email?: string;
+  address?: string;
+  contactNumber1?: string;
+  contactNumber2?: string;
+  status?: ActivityStatus;
+  validFrom?: Moment;
+  validTo?: Moment;
+  companyType?: string;
+  partnerType?: string;
+  parentName?: string;
+  parentId?: number;
+  website?: string;
+  assessments?: ICompanyAssessment[];
+}
+
+export class Company implements ICompany {
+  constructor(
+    public id?: number,
+    public serialNo?: number,
+    public name?: string,
+    public contactPerson?: string,
+    public email?: string,
+    public address?: string,
+    public contactNumber1?: string,
+    public contactNumber2?: string,
+    public status?: ActivityStatus,
+    public validFrom?: Moment,
+    public validTo?: Moment,
+    public companyType?: string,
+    public parentName?: string,
+    public parentId?: number,
+    public website?: string,
+    public assessments?: ICompanyAssessment[]
+  ) {}
 }
 
 export interface CompanyQuery {

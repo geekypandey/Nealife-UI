@@ -54,6 +54,12 @@ body {
   padding: 0 !important; // required as reboot.scss overrided
 }
 
+.p-multiselect {
+  .p-multiselect-panel .p-multiselect-items {
+    padding: 0;
+  }
+}
+
 .nl-cursor-pointer {
   cursor: pointer;
 }

@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { forkJoin } from 'rxjs';
@@ -40,6 +47,7 @@ export class AssessComponent {
   private profileService = inject(ProfileService);
   private authService = inject(AuthenticationService);
   private cdRef = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
 
   constructor() {
     this.headerMenus = [
@@ -52,18 +60,20 @@ export class AssessComponent {
     ];
 
     this.spinner.show();
-    forkJoin([this.profileService.getLoggedInUser(), this.profileService.getAccount()]).subscribe({
-      next: ([profile, account]) => {
-        this.sidebarMenus = this.navigationService.getSidebarMenus(
-          this.profileService.isAdminRole(),
-          account.privilege
-        );
-        this.username = profile.roleDisplayName;
-        this.companyName = profile.companyName;
-        this.spinner.hide();
-        this.cdRef.markForCheck();
-      },
-      error: _ => this.spinner.hide(),
-    });
+    forkJoin([this.profileService.getLoggedInUser(), this.profileService.getAccount()])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: ([profile, account]) => {
+          this.sidebarMenus = this.navigationService.getSidebarMenus(
+            this.profileService.isAdminRole(),
+            account.privilege
+          );
+          this.username = profile.roleDisplayName;
+          this.companyName = profile.companyName;
+          this.spinner.hide();
+          this.cdRef.markForCheck();
+        },
+        error: _ => this.spinner.hide(),
+      });
   }
 }

@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import * as moment from 'moment';
+import { map, tap } from 'rxjs/operators';
 import { API_URL } from 'src/app/constants/api-url.constants';
+import { DATE_FORMAT } from 'src/app/constants/assess.constants';
 import {
   CompetencyAspectItemROCount,
   CompetencyAspectProjections,
 } from '../../assess/assess.model';
 import { AccountDashboard, AccountDashboardDetails } from '../assess.model';
+import { AssessmentGroupDetails, IAssessment } from '../assessment-group/assessment-group.model';
 
 @Injectable()
 export class AssessService {
@@ -37,6 +40,53 @@ export class AssessService {
     return this.http.get<AccountDashboardDetails>(API_URL.accountDashboardDetails, {
       params: payload,
     });
+  }
+
+  getAssessmentsByGroup<T>(id?: any) {
+    const url = id ? `${API_URL.assessmentsByGroup}/${id}` : API_URL.assessmentsByGroup;
+    return this.http.get<T>(url);
+  }
+
+  getAssessmentsByGroupDetails(payload: any) {
+    return this.http.get<AssessmentGroupDetails[]>(API_URL.assessmentsByGroupDetails, {
+      params: payload,
+    });
+  }
+
+  createGroup(assessmentGroup: IAssessment) {
+    const copy = this.convertDateFromClient(assessmentGroup);
+    return this.http
+      .post<IAssessment>(API_URL.assessmentsByGroup, copy)
+      .pipe(map(res => this.convertDateFromServer(res)));
+  }
+
+  updateAssessment(assessment: IAssessment) {
+    const copy = this.convertDateFromClient(assessment);
+    return this.http
+      .put<IAssessment>(API_URL.assessmentsByGroup, copy)
+      .pipe(map(res => this.convertDateFromServer(res)));
+  }
+
+  protected convertDateFromServer(res: IAssessment) {
+    if (res) {
+      res.validFrom = res.validFrom ? moment(res.validFrom) : undefined;
+      res.validTo = res.validTo ? moment(res.validTo) : undefined;
+    }
+    return res;
+  }
+
+  protected convertDateFromClient(assessment: IAssessment): IAssessment {
+    const copy: IAssessment = Object.assign({}, assessment, {
+      validFrom:
+        assessment.validFrom && assessment.validFrom.isValid()
+          ? assessment.validFrom.format(DATE_FORMAT)
+          : undefined,
+      validTo:
+        assessment.validTo && assessment.validTo.isValid()
+          ? assessment.validTo.format(DATE_FORMAT)
+          : undefined,
+    });
+    return copy;
   }
 
   get compProjections() {
