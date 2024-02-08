@@ -20,7 +20,7 @@ import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
 import { CompanyService } from '../../company/company.service';
 import { AssignService } from '../assign.service';
-import { Assessment, Company } from './../../assess.model';
+import { Assessment } from './../../assess.model';
 
 @Component({
   selector: 'nl-company-edit',
@@ -53,6 +53,7 @@ export class AssignEditComponent {
             const assessment = resp.filter(assessment => assessment.id == id);
             if (assessment.length > 0) {
               this.editForm = this.getEditForm(assessment[0]);
+              this.assessment = assessment[0];
               this.cdRef.markForCheck();
               this.isEdit = true;
             }
@@ -65,6 +66,7 @@ export class AssignEditComponent {
     }
   }
 
+  assessment: Assessment;
   parentCompanies: DropdownOption[] = [];
   assessments: DropdownOption[] = [];
   statusList: DropdownOption[] = [];
@@ -102,6 +104,7 @@ export class AssignEditComponent {
         value: '' + company.id,
       }))
     })
+    this.assessment = <Assessment>{};
   }
 
   ngOnInit() {
@@ -135,6 +138,16 @@ export class AssignEditComponent {
   }
 
   save() {
+    if (this.isEdit && this.editForm.valid) {
+      const data = this.editForm.value;
+      const updatedData = { ...this.assessment, ...data };
+      // TODO: send this data for put request
+      this.subscribeToSaveResponse(this.assignService.updateAssessment(updatedData));
+
+    } else {
+      // TODO: show error
+    }
+    return;
     if (this.editForm.valid) {
       const form = this.editForm.value;
       const uploadData = new FormData();
@@ -159,7 +172,7 @@ export class AssignEditComponent {
     }
   }
 
-  private subscribeToSaveResponse(result: Observable<HttpResponse<Company>>): void {
+  private subscribeToSaveResponse(result: Observable<HttpResponse<Assessment>>): void {
     result.subscribe({
       next: () => this.onSaveSuccess(),
       error: () => this.onSaveError(),
@@ -182,7 +195,7 @@ export class AssignEditComponent {
     return this.fb.group({
       companyId: [assessment.companyId],
       assessmentId: [assessment.assessmentId, [Validators.required, Validators.maxLength(75)]],
-      assessmentDate: [assessment.scheduleDate, [Validators.required]],
+      scheduleDate: [assessment.scheduleDate, [Validators.required]],
       timeLimit: [assessment.timeLimit, [Validators.required]],
       totalCredits: [assessment.totalCredits, [Validators.required]],
       availableCredits: [assessment.availableCredits, [Validators.required]],

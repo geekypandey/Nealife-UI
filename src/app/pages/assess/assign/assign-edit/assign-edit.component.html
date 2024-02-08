@@ -31,7 +31,7 @@
                 <p-calendar
                   id="assessment-date"
                   dateFormat="yy-mm-dd"
-                  formControlName="assessmentDate"
+                  formControlName="scheduleDate"
                   [showIcon]="true"></p-calendar>
               </div>
               <div class="col-6">
@@ -82,7 +82,8 @@
             <div class="row justify-content-end">
               <div class="col-3 d-block d-flex justify-content-around">
                 <button type="button" class="p-button" (click)="goBack()">Cancel</button>
-                <button type="button" class="p-button" (click)="save()">Add</button>
+                <button type="button" class="p-button" (click)="save()" *ngIf="isEdit">Save</button>
+                <button type="button" class="p-button" (click)="save()" *ngIf="!isEdit">Add</button>
               </div>
             </div>
           </div>

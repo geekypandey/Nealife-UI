@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { map } from 'rxjs';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { Assessment } from '../assess.model';
 
@@ -23,4 +24,15 @@ export class AssignService {
             params: params,
         });
   }
+
+    updateAssessment(assessment: Assessment) {
+        return this.http.put<Assessment>(API_URL.assign, assessment)
+        .pipe(map(res => this.convertDateFromServer(res)));
+    }
+
+    private convertDateFromServer(res: any) {
+        if (res.body) {
+        }
+        return res;
+    }
 }
