@@ -19,6 +19,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
 import { CompanyService } from '../../company/company.service';
+import { AssignService } from '../assign.service';
 import { Company } from './../../assess.model';
 
 @Component({
@@ -60,6 +61,7 @@ export class AssignEditComponent {
   }
 
   parentCompanies: DropdownOption[] = [];
+  assessments: DropdownOption[] = [];
   statusList: DropdownOption[] = [];
   company!: Company;
   editForm!: FormGroup;
@@ -72,6 +74,7 @@ export class AssignEditComponent {
   private fb = inject(FormBuilder);
   private cdRef = inject(ChangeDetectorRef);
   private translateService = inject(TranslateService);
+  private assignService = inject(AssignService);
 
   constructor() {
     const statusBaseStr = 'nealifeApp.ActivityStatus.';
@@ -80,6 +83,13 @@ export class AssignEditComponent {
       label: this.translateService.instant(statusBaseStr + value),
       value: value,
     }));
+
+    this.assignService.getAssessmentsForDropDown().subscribe((value) => {
+      this.assessments = value.map(assessment => ({
+        label: assessment.assessmentName,
+        value: '' + assessment.assessmentId
+      }))
+    });
 
     this.companyService.getAllCompanies().subscribe((value) => {
       this.parentCompanies = value.map(company => ({
