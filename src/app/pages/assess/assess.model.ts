@@ -22,7 +22,7 @@ export interface AccountDashboard {
   saDashboard?: any;
 }
 
-interface Assessment {
+export interface Assessment {
   id: number;
   companyId: number;
   parentCompanyId?: any;
