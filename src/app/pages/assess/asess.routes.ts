@@ -39,7 +39,7 @@ export const DASHBOARD_ROUTES: Route[] = [
       },
       {
         path: 'assign',
-        loadComponent: () => import('./assign/assign.component').then(c => c.AssignComponent),
+        loadChildren: () => import('./assign/assign.route').then(c => c.assignRoute),
       },
     ],
   },
