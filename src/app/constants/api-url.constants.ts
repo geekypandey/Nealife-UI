@@ -33,4 +33,5 @@ export const API_URL = {
   submitGroupResult: BASE_URL + '/submitGroupResult',
 
   assign: BASE_URL + '/company-assessments',
+  assessmentForDropDown: BASE_URL + '/company-assessments/fordropdown',
 };
