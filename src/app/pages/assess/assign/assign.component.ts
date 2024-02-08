@@ -7,7 +7,7 @@ import { Observable, finalize } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
-import { API_URL } from 'src/app/constants/api-url.constants';
+import { AssignService } from './assign.service';
 
 
 @Component({
@@ -22,6 +22,7 @@ export class AssignComponent {
   private spinner = inject(NgxSpinnerService);
   private http = inject(HttpClient);
   private router = inject(Router);
+  private assignService = inject(AssignService);
 
   spinnerName: string = 'assign-spinner';
   assessments$: Observable<any[]>;
@@ -42,7 +43,7 @@ export class AssignComponent {
 
   constructor() {
     this.spinner.show(this.spinnerName);
-    this.assessments$ = this.http.get<any[]>(API_URL.assign).pipe(
+    this.assessments$ = this.assignService.getAssessments().pipe(
       finalize(() => this.spinner.hide(this.spinnerName))
     );
     this.actionsList = [
