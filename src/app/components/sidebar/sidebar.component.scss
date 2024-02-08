@@ -33,6 +33,7 @@
       }
       &.active {
         color: var(--nl-success-color);
+        background: url('./../../../assets/dashboard/menu-bg.svg');
         .bar {
           background-color: var(--nl-success-color);
         }
