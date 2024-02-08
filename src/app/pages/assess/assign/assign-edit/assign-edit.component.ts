@@ -147,29 +147,35 @@ export class AssignEditComponent {
     } else {
       // TODO: show error
     }
-    return;
-    if (this.editForm.valid) {
-      const form = this.editForm.value;
-      const uploadData = new FormData();
-      const companyId = this.editForm.get('id')?.value;
+  }
 
-      uploadData.append('data', JSON.stringify(form));
-      if (this.imagesUrl === undefined || this.imagesUrl === 'undefined') {
-        uploadData.append('file', '');
-      } else {
-        uploadData.append('file', this.imagesUrl);
+  add() {
+    console.log(this.extractDate(this.editForm.value.scheduleDate));
+    if (!this.isEdit && this.editForm.valid) {
+      const assessment = this.editForm.value;
+      const appendedData = {
+        id: null,
+        reportTemplate: null,
+        emailTemplate: null,
+        url: null,
+        parentCompanyId: "1",
+        scheduleDate: this.extractDate(assessment.scheduleDate)
       }
-
-      console.info(uploadData.getAll('data'), uploadData.getAll('file'));
-      if (companyId !== undefined) {
-        this.subscribeToSaveResponse(this.companyService.updateCompany(uploadData));
-      } else {
-        // this.subscribeToSaveResponse(this.companyService.createCompany(uploadData));
-      }
+      const newData = { ...assessment, ...appendedData };
+      console.log(newData);
+      // TODO: send this data for put request
+      this.subscribeToSaveResponse(this.assignService.addAssessment(newData));
     } else {
-      // TODO: show error to the user
-      console.log('ERRORORROR!!')
+      // TODO: show error
     }
+  }
+
+  extractDate(date: Date) {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 because months are indexed from 0
+    const year = date.getFullYear();
+    
+    return `${year}-${month}-${day}`
   }
 
   private subscribeToSaveResponse(result: Observable<HttpResponse<Assessment>>): void {
@@ -204,3 +210,16 @@ export class AssignEditComponent {
     });
   }
 }
+  // "id": null,
+  // "companyId": 1,
+  // "assessmentId": 245352,
+  // "scheduleDate": "2024-02-09",
+  // "reportTemplate": null,
+  // "emailTemplate": null,
+  // "timeLimit": "150",
+  // "availableCredits": "120",
+  // "usedCredits": "120",
+  // "allocatedCredits": "120",
+  // "totalCredits": 120,
+  // "url": null,
+  // "parentCompanyId": "1"

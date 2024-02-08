@@ -30,6 +30,12 @@ export class AssignService {
         .pipe(map(res => this.convertDateFromServer(res)));
     }
 
+    addAssessment(assessment: Assessment) {
+        return this.http.post<Assessment>(API_URL.assign, assessment)
+        .pipe(map(res => this.convertDateFromServer(res)));
+    }
+
+
     private convertDateFromServer(res: any) {
         if (res.body) {
         }
