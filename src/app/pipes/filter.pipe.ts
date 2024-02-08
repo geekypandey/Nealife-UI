@@ -5,11 +5,12 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class FilterPipe implements PipeTransform {
-  transform<T>(items: any[], filterBy: string, filterKey: string): any[] {
+  transform<T>(items: any[], searchText: string, fieldName: string): any[] {
+    console.info(items);
     return items.filter(item => {
-      const filterValue = item[filterKey].toLowerCase();
-      filterBy = filterBy.toLocaleLowerCase();
-      return filterValue.indexOf(filterBy) !== -1;
+      const filterValue = item[fieldName].toLowerCase();
+      searchText = searchText.toLocaleLowerCase();
+      return filterValue.indexOf(searchText) !== -1;
     });
   }
 }

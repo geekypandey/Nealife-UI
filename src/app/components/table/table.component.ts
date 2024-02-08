@@ -79,4 +79,8 @@ export class TableComponent {
   onColumnInput(value: string) {
     this.columnSearchText = value;
   }
+
+  onFilterInputText(fieldName: string, searchText: string) {
+    console.info(fieldName, searchText);
+  }
 }

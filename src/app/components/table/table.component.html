@@ -1,5 +1,5 @@
 <div class="table-container d-flex">
-  <div [ngStyle]="{ width: value.length == 0 ? '100%' : '95%' }" #primengContainer>
+  <div [ngStyle]="{ width: value.length == 0 ? '100%' : '97%' }" #primengContainer>
     <div class="d-flex">
       <div
         [ngClass]="{
@@ -123,37 +123,15 @@
                     </ng-template>
                     <ng-template #body>
                       <div class="p-fluid">
-                        <input class="p-inputtext p-component" [id]="column.field" type="text" />
+                        <input
+                          class="p-inputtext p-component"
+                          #filterInput
+                          (input)="onFilterInputText(column.field, filterInput.value)"
+                          [id]="column.field"
+                          type="text" />
                       </div>
                     </ng-template>
                   </nl-accordion-item>
-
-                  <!-- <div class="col-12 p-fluid mb-3">
-              <label class="form-label" [for]="column.field">{{ column.header }}</label>
-              <input class="p-inputtext p-component" [id]="column.field" type="text" />
-            </div> -->
-                  <!-- <div class="accordion">
-                  <div class="accordion-item">
-                    <h2 class="accordion-header">
-                      <button
-                        class="accordion-button"
-                        [class.collapsed]="!column.visible"
-                        type="button"
-                        (click)="column.visible = !column.visible"
-                        aria-expanded="true"
-                        aria-controls="panelsStayOpen-collapseOne">
-                        {{ column.header }}
-                      </button>
-                    </h2>
-                    <div class="accordion-collapse collapse" [class.show]="column.visible">
-                      <div class="accordion-body">
-                        <div class="p-fluid">
-                          <input class="p-inputtext p-component" [id]="column.field" type="text" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
                 </ng-container>
               </nl-accordion>
             </div>
@@ -165,7 +143,7 @@
   <!-- *ngIf="value.length > 0" -->
   <div
     *ngIf="value.length > 0"
-    [ngStyle]="{ width: value.length == 0 ? '0%' : '5%' }"
+    [ngStyle]="{ width: value.length == 0 ? '0%' : '3%' }"
     class="table-tool-panel">
     <div class="">
       <div class="pt-3">

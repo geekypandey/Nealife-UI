@@ -9,24 +9,37 @@
   </div>
   <div class="menus p-0">
     <ng-container *ngFor="let menu of menus">
-      <div
-        class="menu p-0 d-flex align-items-center"
-        routerLinkActive="active"
-        [routerLink]="menu.url">
-        <div class="bar"></div>
-        <img
-          routerLinkActive="active"
-          [src]="'./../../../../assets/dashboard/' + menu.icon + '.svg'"
-          [alt]="menu.icon" />
-        {{ menu.label }}
-
-        <ng-container *ngIf="menu.children?.length">
-          <img
-            class="down-arrow-white"
-            src="./../../../../../assets/dashboard/down-arrow-white.svg"
-            alt="down-arrow" />
+      <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu }"></ng-container>
+      <ng-container *ngIf="menu.toggleMenu">
+        <ng-container *ngFor="let childMenu of menu.children">
+          <ng-container
+            *ngTemplateOutlet="
+              menuTpl;
+              context: { $implicit: childMenu, isChildMenu: true }
+            "></ng-container>
         </ng-container>
-      </div>
+      </ng-container>
     </ng-container>
   </div>
 </div>
+
+<ng-template #menuTpl let-menu let-isChildMenu="isChildMenu">
+  <div
+    class="menu p-0 d-flex align-items-center"
+    [class.px-4]="isChildMenu"
+    routerLinkActive="active"
+    [routerLink]="menu.url"
+    (click)="menu.toggleMenu = !menu.toggleMenu">
+    <div class="bar"></div>
+    <img
+      routerLinkActive="active"
+      [src]="'./../../../../assets/dashboard/' + menu.icon + '.svg'"
+      [alt]="menu.icon" />
+    {{ menu.label }}
+    <img
+      *ngIf="menu.children && menu.children.length"
+      class="down-arrow-white"
+      src="./../../../../../assets/dashboard/down-arrow-white.svg"
+      alt="down-arrow" />
+  </div>
+</ng-template>

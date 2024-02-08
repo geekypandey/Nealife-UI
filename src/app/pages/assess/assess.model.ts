@@ -142,6 +142,7 @@ export interface SidebarMenu {
   icon: string;
   url?: string;
   privilege: string;
+  toggleMenu?: boolean;
   children?: SidebarMenu[];
 }
 
