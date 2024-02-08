@@ -11,69 +11,71 @@
                 <label class="d-block" for="parent">Company*</label>
                 <p-dropdown
                   [attr.id]="'parent'"
-                  formControlName="parentId"
+                  formControlName="companyId"
                   [options]="parentCompanies"
                   placeholder="Select Company"></p-dropdown>
               </div>
               <div class="col-6">
-                <label class="d-block" for="emailId">Assessment*</label>
+                <label class="d-block" for="assessment-name">Assessment*</label>
                 <p-dropdown
+                  id="assessment-name"
                   [attr.id]="'parent'"
-                  formControlName="parentId"
+                  formControlName="assessmentId"
                   [options]="assessments"
                   placeholder="Select Assessment"></p-dropdown>
               </div>
             </div>
             <div class="row mb-3 p-fluid">
               <div class="col-6">
-                <label class="d-block" for="address">Assessment Date*</label>
+                <label class="d-block" for="assessment-date">Assessment Date*</label>
                 <p-calendar
+                  id="assessment-date"
                   dateFormat="yy-mm-dd"
-                  formControlName="validTo"
+                  formControlName="assessmentDate"
                   [showIcon]="true"></p-calendar>
               </div>
               <div class="col-6">
-                <label class="d-block" for="status">Time Limit (in minutes)*</label>
+                <label class="d-block" for="time-limit">Time Limit (in minutes)*</label>
                 <input
                   type="text"
-                  formControlName="contactNumber1"
-                  id="contactNumber1"
+                  formControlName="timeLimit"
+                  id="time-limit"
                   class="p-inputtext" />
               </div>
             </div>
             <div class="row mb-3 p-fluid">
               <div class="col-6">
-                <label class="d-block" for="contactNumber1">Total Credits*</label>
+                <label class="d-block" for="total-credits">Total Credits*</label>
                 <input
                   type="text"
-                  formControlName="contactNumber1"
-                  id="contactNumber1"
+                  formControlName="totalCredits"
+                  id="total-credits"
                   class="p-inputtext" />
               </div>
               <div class="col-6">
-                <label class="d-block" for="contactNumber2">Avaliable Credits*</label>
+                <label class="d-block" for="available-credits">Avaliable Credits*</label>
                 <input
                   type="text"
-                  formControlName="contactNumber2"
-                  id="contactNumber2"
+                  formControlName="availableCredits"
+                  id="available-credits"
                   class="p-inputtext" />
               </div>
             </div>
             <div class="row mb-3 p-fluid">
               <div class="col-6">
-                <label class="d-block" for="validFrom">Used Credits*</label>
+                <label class="d-block" for="used-credits">Used Credits*</label>
                 <input
                   type="text"
-                  formControlName="contactNumber1"
-                  id="contactNumber1"
+                  formControlName="usedCredits"
+                  id="used-credits"
                   class="p-inputtext" />
               </div>
               <div class="col-6">
-                <label class="d-block" for="validTo">Allocated Credits*</label>
+                <label class="d-block" for="allocated-credits">Allocated Credits*</label>
                 <input
                   type="text"
-                  formControlName="contactNumber1"
-                  id="contactNumber1"
+                  formControlName="allocatedCredits"
+                  id="allocated-credits"
                   class="p-inputtext" />
               </div>
             </div>

@@ -20,7 +20,7 @@ import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
 import { CompanyService } from '../../company/company.service';
 import { AssignService } from '../assign.service';
-import { Company } from './../../assess.model';
+import { Assessment, Company } from './../../assess.model';
 
 @Component({
   selector: 'nl-company-edit',
@@ -42,21 +42,25 @@ import { Company } from './../../assess.model';
 export class AssignEditComponent {
   imagesUrl: any;
   @Input()
-  set id(id: string) {
+  set id(id: number) {
     this.spinner.show('register-edit');
     if (id) {
-      this.companyService.getCompanies(id).subscribe({
+      console.log(id);
+      this.editForm = this.getEditForm(<Assessment>{});
+      this.assignService.getAssessments().subscribe(({
         next: resp => {
-          if (resp && resp.length) {
-            this.company = resp[0];
-            this.editForm = this.getEditForm(this.company);
-            this.cdRef.markForCheck();
+          if (resp && resp.length > 0) {
+            const assessment = resp.filter(assessment => assessment.id == id);
+            if (assessment.length > 0) {
+              this.editForm = this.getEditForm(assessment[0]);
+              this.cdRef.markForCheck();
+            }
           }
         },
         complete: () => this.spinner.hide('register-edit'),
-      });
+      }))
     } else {
-      this.editForm = this.getEditForm(<Company>{});
+      this.editForm = this.getEditForm(<Assessment>{});
     }
   }
 
@@ -171,36 +175,16 @@ export class AssignEditComponent {
     window.history.back();
   }
 
-  getEditForm(company: Company) {
+  getEditForm(assessment: Assessment) {
     return this.fb.group({
-      id: [company.id],
-      name: [company.name, [Validators.required, Validators.maxLength(75)]],
-      contactPerson: [company.contactPerson, [Validators.required, Validators.maxLength(75)]],
-      email: [
-        company.email,
-        [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
-      ],
-      address: [company.address, [Validators.required, Validators.maxLength(300)]],
-      contactNumber1: [
-        company.contactNumber1,
-        [
-          Validators.required,
-          Validators.maxLength(10),
-          Validators.minLength(10),
-          Validators.pattern('^[0-9]*$'),
-        ],
-      ],
-      contactNumber2: [
-        company.contactNumber2,
-        [Validators.maxLength(10), Validators.minLength(10), Validators.pattern('^[0-9]*$')],
-      ],
-      status: [company.status, Validators.required],
-      validFrom: [company.validFrom, [Validators.required]],
-      validTo: [company.validTo, [Validators.required]],
-      companyType: [company.companyType, Validators.required],
-      partnerType: [company.partnerType, Validators.required],
-      website: [company.website],
-      parentId: [company.parentId],
+      companyId: [assessment.companyId],
+      assessmentId: [assessment.assessmentId, [Validators.required, Validators.maxLength(75)]],
+      assessmentDate: [assessment.scheduleDate, [Validators.required]],
+      timeLimit: [assessment.timeLimit, [Validators.required]],
+      totalCredits: [assessment.totalCredits, [Validators.required]],
+      availableCredits: [assessment.availableCredits, [Validators.required]],
+      usedCredits: [assessment.usedCredits, [Validators.required]],
+      allocatedCredits: [assessment.allocatedCredits, [Validators.required]],
     });
   }
 }
