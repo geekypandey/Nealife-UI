@@ -26,12 +26,12 @@
 <ng-template #menuTpl let-menu let-isChildMenu="isChildMenu">
   <div
     class="menu p-0 d-flex align-items-center"
-    [class.px-4]="isChildMenu"
     routerLinkActive="active"
     [routerLink]="menu.url"
     (click)="menu.toggleMenu = !menu.toggleMenu">
     <div class="bar"></div>
     <img
+      [class.child-menu]="isChildMenu"
       routerLinkActive="active"
       [src]="'./../../../../assets/dashboard/' + menu.icon + '.svg'"
       [alt]="menu.icon" />
