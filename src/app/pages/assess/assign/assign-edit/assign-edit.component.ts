@@ -134,7 +134,6 @@ export class AssignEditComponent {
   }
 
   save() {
-    console.log(this.editForm.value);
     if (this.editForm.valid) {
       const form = this.editForm.value;
       const uploadData = new FormData();
@@ -153,6 +152,9 @@ export class AssignEditComponent {
       } else {
         // this.subscribeToSaveResponse(this.companyService.createCompany(uploadData));
       }
+    } else {
+      // TODO: show error to the user
+      console.log('ERRORORROR!!')
     }
   }
 
