@@ -80,10 +80,13 @@ export class AssignEditComponent {
       label: this.translateService.instant(statusBaseStr + value),
       value: value,
     }));
-    this.parentCompanies = this.companyService.companies.map(company => ({
-      label: company.name,
-      value: '' + company.id,
-    }));
+
+    this.companyService.getAllCompanies().subscribe((value) => {
+      this.parentCompanies = value.map(company => ({
+        label: company.name,
+        value: '' + company.id,
+      }))
+    })
   }
 
   ngOnInit() {
