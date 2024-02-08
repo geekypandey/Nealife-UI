@@ -7,7 +7,7 @@ import { Observable, finalize } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
-import { Assessment } from '../../render-assessment/render-assessment.model';
+import { Assessment } from '../assess.model';
 import { AssignService } from './assign.service';
 
 

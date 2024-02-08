@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { API_URL } from 'src/app/constants/api-url.constants';
-import { Assessment } from '../../render-assessment/render-assessment.model';
+import { Assessment } from '../assess.model';
 
 @Injectable()
 export class AssignService {
