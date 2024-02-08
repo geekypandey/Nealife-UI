@@ -13,26 +13,32 @@
                   [attr.id]="'parent'"
                   formControlName="parentId"
                   [options]="parentCompanies"
-                  placeholder="Select parent company"></p-dropdown>
+                  placeholder="Select Company"></p-dropdown>
               </div>
               <div class="col-6">
                 <label class="d-block" for="emailId">Assessment*</label>
-                <input type="email" formControlName="email" id="emailId" class="p-inputtext" />
+                <p-dropdown
+                  [attr.id]="'parent'"
+                  formControlName="parentId"
+                  [options]="assessments"
+                  placeholder="Select Assessment"></p-dropdown>
               </div>
             </div>
             <div class="row mb-3 p-fluid">
               <div class="col-6">
                 <label class="d-block" for="address">Assessment Date*</label>
-                <input type="text" formControlName="address" id="address" class="p-inputtext" />
+                <p-calendar
+                  dateFormat="yy-mm-dd"
+                  formControlName="validTo"
+                  [showIcon]="true"></p-calendar>
               </div>
               <div class="col-6">
                 <label class="d-block" for="status">Time Limit (in minutes)*</label>
-                <p-dropdown
-                  [attr.id]="'status'"
-                  formControlName="status"
-                  [options]="statusList"
-                  placeholder="Select parent company">
-                </p-dropdown>
+                <input
+                  type="text"
+                  formControlName="contactNumber1"
+                  id="contactNumber1"
+                  class="p-inputtext" />
               </div>
             </div>
             <div class="row mb-3 p-fluid">
@@ -56,19 +62,19 @@
             <div class="row mb-3 p-fluid">
               <div class="col-6">
                 <label class="d-block" for="validFrom">Used Credits*</label>
-                <p-calendar
-                  dateFormat="yy-mm-dd"
-                  formControlName="validFrom"
-                  [showIcon]="true"></p-calendar>
-                <!-- <input type="text" formControlName="validFrom" id="validFrom" class="p-inputtext" /> -->
+                <input
+                  type="text"
+                  formControlName="contactNumber1"
+                  id="contactNumber1"
+                  class="p-inputtext" />
               </div>
               <div class="col-6">
                 <label class="d-block" for="validTo">Allocated Credits*</label>
-                <p-calendar
-                  dateFormat="yy-mm-dd"
-                  formControlName="validTo"
-                  [showIcon]="true"></p-calendar>
-                <!-- <input type="text" formControlName="validTo" id="validTo" class="p-inputtext" /> -->
+                <input
+                  type="text"
+                  formControlName="contactNumber1"
+                  id="contactNumber1"
+                  class="p-inputtext" />
               </div>
             </div>
             <div class="row justify-content-end">
