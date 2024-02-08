@@ -11,8 +11,15 @@ export class AssignService {
           .get<any[]>(API_URL.assign);
   }
 
-  getAssessmentsForDropDown(formData: any) {
-      return this.http
-          .get<any[]>(API_URL.assessmentForDropDown);
+  getAssessmentsForDropDown() {
+    const params: any = {
+      'companyId.equals': 1,
+      'displayInSignup.equals': true,
+    };
+
+    return this.http
+        .get<any[]>(API_URL.assessmentForDropDown, {
+            params: params,
+        });
   }
 }
