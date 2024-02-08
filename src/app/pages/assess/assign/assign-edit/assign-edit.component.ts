@@ -54,6 +54,7 @@ export class AssignEditComponent {
             if (assessment.length > 0) {
               this.editForm = this.getEditForm(assessment[0]);
               this.cdRef.markForCheck();
+              this.isEdit = true;
             }
           }
         },
@@ -67,7 +68,7 @@ export class AssignEditComponent {
   parentCompanies: DropdownOption[] = [];
   assessments: DropdownOption[] = [];
   statusList: DropdownOption[] = [];
-  company!: Company;
+  isEdit: boolean = false;
   editForm!: FormGroup;
   accountTypes: DropdownOption[] = [];
   partnerTypes: DropdownOption[] = [];
