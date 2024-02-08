@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { API_URL } from 'src/app/constants/api-url.constants';
+import { Assessment } from '../../render-assessment/render-assessment.model';
 
 @Injectable()
 export class AssignService {
@@ -8,7 +9,7 @@ export class AssignService {
 
   getAssessments() {
       return this.http
-          .get<any[]>(API_URL.assign);
+          .get<Assessment[]>(API_URL.assign);
   }
 
   getAssessmentsForDropDown() {
@@ -18,7 +19,7 @@ export class AssignService {
     };
 
     return this.http
-        .get<any[]>(API_URL.assessmentForDropDown, {
+        .get<Assessment[]>(API_URL.assessmentForDropDown, {
             params: params,
         });
   }
