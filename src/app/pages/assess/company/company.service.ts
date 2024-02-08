@@ -38,6 +38,10 @@ export class CompanyService {
       .pipe(map(res => this.convertDateFromServer(res)));
   }
 
+  getAllCompanies() {
+    return this.http.get<Company[]>(API_URL.companies);
+  }
+
   private convertDateFromServer(res: any) {
     if (res.body) {
       res.body.validFrom = res.body.validFrom ? moment(res.body.validFrom) : undefined;
