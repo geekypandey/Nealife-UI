@@ -7,6 +7,7 @@ import { DATE_FORMAT } from 'src/app/constants/assess.constants';
 import {
   CompetencyAspectItemROCount,
   CompetencyAspectProjections,
+  ILookup,
 } from '../../assess/assess.model';
 import { AccountDashboard, AccountDashboardDetails } from '../assess.model';
 import { AssessmentGroupDetails, IAssessment } from '../assessment-group/assessment-group.model';
@@ -65,6 +66,14 @@ export class AssessService {
     return this.http
       .put<IAssessment>(API_URL.assessmentsByGroup, copy)
       .pipe(map(res => this.convertDateFromServer(res)));
+  }
+
+  create(lookup: ILookup) {
+    return this.http.post<ILookup>(API_URL.lookup, lookup);
+  }
+
+  update(lookup: ILookup) {
+    return this.http.put<ILookup>(API_URL.lookup, lookup);
   }
 
   protected convertDateFromServer(res: IAssessment) {

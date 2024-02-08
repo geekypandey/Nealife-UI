@@ -160,6 +160,24 @@ export interface IApplicationUserAssessment {
   companyId?: number;
 }
 
+export interface ILookup {
+  id?: number;
+  type?: string;
+  subType?: string;
+  key?: string;
+  value?: string;
+}
+
+export class Lookup implements ILookup {
+  constructor(
+    public id?: number,
+    public type?: string,
+    public subType?: string,
+    public key?: string,
+    public value?: string
+  ) {}
+}
+
 export const enum AssesmentStatus {
   SCHEDULED = 'SCHEDULED',
   INPROGRESS = 'INPROGRESS',

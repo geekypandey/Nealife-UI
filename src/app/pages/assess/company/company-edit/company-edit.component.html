@@ -7,7 +7,7 @@
         <div class="col">
           <div class="nl-card nl-border nl-border-1">
             <div class="row mb-3 p-fluid">
-              <div class="col-6">
+              <div class="col-6" [hidden]="!editForm.get('id')!.value">
                 <label class="d-block" for="id">ID</label>
                 <input type="text" formControlName="id" id="id" class="p-inputtext p-disabled" />
               </div>

@@ -53,7 +53,6 @@ export class NavigationService {
         url: this.baseRoute + '/payment',
       },
     ];
-    const settingsRoute = '/settings';
     const settingsMenu: SidebarMenu[] = [
       {
         privilege: 'settings-main',
@@ -64,7 +63,7 @@ export class NavigationService {
             privilege: 'lookup',
             label: 'Look Ups',
             icon: 'settings',
-            url: this.baseRoute + settingsRoute + '/lookups',
+            url: this.baseRoute + '/lookup',
           },
           {
             privilege: 'configuration-main',

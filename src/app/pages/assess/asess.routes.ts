@@ -33,6 +33,10 @@ export const DASHBOARD_ROUTES: Route[] = [
         loadChildren: () =>
           import('./assessment-group/assessment-group.route').then(c => c.assessmentGroupRoute),
       },
+      {
+        path: 'lookup',
+        loadChildren: () => import('./lookup/lookup.route').then(r => r.lookupRoute),
+      },
     ],
   },
 ];
