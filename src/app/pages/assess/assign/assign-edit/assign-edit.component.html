@@ -79,7 +79,7 @@
                   class="p-inputtext" />
               </div>
             </div>
-            <div class="row justify-content-end">
+            <div class="row justify-content-end" *ngIf="!isEdit">
               <div class="col-3 d-block d-flex justify-content-around">
                 <button type="button" class="p-button" (click)="goBack()">Cancel</button>
                 <button type="button" class="p-button" (click)="save()" *ngIf="isEdit">Save</button>
@@ -91,5 +91,94 @@
         </div>
       </div>
     </div>
+    <ng-container *ngIf="isEdit">
+      <div class="mt-4">
+        <h3>Individual</h3>
+      </div>
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <div class="nl-card nl-border nl-border-1">
+              <div class="row mb-3 p-fluid">
+                <div class="col-6">
+                  <label class="d-block" for="parent">Generate URL*</label>
+                  <p-dropdown
+                    [attr.id]="'parent'"
+                    formControlName="companyId"
+                    [options]="parentCompanies"
+                    placeholder="Select Company"></p-dropdown>
+                </div>
+                <div class="col-6">
+                  <label class="d-block" for="assessment-name">Credit Code</label>
+                  <p-dropdown
+                    id="assessment-name"
+                    [attr.id]="'parent'"
+                    formControlName="assessmentId"
+                    [options]="assessments"
+                    placeholder="Select Assessment"></p-dropdown>
+                </div>
+              </div>
+              <div class="row mb-3 p-fluid">
+                <div class="col-6">
+                  <label class="d-block" for="assessment-date">Email</label>
+                  <p-calendar
+                    id="assessment-date"
+                    dateFormat="yy-mm-dd"
+                    formControlName="scheduleDate"
+                    [showIcon]="true"></p-calendar>
+                </div>
+                <div class="col-6">
+                  <label class="d-block" for="time-limit">Time Limit (in minutes)*</label>
+                  <input
+                    type="text"
+                    formControlName="timeLimit"
+                    id="time-limit"
+                    class="p-inputtext" />
+                </div>
+              </div>
+            </div>
+            <!--card end-->
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <h3>Bulk</h3>
+      </div>
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <div class="nl-card nl-border nl-border-1">
+              <div class="row mb-3 p-fluid">
+                <div class="col-6">
+                  <label class="d-block" for="parent">Credits</label>
+                  <p-dropdown
+                    [attr.id]="'parent'"
+                    formControlName="companyId"
+                    [options]="parentCompanies"
+                    placeholder="Select Company"></p-dropdown>
+                </div>
+                <div class="col-6">
+                  <label class="d-block" for="assessment-name">Credit Code</label>
+                  <p-dropdown
+                    id="assessment-name"
+                    [attr.id]="'parent'"
+                    formControlName="assessmentId"
+                    [options]="assessments"
+                    placeholder="Select Assessment"></p-dropdown>
+                </div>
+              </div>
+              <div class="row justify-content-end">
+                <div class="col-3 d-block d-flex justify-content-around">
+                  <button type="button" class="p-button" (click)="goBack()">Cancel</button>
+                  <button type="button" class="p-button" (click)="save()" *ngIf="isEdit">Save</button>
+                  <button type="button" class="p-button" (click)="add()" *ngIf="!isEdit">Add</button>
+                </div>
+              </div>
+            </div>
+            <!--card end-->
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </ng-container>
 </div>
