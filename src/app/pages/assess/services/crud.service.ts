@@ -39,7 +39,7 @@ export class CRUDService {
     return this.http.delete(`${API_URL.applicationUserAssessment}/${id}`);
   }
 
-  downloadPdfReport(url: string) {
+  downloadReport(url: string) {
     return this.http.get(url, { responseType: 'blob' });
   }
 

@@ -75,7 +75,7 @@ export interface Account {
   privilege: string[];
 }
 
-export interface CompetencyAspectProjections {
+export interface ICompetencyAspectProjection {
   competency: string;
   childAspect: string;
   childAspectType: string;
@@ -83,11 +83,31 @@ export interface CompetencyAspectProjections {
   parentAspectType: string;
 }
 
+export class CompetencyAspectProjection implements ICompetencyAspectProjection {
+  constructor(
+    public competency: string,
+    public childAspect: string,
+    public childAspectType: string,
+    public parentAspect: string,
+    public parentAspectType: string
+  ) {}
+}
+
 export interface CompetencyAspectItemROCount {
   aspectCount: string;
   competencyCount: string;
   itemCount: string;
   responseOptionCount: string;
+}
+
+export interface MasterDataDetails {
+  question: string;
+  itemKey: string;
+  fiHigh: string;
+  fiBelowAverage: string;
+  fiLow: string;
+  choice: string;
+  weight?: any;
 }
 
 export interface ICompany {

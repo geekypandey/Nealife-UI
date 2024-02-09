@@ -9,8 +9,12 @@ export class NavigationService {
   public readonly baseRoute: string = '/assess';
   constructor() {}
 
-  getSidebarMenus(authorityType: string, privileges: string[]): SidebarMenu[] {
-    console.info(authorityType, privileges);
+  getSidebarMenus(
+    authorityType: string,
+    privileges: string[],
+    authorities: string[]
+  ): SidebarMenu[] {
+    console.info(authorityType, privileges, authorities);
     const commonMenu: SidebarMenu[] = [
       {
         privilege: 'dashboard-main',
@@ -35,16 +39,14 @@ export class NavigationService {
         label: 'Results',
         icon: 'results',
         url: this.baseRoute + '/assessment-result',
-      }
-    ];
-    const masterMenu: SidebarMenu[] = [
-      {
-        label: 'Master Data',
-        privilege: 'master-main',
-        icon: 'masterData',
-        url: this.baseRoute + 'masterData',
       },
     ];
+    const masterMenu: SidebarMenu = {
+      label: 'Master Data',
+      privilege: 'adminDashboard',
+      icon: 'dashboard',
+      url: this.baseRoute + '/masterData',
+    };
     const paymentMenu: SidebarMenu[] = [
       {
         privilege: 'payment',
@@ -90,6 +92,9 @@ export class NavigationService {
     const sidebarMenu: SidebarMenu[] = [];
     switch (authorityType) {
       case Authority.ADMIN:
+        if (authorities.includes(Authority.SUPER_ADMIN)) {
+          commonMenu.splice(1, 0, masterMenu);
+        }
         const menus = commonMenu.concat(paymentMenu, settingsMenu);
         this.setMenu(menus, privileges, sidebarMenu);
         break;

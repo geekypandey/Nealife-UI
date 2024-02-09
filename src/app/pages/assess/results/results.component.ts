@@ -71,7 +71,7 @@ export class ResultsComponent {
 
   downloadPdfReport(reportUrl: string): any {
     this.spinner.show(this.spinnerName);
-    this.crudService.downloadPdfReport(reportUrl).subscribe({
+    this.crudService.downloadReport(reportUrl).subscribe({
       next: (response: Blob) => {
         const blob = new Blob([response], { type: 'application/pdf' });
         saveFile(blob, 'report.pdf');

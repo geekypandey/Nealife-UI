@@ -67,7 +67,8 @@ export class AssessComponent {
         next: ([profile, account]) => {
           this.sidebarMenus = this.navigationService.getSidebarMenus(
             this.profileService.isAdminRole(),
-            account.privilege
+            account.privilege,
+            account.authorities
           );
           this.username = profile.roleDisplayName;
           this.companyName = profile.companyName;

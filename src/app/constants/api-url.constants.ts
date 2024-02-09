@@ -9,6 +9,7 @@ export const API_URL = {
   competencyAspectProjections:
     BASE_URL + '/competencyAspectProjections?page=0&size=5000&sort=competency,desc',
   competencyAspectItemROCount: BASE_URL + '/competencies/getCompetencyAspectItemROCount',
+  getAspectProjectionListURL: BASE_URL + '/itemAspectProjections',
   accountDashboard: BASE_URL + '/account-dashboard',
   accountDashboardDetails: BASE_URL + '/notifications/dashboard',
   companies: BASE_URL + '/companies',

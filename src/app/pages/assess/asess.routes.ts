@@ -1,5 +1,4 @@
 import { Route } from '@angular/router';
-import { dashboardRoutes } from './dashboard/dashboard.route';
 
 export const DASHBOARD_ROUTES: Route[] = [
   {
@@ -13,7 +12,11 @@ export const DASHBOARD_ROUTES: Route[] = [
       },
       {
         path: 'dashboard',
-        loadChildren: () => import('./dashboard/dashboard.route').then(r => dashboardRoutes),
+        loadChildren: () => import('./dashboard/dashboard.route').then(r => r.dashboardRoutes),
+      },
+      {
+        path: 'masterData',
+        loadChildren: () => import('./master-data/master.route').then(r => r.masterDataRoutes),
       },
       {
         path: 'company',

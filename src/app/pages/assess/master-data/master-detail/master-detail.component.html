@@ -1,0 +1,39 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="mt-3">
+  <button class="p-button nl-auto d-block" (click)="goBack()">Back</button>
+</div>
+<ng-container *ngIf="masterDataDetails$ | async as masterDataDetails">
+  <div class="py-3">
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <div class="d-flex column-gap-2">
+          <strong>Competency :</strong>
+          <span></span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="d-flex column-gap-2">
+          <strong>Aspect Type(Parent):</strong>
+          <span></span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="d-flex column-gap-2">
+          <strong>Aspect Type(Child):</strong>
+          <span></span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="d-flex column-gap-2">
+          <strong>Aspect (Child):</strong>
+          <span></span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <nl-table [cols]="cols" [value]="masterDataDetails" />
+      </div>
+    </div>
+  </div>
+</ng-container>

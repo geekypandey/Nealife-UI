@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { Params } from '@angular/router';
 import * as moment from 'moment';
 import { map, tap } from 'rxjs/operators';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { DATE_FORMAT } from 'src/app/constants/assess.constants';
 import {
   CompetencyAspectItemROCount,
-  CompetencyAspectProjections,
+  ICompetencyAspectProjection,
   ILookup,
+  MasterDataDetails,
 } from '../../assess/assess.model';
 import { AccountDashboard, AccountDashboardDetails } from '../assess.model';
 import { AssessmentGroupDetails, IAssessment } from '../assessment-group/assessment-group.model';
@@ -15,10 +17,10 @@ import { AssessmentGroupDetails, IAssessment } from '../assessment-group/assessm
 @Injectable()
 export class AssessService {
   private http = inject(HttpClient);
-  private compProjectionsData: CompetencyAspectProjections[] = [];
+  private compProjectionsData: ICompetencyAspectProjection[] = [];
 
   getCompetencyAspectProjections() {
-    return this.http.get<CompetencyAspectProjections[]>(API_URL.competencyAspectProjections).pipe(
+    return this.http.get<ICompetencyAspectProjection[]>(API_URL.competencyAspectProjections).pipe(
       tap(resp => {
         this.compProjectionsData = resp;
       })
@@ -27,6 +29,12 @@ export class AssessService {
 
   getCompetencyAspectItemROCount() {
     return this.http.get<CompetencyAspectItemROCount>(API_URL.competencyAspectItemROCount);
+  }
+
+  getAspectProjectionList(queryParams: Params) {
+    return this.http.get<MasterDataDetails[]>(API_URL.getAspectProjectionListURL, {
+      params: queryParams,
+    });
   }
 
   getAccountdashboardLookup(companyId: string) {
