@@ -14,6 +14,14 @@ export const APP_ROUTES: Routes = [
     canActivate: [isNotAuthenticatedGuard],
   },
   {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./pages/forgot-password/forgot-password.component').then(
+        c => c.ForgotPasswordComponent
+      ),
+    canActivate: [isNotAuthenticatedGuard],
+  },
+  {
     path: 'assess',
     loadChildren: () => import('./pages/assess/asess.routes').then(r => r.DASHBOARD_ROUTES),
     canActivate: [isAuthenticatedGuard],

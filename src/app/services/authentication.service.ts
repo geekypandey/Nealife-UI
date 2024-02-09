@@ -25,4 +25,8 @@ export class AuthenticationService {
     localStorage.clear();
     this.router.navigate(['/login']);
   }
+
+  resetPassword(emailId: string) {
+    return this.http.post(API_URL.resetPassword, emailId);
+  }
 }

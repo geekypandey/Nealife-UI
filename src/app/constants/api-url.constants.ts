@@ -5,7 +5,7 @@ export const API_URL = {
   login: BASE_URL + '/authenticate',
   getLoggedInUser: BASE_URL + '/users/getLoggedInUser',
   account: BASE_URL + '/account',
-
+  resetPassword: BASE_URL + '/account/reset-password/init',
   competencyAspectProjections:
     BASE_URL + '/competencyAspectProjections?page=0&size=5000&sort=competency,desc',
   competencyAspectItemROCount: BASE_URL + '/competencies/getCompetencyAspectItemROCount',
