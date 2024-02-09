@@ -1,4 +1,7 @@
 ::ng-deep p-tabView {
+  .p-tabview-nav {
+    border-color: #c8d7ed;
+  }
   .p-tabview-nav-container ul {
     margin-bottom: 0;
     padding: 0;
@@ -14,5 +17,6 @@
     text-decoration: none;
     color: #1f2c40;
     font-size: 14px;
+    transition: box-shadow 0.2s;
   }
 }
