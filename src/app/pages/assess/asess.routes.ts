@@ -41,6 +41,10 @@ export const DASHBOARD_ROUTES: Route[] = [
         path: 'assign',
         loadChildren: () => import('./assign/assign.route').then(c => c.assignRoute),
       },
+      {
+        path: 'payment',
+        loadComponent: () => import('./payment/payment.component').then(c => c.PaymentComponent),
+      },
     ],
   },
 ];
