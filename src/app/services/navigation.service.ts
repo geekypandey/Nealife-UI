@@ -35,7 +35,7 @@ export class NavigationService {
         label: 'Results',
         icon: 'results',
         url: this.baseRoute + '/assessment-result',
-      },
+      }
     ];
     const masterMenu: SidebarMenu[] = [
       {
