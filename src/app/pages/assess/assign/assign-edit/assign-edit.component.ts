@@ -67,7 +67,7 @@ export class AssignEditComponent {
   }
 
   assessment: Assessment;
-  parentCompanies: DropdownOption[] = [];
+  parentCompanies: any[] = [];
   assessments: DropdownOption[] = [];
   statusList: DropdownOption[] = [];
   isEdit: boolean = false;
