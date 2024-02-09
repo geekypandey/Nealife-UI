@@ -7,7 +7,7 @@ import { Observable, finalize } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ColDef } from 'src/app/components/table/table.model';
-import { Assessment } from '../assess.model';
+import { API_URL } from 'src/app/constants/api-url.constants';
 import { AssignService } from '../assign/assign.service';
 
 
@@ -26,14 +26,15 @@ export class PaymentComponent {
   private assignService = inject(AssignService);
 
   spinnerName: string = 'payment-spinner';
-  assessments$: Observable<Assessment[]>;
+  payments$: Observable<any[]>;
   activatedRoute = inject(ActivatedRoute);
 
   cols: ColDef[] = [
-    { header: 'Name', field: 'id' },
-    { header: 'Email', field: 'companyName'},
-    { header: 'Contact Number', field: 'assessmentName'},
-    { header: 'Payment Date', field: 'timeLimit'},
+    { header: 'Name', field: 'name' },
+    { header: 'Email', field: 'email'},
+    { header: 'Contact Number', field: 'phone'},
+    { header: 'Payment Date', field: 'paymentDate'},
+    // TODO: update these parameters
     { header: 'Quantity', field: 'availableCredits'},
     { header: 'Price', field: 'usedCredits'},
     { header: 'Total', field: 'usedCredits'},
@@ -43,8 +44,8 @@ export class PaymentComponent {
 
   constructor() {
     this.spinner.show(this.spinnerName);
-    this.assessments$ = this.assignService.getAssessments().pipe(
-      finalize(() => this.spinner.hide(this.spinnerName))
-    );
+    this.payments$ = this.http.get<any[]>(API_URL.payment).pipe(
+          finalize(() => this.spinner.hide(this.spinnerName))
+        );
   }
 }

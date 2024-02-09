@@ -2,7 +2,7 @@
 <div class="mt-3 row flex-column">
   <strong class="col mb-3">Payment</strong>
 
-  <ng-container *ngIf="assessments$ | async as assessments">
+  <ng-container *ngIf="payments$ | async as payments">
     <div class="mb-3 d-flex justify-content-end">
       <button
         type="button"
@@ -12,6 +12,6 @@
         Add
       </button>
     </div>
-    <nl-table [cols]="cols" [value]="assessments" />
+    <nl-table [cols]="cols" [value]="payments" />
   </ng-container>
 </div>
