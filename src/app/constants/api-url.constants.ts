@@ -36,4 +36,5 @@ export const API_URL = {
   assessmentForDropDown: BASE_URL + '/company-assessments/fordropdown',
 
   payment: BASE_URL + '/payments',
+  assignGroup: BASE_URL + '/company-assessment-groups',
 };
