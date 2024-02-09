@@ -35,12 +35,6 @@ export class NavigationService {
         label: 'Results',
         icon: 'results',
         url: this.baseRoute + '/assessment-result',
-      },
-      {
-        privilege: 'result-main',
-        label: 'Payment',
-        icon: 'payment',
-        url: this.baseRoute + '/payment',
       }
     ];
     const masterMenu: SidebarMenu[] = [
