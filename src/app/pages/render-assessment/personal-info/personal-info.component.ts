@@ -83,8 +83,8 @@ export class PersonalInfoComponent {
   stream: DropdownOption[] = [];
   board: DropdownOption[] = [];
   sectors: LookupResponse[] = [];
-  engBranches: LookupResponse[] = [];
-  mbaBranches: LookupResponse[] = [];
+  engBranches: LookupResponse[] | DropdownOption[] = [];
+  mbaBranches: LookupResponse[] | DropdownOption[] = [];
 
   basicInfoForm!: FormGroup<any>;
   todaysDate: Date = new Date();
@@ -243,6 +243,10 @@ export class PersonalInfoComponent {
       return this.income;
     } else if (fieldName === 'gender') {
       return this.gender;
+    } else if (fieldName === 'engBranch') {
+      return this.engBranches;
+    } else if (fieldName === 'mbaBranch') {
+      return this.mbaBranches;
     } else return [];
   }
 
@@ -338,20 +342,22 @@ export class PersonalInfoComponent {
       this.sharedApiService.lookup('STANDARD').pipe(tap(res => (this.standard = res))),
       this.sharedApiService.lookup('STREAM').pipe(tap(res => (this.stream = res))),
       this.sharedApiService.lookup('BOARD').pipe(tap(res => (this.board = res))),
+      this.engBranchApiCall(true),
+      this.mbaBranchApiCall(true),
     ];
   }
 
   private sectorsApiCall() {
     return this.sharedApiService.lookup('SECTORS', false).pipe(tap(res => (this.sectors = res)));
   }
-  private engBranchApiCall() {
+  private engBranchApiCall(convertDropDown: boolean = false) {
     return this.sharedApiService
-      .lookup('ENGINEERING_BRANCH', false)
+      .lookup('ENGINEERING_BRANCH', convertDropDown)
       .pipe(tap(res => (this.engBranches = res)));
   }
-  private mbaBranchApiCall() {
+  private mbaBranchApiCall(convertDropDown: boolean = false) {
     return this.sharedApiService
-      .lookup('MBA_BRANCH', false)
+      .lookup('MBA_BRANCH', convertDropDown)
       .pipe(tap(res => (this.mbaBranches = res)));
   }
 
@@ -370,6 +376,8 @@ export class PersonalInfoComponent {
       'standard',
       'stream',
       'board',
+      'engBranch',
+      'mbaBranch'
     ];
   }
 
