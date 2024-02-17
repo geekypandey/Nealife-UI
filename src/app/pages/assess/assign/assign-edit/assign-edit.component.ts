@@ -40,7 +40,24 @@ import { Assessment } from './../../assess.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AssignEditComponent {
+  assessment: Assessment;
+  parentCompanies: any[] = [];
+  assessments: DropdownOption[] = [];
+  statusList: DropdownOption[] = [];
+  isEdit: boolean = false;
+  editForm!: FormGroup;
+  accountTypes: DropdownOption[] = [];
+  partnerTypes: DropdownOption[] = [];
+
+  private companyService = inject(CompanyService);
+  private sharedApiService = inject(SharedApiService);
+  private spinner = inject(NgxSpinnerService);
+  private fb = inject(FormBuilder);
+  private cdRef = inject(ChangeDetectorRef);
+  private translateService = inject(TranslateService);
+  private assignService = inject(AssignService);
   imagesUrl: any;
+
   @Input()
   set id(id: number) {
     this.spinner.show('register-edit');
@@ -66,22 +83,6 @@ export class AssignEditComponent {
     }
   }
 
-  assessment: Assessment;
-  parentCompanies: any[] = [];
-  assessments: DropdownOption[] = [];
-  statusList: DropdownOption[] = [];
-  isEdit: boolean = false;
-  editForm!: FormGroup;
-  accountTypes: DropdownOption[] = [];
-  partnerTypes: DropdownOption[] = [];
-
-  private companyService = inject(CompanyService);
-  private sharedApiService = inject(SharedApiService);
-  private spinner = inject(NgxSpinnerService);
-  private fb = inject(FormBuilder);
-  private cdRef = inject(ChangeDetectorRef);
-  private translateService = inject(TranslateService);
-  private assignService = inject(AssignService);
 
   constructor() {
     const statusBaseStr = 'nealifeApp.ActivityStatus.';
@@ -174,7 +175,7 @@ export class AssignEditComponent {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 because months are indexed from 0
     const year = date.getFullYear();
-    
+
     return `${year}-${month}-${day}`
   }
 
@@ -210,16 +211,3 @@ export class AssignEditComponent {
     });
   }
 }
-  // "id": null,
-  // "companyId": 1,
-  // "assessmentId": 245352,
-  // "scheduleDate": "2024-02-09",
-  // "reportTemplate": null,
-  // "emailTemplate": null,
-  // "timeLimit": "150",
-  // "availableCredits": "120",
-  // "usedCredits": "120",
-  // "allocatedCredits": "120",
-  // "totalCredits": 120,
-  // "url": null,
-  // "parentCompanyId": "1"

@@ -56,13 +56,13 @@ export class AssignComponent {
   assessmentGroupActionList: Action[];
 
 
-
   constructor() {
     this.spinner.show(this.spinnerName);
     this.assessments$ = this.assignService.getAssessments().pipe(
       finalize(() => this.spinner.hide(this.spinnerName))
     );
     this.assessmentGroups$ = this.http.get<any[]>(API_URL.assignGroup);
+
     this.actionsList = [
       {
         icon: ACTION_ICON.EDIT,
@@ -74,6 +74,7 @@ export class AssignComponent {
         },
       },
     ]
+
     this.assessmentGroupActionList = [
       {
         icon: ACTION_ICON.EDIT,
