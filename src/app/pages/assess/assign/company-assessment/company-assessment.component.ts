@@ -7,7 +7,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { Assessment } from '../../assess.model';
-import { AssignService } from '../assign.service';
+import { AssignService } from '../assessment.service';
 
 @Component({
   selector: 'nl-company-assessment',
@@ -32,13 +32,13 @@ export class CompanyAssessmentComponent {
     { header: 'Used Credits', field: 'usedCredits'},
   ]
 
-  private assignService = inject(AssignService);
+  private assessmentService = inject(AssignService);
   private spinner = inject(NgxSpinnerService);
   private router = inject(Router);
 
 
   constructor() {
-    this.assessments$ = this.assignService.getAssessments().pipe(
+    this.assessments$ = this.assessmentService.getAssessments().pipe(
       finalize(() => this.spinner.hide(this.spinnerName))
     );
 

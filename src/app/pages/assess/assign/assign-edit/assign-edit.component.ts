@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  inject,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Input,
+    inject,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -19,7 +19,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
 import { CompanyService } from '../../company/company.service';
-import { AssignService } from '../assign.service';
+import { AssignService } from '../assessment.service';
 import { Assessment } from './../../assess.model';
 
 @Component({
