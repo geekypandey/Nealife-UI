@@ -8,7 +8,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ColDef } from 'src/app/components/table/table.model';
 import { API_URL } from 'src/app/constants/api-url.constants';
-import { AssignService } from '../assign/assessment.service';
+import { AssessmentService } from '../assign/assessment.service';
 
 export interface Payment {
   name: string,
@@ -51,7 +51,7 @@ export class PaymentComponent {
   private spinner = inject(NgxSpinnerService);
   private http = inject(HttpClient);
   private router = inject(Router);
-  private assignService = inject(AssignService);
+  private assignService = inject(AssessmentService);
 
   spinnerName: string = 'payment-spinner';
   payments$: Observable<PaymentDisplay[]>;

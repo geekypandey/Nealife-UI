@@ -5,12 +5,17 @@ import { API_URL } from 'src/app/constants/api-url.constants';
 import { Assessment } from '../assess.model';
 
 @Injectable()
-export class AssignService {
+export class AssessmentService {
   private http = inject(HttpClient);
 
   getAssessments() {
       return this.http
           .get<Assessment[]>(API_URL.companyAssessments);
+  }
+
+  getAssessment(id: number) {
+      return this.http
+          .get<Assessment>(`${API_URL.companyAssessments}/${id}`);
   }
 
   getAssessmentsForDropDown() {

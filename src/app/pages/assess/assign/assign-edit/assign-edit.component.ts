@@ -19,7 +19,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
 import { CompanyService } from '../../company/company.service';
-import { AssignService } from '../assessment.service';
+import { AssessmentService } from '../assessment.service';
 import { Assessment } from './../../assess.model';
 
 @Component({
@@ -55,7 +55,7 @@ export class AssignEditComponent {
   private fb = inject(FormBuilder);
   private cdRef = inject(ChangeDetectorRef);
   private translateService = inject(TranslateService);
-  private assignService = inject(AssignService);
+  private assignService = inject(AssessmentService);
   imagesUrl: any;
 
   @Input()

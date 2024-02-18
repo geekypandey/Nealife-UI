@@ -7,7 +7,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { Assessment } from '../../assess.model';
-import { AssignService } from '../assessment.service';
+import { AssessmentService } from '../assessment.service';
 
 @Component({
   selector: 'nl-company-assessment',
@@ -32,7 +32,7 @@ export class CompanyAssessmentComponent {
     { header: 'Used Credits', field: 'usedCredits'},
   ]
 
-  private assessmentService = inject(AssignService);
+  private assessmentService = inject(AssessmentService);
   private spinner = inject(NgxSpinnerService);
   private router = inject(Router);
 
@@ -56,7 +56,7 @@ export class CompanyAssessmentComponent {
         icon: ACTION_ICON.EDIT,
         field: 'id',
         onClick: (value: string) => {
-          this.router.navigate([value + '/edit'], {
+          this.router.navigate(['company-assessment/' + value + '/edit'], {
             relativeTo: this.activatedRoute,
           });
         },

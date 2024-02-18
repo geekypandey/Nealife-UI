@@ -16,7 +16,7 @@ import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { SidebarMenu } from './assess.model';
-import { AssignService } from './assign/assessment.service';
+import { AssessmentService } from './assign/assessment.service';
 import { CompanyService } from './company/company.service';
 import { AssessService } from './services/assess.service';
 import { ProfileService } from './services/profile.service';
@@ -35,7 +35,7 @@ import { ProfileService } from './services/profile.service';
   templateUrl: './assess.component.html',
   styleUrls: ['./assess.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ProfileService, AssessService, CompanyService, AssignService],
+  providers: [ProfileService, AssessService, CompanyService, AssessmentService],
 })
 export class AssessComponent {
   sidebarMenus: SidebarMenu[] = [];
