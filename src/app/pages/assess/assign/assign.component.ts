@@ -9,13 +9,15 @@ import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.mode
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { Assessment } from '../assess.model';
 import { AssignService } from './assign.service';
+import { CompanyAssessmentGroupComponent } from './company-assessment-group/company-assessment-group.component';
 import { CompanyAssessmentComponent } from './company-assessment/company-assessment.component';
+
 
 
 @Component({
   selector: 'nl-assign',
   standalone: true,
-  imports: [CommonModule , TableComponent, RouterLink, TabViewModule, CompanyAssessmentComponent],
+  imports: [CommonModule , TableComponent, RouterLink, TabViewModule, CompanyAssessmentComponent, CompanyAssessmentGroupComponent],
   templateUrl: './assign.component.html',
   styleUrls: ['./assign.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

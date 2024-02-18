@@ -1,23 +1,12 @@
 <div class="mt-3 row flex-column">
   <strong class="col mb-3">Assign</strong>
   <p-tabView>
-     <p-tabPanel header="Assign Assessment">
+    <p-tabPanel header="Assign Assessment">
       <nl-company-assessment />
-      </p-tabPanel>
+    </p-tabPanel>
 
-      <p-tabPanel header="Assign Assessment Group">
-        <ng-container *ngIf="assessmentGroups$ | async as assessmentGroups">
-          <div class="mb-3 d-flex justify-content-end">
-            <button
-              type="button"
-              routerLink="add"
-              [relativeTo]="activatedRoute"
-              class="p-button ml-auto d-block">
-              Add
-            </button>
-          </div>
-          <nl-table [cols]="assessmentGroupCols" [value]="assessmentGroups" [actionsList]="assessmentGroupActionList" />
-        </ng-container>
-      </p-tabPanel>
+    <p-tabPanel header="Assign Assessment Group">
+      <nl-company-assessment-group />
+    </p-tabPanel>
   </p-tabView>
 </div>
