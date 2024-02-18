@@ -33,7 +33,7 @@ export const API_URL = {
   preAssessmentSectionDetails: BASE_URL + '/pre-assessment-section-details',
   submitGroupResult: BASE_URL + '/submitGroupResult',
 
-  assign: BASE_URL + '/company-assessments',
+  companyAssessments: BASE_URL + '/company-assessments',
   assessmentForDropDown: BASE_URL + '/company-assessments/fordropdown',
 
   payment: BASE_URL + '/payments',

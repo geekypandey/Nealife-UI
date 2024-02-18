@@ -10,7 +10,7 @@ export class AssignService {
 
   getAssessments() {
       return this.http
-          .get<Assessment[]>(API_URL.assign);
+          .get<Assessment[]>(API_URL.companyAssessments);
   }
 
   getAssessmentsForDropDown() {
@@ -26,12 +26,12 @@ export class AssignService {
   }
 
     updateAssessment(assessment: Assessment) {
-        return this.http.put<Assessment>(API_URL.assign, assessment)
+        return this.http.put<Assessment>(API_URL.companyAssessments, assessment)
         .pipe(map(res => this.convertDateFromServer(res)));
     }
 
     addAssessment(assessment: Assessment) {
-        return this.http.post<Assessment>(API_URL.assign, assessment)
+        return this.http.post<Assessment>(API_URL.companyAssessments, assessment)
         .pipe(map(res => this.convertDateFromServer(res)));
     }
 
