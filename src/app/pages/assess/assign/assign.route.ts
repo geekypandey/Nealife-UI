@@ -28,6 +28,19 @@ export const assignRoute: Route[] = [
     },
   },
   {
+    path: 'company-assessment',
+    loadChildren: () =>
+      import('./company-assessment/company-assessment.route').then(c => c.companyAssessmentRoutes),
+    data: {
+      authorities: [
+        Authority.ACCOUNT_ADMIN,
+        Authority.NEA_ADMIN,
+        Authority.ADMIN,
+        Authority.SUPER_ADMIN,
+      ],
+    },
+  },
+  {
     path: 'add',
     loadComponent: () =>
       import('./assign-edit/assign-edit.component').then(c => c.AssignEditComponent),
