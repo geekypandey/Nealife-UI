@@ -1,0 +1,16 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="row flex-column">
+  <div class="mb-3 d-flex justify-content-between align-items-center">
+    <strong class="">Competency</strong>
+    <button
+      type="button"
+      routerLink="new"
+      [relativeTo]="activatedRoute"
+      class="p-button ml-auto d-block">
+      Add Competency
+    </button>
+  </div>
+  <ng-container *ngIf="competencies$ | async as competencies">
+    <nl-table [cols]="cols" [value]="competencies" [actionsList]="actionsList" />
+  </ng-container>
+</div>

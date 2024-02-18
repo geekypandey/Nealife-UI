@@ -1,0 +1,9 @@
+<div class="mt-3 row flex-column">
+  <strong class="col mb-3">{{ menuUrl | titlecase }}</strong>
+</div>
+<p-tabView (activeIndexChange)="onTabSelection($event)" [(activeIndex)]="activeIndex">
+  <p-tabPanel *ngFor="let tab of tabs" [header]="tab.header"> </p-tabPanel>
+</p-tabView>
+<div class="position-relative h-100">
+  <router-outlet></router-outlet>
+</div>

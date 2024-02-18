@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { API_URL } from 'src/app/constants/api-url.constants';
-import { IApplicationUserAssessment } from '../assess.model';
 import { createRequestOption } from '../assess.util';
 
 @Injectable({
@@ -10,18 +9,12 @@ import { createRequestOption } from '../assess.util';
 export class CRUDService {
   private http = inject(HttpClient);
 
-  create(applicationUserAssessment: IApplicationUserAssessment) {
-    return this.http.post<IApplicationUserAssessment>(
-      API_URL.applicationUserAssessment,
-      applicationUserAssessment
-    );
+  create<T>(url: string, payload: T) {
+    return this.http.post<T>(url, payload);
   }
 
-  update(applicationUserAssessment: IApplicationUserAssessment) {
-    return this.http.put<IApplicationUserAssessment>(
-      API_URL.applicationUserAssessment,
-      applicationUserAssessment
-    );
+  update<T>(url: string, payload: T) {
+    return this.http.put<T>(url, payload);
   }
 
   find<T>(url: string, id: string) {

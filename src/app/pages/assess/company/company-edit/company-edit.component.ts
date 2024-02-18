@@ -43,7 +43,6 @@ export class CompanyEditComponent {
   imagesUrl: any;
   @Input()
   set id(id: string) {
-    this.spinner.show('register-edit');
     if (id) {
       this.spinner.show(this.spinnerName);
       this.companyService.getCompanies(id).subscribe({

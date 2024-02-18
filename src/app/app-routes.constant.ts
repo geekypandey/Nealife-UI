@@ -26,11 +26,6 @@ export const APP_ROUTES: Routes = [
     loadChildren: () => import('./pages/assess/assess.routes').then(r => r.DASHBOARD_ROUTES),
     canActivate: [isAuthenticatedGuard],
   },
-  // {
-  //   path: 'assess',
-  //   loadChildren: () => import('./pages/dashboard/dashboard.routes').then(r => r.DASHBOARD_ROUTES),
-  //   canActivate: [isAuthenticatedGuard],
-  // },
   {
     path: 'render-assessment',
     loadComponent: () =>
