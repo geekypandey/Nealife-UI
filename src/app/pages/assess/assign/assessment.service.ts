@@ -46,4 +46,11 @@ export class AssessmentService {
         }
         return res;
     }
+
+    downloadCredits(companyAssessmentId: string) {
+        const params = {
+            'companyAssessmentId.equals': companyAssessmentId,
+        }
+        return this.http.get(`${API_URL.downloadCredits}?companyAssessmentId.equals=${companyAssessmentId}`, {observe: 'response', responseType: 'blob'});
+    }
 }

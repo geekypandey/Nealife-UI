@@ -38,4 +38,5 @@ export const API_URL = {
 
   payment: BASE_URL + '/payments',
   assignGroup: BASE_URL + '/company-assessment-groups',
+  downloadCredits: BASE_URL + '/download-credits',
 };
