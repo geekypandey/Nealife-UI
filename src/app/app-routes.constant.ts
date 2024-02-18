@@ -23,7 +23,7 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'assess',
-    loadChildren: () => import('./pages/assess/asess.routes').then(r => r.DASHBOARD_ROUTES),
+    loadChildren: () => import('./pages/assess/assess.routes').then(r => r.DASHBOARD_ROUTES),
     canActivate: [isAuthenticatedGuard],
   },
   // {

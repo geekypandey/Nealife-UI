@@ -26,6 +26,10 @@ export class CompanyService {
       .pipe(map(resp => (this.companiesData = resp)));
   }
 
+  getCompany(companyId: number) {
+    return this.http.get<Company>(`${API_URL.companies}/${companyId}`);
+  }
+
   createCompany(formData: any) {
     return this.http
       .post<Company>(API_URL.companies, formData)

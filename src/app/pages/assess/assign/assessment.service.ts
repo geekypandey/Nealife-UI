@@ -5,12 +5,17 @@ import { API_URL } from 'src/app/constants/api-url.constants';
 import { Assessment } from '../assess.model';
 
 @Injectable()
-export class AssignService {
+export class AssessmentService {
   private http = inject(HttpClient);
 
   getAssessments() {
       return this.http
-          .get<Assessment[]>(API_URL.assign);
+          .get<Assessment[]>(API_URL.companyAssessments);
+  }
+
+  getAssessment(id: number) {
+      return this.http
+          .get<Assessment>(`${API_URL.companyAssessments}/${id}`);
   }
 
   getAssessmentsForDropDown() {
@@ -26,12 +31,12 @@ export class AssignService {
   }
 
     updateAssessment(assessment: Assessment) {
-        return this.http.put<Assessment>(API_URL.assign, assessment)
+        return this.http.put<Assessment>(API_URL.companyAssessments, assessment)
         .pipe(map(res => this.convertDateFromServer(res)));
     }
 
     addAssessment(assessment: Assessment) {
-        return this.http.post<Assessment>(API_URL.assign, assessment)
+        return this.http.post<Assessment>(API_URL.companyAssessments, assessment)
         .pipe(map(res => this.convertDateFromServer(res)));
     }
 

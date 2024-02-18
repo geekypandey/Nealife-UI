@@ -48,6 +48,10 @@ export const DASHBOARD_ROUTES: Route[] = [
         path: 'payment',
         loadComponent: () => import('./payment/payment.component').then(c => c.PaymentComponent),
       },
+      {
+        path: 'configure',
+        loadComponent: () => import('./configure/configure.component').then(r => r.ConfigureComponent),
+      },
     ],
   },
 ];

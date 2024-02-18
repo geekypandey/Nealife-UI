@@ -1,0 +1,37 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<ng-container *ngIf="assessmentGroups$ | async as assessmentGroups">
+    <div class="mb-3 d-flex justify-content-end">
+    <button
+        type="button"
+        routerLink="add"
+        [relativeTo]="activatedRoute"
+        class="p-button ml-auto d-block">
+        Add
+    </button>
+    </div>
+    <nl-table [cols]="cols" [value]="assessmentGroups" [actionsList]="actionsList">
+        <ng-template #customBodyTpl let-rowData let-columns="columns">
+            <ng-template ngFor let-col [ngForOf]="columns" let-i="index">
+            <td *ngIf="col.visible">
+                <ng-container [ngSwitch]="col.field">
+                <ng-container *ngSwitchCase="'id'">
+                    <span
+                    class="link-primary nl-cursor-pointer"
+                    [routerLink]="['/assess/assign/', rowData['companyId'], 'view']"
+                    >{{ rowData[col.field] }}</span
+                    >
+                </ng-container>
+                <ng-container *ngSwitchCase="'companyName'">
+                    <span
+                    class="link-primary nl-cursor-pointer"
+                    [routerLink]="['/assess/company/', rowData['companyId'], 'view']"
+                    >{{ rowData[col.field] }}</span
+                    >
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ rowData[col.field] }}</ng-container>
+                </ng-container>
+            </td>
+            </ng-template>
+        </ng-template>
+    </nl-table>
+</ng-container>
