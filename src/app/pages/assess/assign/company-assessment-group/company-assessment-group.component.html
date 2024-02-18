@@ -1,0 +1,13 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<ng-container *ngIf="assessmentGroups$ | async as assessmentGroups">
+    <div class="mb-3 d-flex justify-content-end">
+    <button
+        type="button"
+        routerLink="add"
+        [relativeTo]="activatedRoute"
+        class="p-button ml-auto d-block">
+        Add
+    </button>
+    </div>
+    <nl-table [cols]="cols" [value]="assessmentGroups" [actionsList]="actionsList" />
+</ng-container>
