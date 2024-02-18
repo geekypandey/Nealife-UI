@@ -51,6 +51,6 @@ export class AssessmentService {
         const params = {
             'companyAssessmentId.equals': companyAssessmentId,
         }
-        return this.http.get(`${API_URL.downloadCredits}?companyAssessmentId.equals=${companyAssessmentId}`, {observe: 'response', responseType: 'blob'});
+        return this.http.get(`${API_URL.downloadCredits}?companyAssessmentId.equals=${companyAssessmentId}`, { responseType: 'blob'});
     }
 }
