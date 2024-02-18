@@ -44,7 +44,43 @@ export class CompanyAssessmentComponent {
 
     this.actionsList = [
       {
+        icon: ACTION_ICON.VIEW,
+        field: 'id',
+        onClick: (value: string) => {
+          this.router.navigate([value + '/edit'], {
+            relativeTo: this.activatedRoute,
+          });
+        },
+      },
+      {
         icon: ACTION_ICON.EDIT,
+        field: 'id',
+        onClick: (value: string) => {
+          this.router.navigate([value + '/edit'], {
+            relativeTo: this.activatedRoute,
+          });
+        },
+      },
+      {
+        icon: ACTION_ICON.ALERT,
+        field: 'id',
+        onClick: (value: string) => {
+          this.router.navigate([value + '/edit'], {
+            relativeTo: this.activatedRoute,
+          });
+        },
+      },
+      {
+        icon: ACTION_ICON.DOWNLOAD,
+        field: 'id',
+        onClick: (value: string) => {
+          this.router.navigate([value + '/edit'], {
+            relativeTo: this.activatedRoute,
+          });
+        },
+      },
+      {
+        icon: ACTION_ICON.DELETE,
         field: 'id',
         onClick: (value: string) => {
           this.router.navigate([value + '/edit'], {
