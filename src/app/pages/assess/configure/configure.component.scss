@@ -1,0 +1,22 @@
+::ng-deep p-tabView {
+  .p-tabview-nav {
+    border-color: #c8d7ed;
+  }
+  .p-tabview-nav-container ul {
+    margin-bottom: 0;
+    padding: 0;
+  }
+  .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: #03c988;
+    border-color: #03c988;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px 8px 0px 0px;
+  }
+  .p-tabview-nav li .p-tabview-nav-link {
+    text-decoration: none;
+    color: #1f2c40;
+    font-size: 14px;
+    transition: box-shadow 0.2s;
+  }
+}
