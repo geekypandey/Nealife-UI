@@ -71,7 +71,8 @@
       {{ fieldName | titlecase }} is required.
     </div>
     <div *ngIf="editForm.controls[fieldName].errors?.['maxlength']">
-      This field cannot be longer than 75 characters.
+      This field cannot be longer than
+      {{ editForm.controls[fieldName].errors?.['maxlength']?.['requiredLength'] }} characters.
     </div>
   </small>
 </ng-template>

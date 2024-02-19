@@ -92,11 +92,11 @@ export class AspectUpdateComponent {
   private createFromForm(): IAspect {
     return {
       ...new Aspect(),
-      id: this.editForm.get(['id'])!.value,
+      id: this.editForm.get(['id'])!.value || undefined,
       name: this.editForm.get(['name'])!.value,
       description: this.editForm.get(['description'])!.value,
       type: this.editForm.get(['type'])!.value,
-      interpretationsId: this.editForm.get(['interpretationsId'])!.value,
+      interpretationsId: this.editForm.get(['interpretationsId'])!.value || undefined,
       parentId: this.editForm.get(['parentId'])!.value,
     };
   }

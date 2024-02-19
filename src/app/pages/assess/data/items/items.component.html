@@ -1,0 +1,33 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="row flex-column">
+  <div class="mb-3 d-flex justify-content-between align-items-center">
+    <strong class="">Items</strong>
+    <button
+      type="button"
+      routerLink="new"
+      [relativeTo]="activatedRoute"
+      class="p-button ml-auto d-block">
+      Add Item
+    </button>
+  </div>
+  <ng-container *ngIf="items$ | async as items">
+    <nl-table [cols]="cols" [value]="items" [actionsList]="actionsList">
+      <ng-template #customBodyTpl let-rowData let-columns="columns">
+        <ng-template ngFor let-col [ngForOf]="columns" let-i="index">
+          <td *ngIf="col.visible">
+            <ng-container [ngSwitch]="col.field">
+              <ng-container *ngSwitchCase="'id'">
+                <span
+                  class="link-primary nl-cursor-pointer"
+                  [routerLink]="['/assess/data/items', rowData['id'], 'view']"
+                  >{{ rowData[col.field] }}</span
+                >
+              </ng-container>
+              <ng-container *ngSwitchDefault>{{ rowData[col.field] }}</ng-container>
+            </ng-container>
+          </td>
+        </ng-template>
+      </ng-template>
+    </nl-table>
+  </ng-container>
+</div>
