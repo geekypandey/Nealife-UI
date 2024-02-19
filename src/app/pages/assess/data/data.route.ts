@@ -26,11 +26,11 @@ export const dataRoute: Route[] = [
         path: 'norm',
         loadChildren: () => import('./norm/norm.route').then(c => c.normRoute),
       },
-      // {
-      //   path: 'interpretation',
-      //   loadChildren: () =>
-      //     import('./interpretation/interpretation.route').then(c => c.interpretationRoute),
-      // },
+      {
+        path: 'interpretation',
+        loadChildren: () =>
+          import('./interpretation/interpretation.route').then(c => c.interpretationRoute),
+      },
     ],
   },
   //   {

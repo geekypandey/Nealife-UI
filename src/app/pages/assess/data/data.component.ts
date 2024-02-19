@@ -36,6 +36,10 @@ export class DataComponent {
         header: 'Norm',
         url: 'norm',
       },
+      {
+        header: 'Interpretation',
+        url: 'interpretation',
+      },
     ];
   }
 }

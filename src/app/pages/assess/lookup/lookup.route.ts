@@ -56,9 +56,6 @@ export const lookupRoute: Route[] = [
   {
     path: 'new',
     component: LookupUpdateComponent,
-    resolve: {
-      lookup: lookupResolver,
-    },
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
