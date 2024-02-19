@@ -32,6 +32,10 @@ export class DataComponent {
         header: 'Response Option',
         url: 'response-option',
       },
+      {
+        header: 'Norm',
+        url: 'norm',
+      },
     ];
   }
 }

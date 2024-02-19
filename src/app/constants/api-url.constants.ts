@@ -24,6 +24,7 @@ export const API_URL = {
   aspects: BASE_URL + '/aspects',
   items: BASE_URL + '/items',
   responseOptions: BASE_URL + '/response-options',
+  norms: BASE_URL + '/norms',
 
   assessment: BASE_URL + '/assessments/renderNewAssesment',
   assessmentJson: BASE_URL + '/assessments/getAssessmentJson',

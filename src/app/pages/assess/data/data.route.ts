@@ -22,6 +22,15 @@ export const dataRoute: Route[] = [
         loadChildren: () =>
           import('./response-option/response-option.route').then(c => c.responseOptionRoute),
       },
+      {
+        path: 'norm',
+        loadChildren: () => import('./norm/norm.route').then(c => c.normRoute),
+      },
+      // {
+      //   path: 'interpretation',
+      //   loadChildren: () =>
+      //     import('./interpretation/interpretation.route').then(c => c.interpretationRoute),
+      // },
     ],
   },
   //   {
