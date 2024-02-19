@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    Input,
-    inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  inject,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -92,7 +92,7 @@ export class AssignEditComponent {
       value: value,
     }));
 
-    this.assignService.getAssessmentsForDropDown().subscribe((value) => {
+    this.assignService.getAssessmentsForDropDown('').subscribe((value) => {
       this.assessments = value.map(assessment => ({
         label: assessment.assessmentName,
         value: '' + assessment.assessmentId
