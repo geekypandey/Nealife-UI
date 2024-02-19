@@ -19,10 +19,9 @@ export const associationRoutes: Route[] = [
   },
   {
     path: 'assessment-competency',
-    loadComponent: () =>
-      import('./association.component').then(c => c.AssociationComponent),
+    loadChildren: () =>
+      import('./assessment-competency/assessment-competency.route').then(c => c.assessmentCompetencyRoute),
     data: {
-      tabIndex: ASSOCIATION_TAB_INDEX.ASSESSMENT_COMPETENCY,
       authorities: [
         Authority.ACCOUNT_ADMIN,
         Authority.NEA_ADMIN,
