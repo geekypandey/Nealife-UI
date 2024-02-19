@@ -45,4 +45,6 @@ export const API_URL = {
   competencyAspects: BASE_URL + '/competency-aspects',
   aspectItems: BASE_URL + '/aspect-items',
   assessmentGroup: BASE_URL + '/assessment-group-assessments',
+  competenciesForDropdown: BASE_URL + '/competencies-forDropdown',
+  assessmentsForDropdown: BASE_URL + '/assessments-fordropdown',
 };
