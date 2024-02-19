@@ -6,27 +6,26 @@ import { Observable } from 'rxjs';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { API_URL } from 'src/app/constants/api-url.constants';
-import { Assessment } from '../../assess.model';
 
 @Component({
-  selector: 'nl-assessment',
+  selector: 'nl-assessment-competency',
   standalone: true,
   imports: [CommonModule, TableComponent, RouterLink],
-  templateUrl: './assessment.component.html',
-  styleUrls: ['./assessment.component.scss'],
+  templateUrl: './assessment-competency.component.html',
+  styleUrls: ['./assessment-competency.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AssessmentComponent {
-  assessments$: Observable<Array<Assessment>>;
-  activatedRoute = inject(ActivatedRoute);
+export class AssessmentCompetencyComponent {
+  assessmentCompetencies$: Observable<any>;
+  activatedRoute = inject(ActivatedRoute)
 
   private http = inject(HttpClient);
-  private router = inject(Router)
+  private router = inject(Router);
 
   cols: ColDef[] = [
-    { header: 'Id', field: 'id' },
-    { header: 'Name', field: 'displayName'},
-    { header: 'Status', field: 'status'},
+    { header: 'Id', field: 'id'},
+    { header: 'Assessment', field: 'assessmentName'},
+    { header: 'Competency', field: 'competencyName'},
   ]
 
   actionsList: Action[] = [
@@ -51,7 +50,6 @@ export class AssessmentComponent {
   ]
 
   constructor() {
-    this.assessments$ = this.http.get<any>(`${API_URL.assessments}?page=0&size=5000&sort=id,desc`);
+    this.assessmentCompetencies$ = this.http.get<any>(`${API_URL.assessmentCompetencies}?page=0&size=5000&sort=id,desc`);
   }
-
 }

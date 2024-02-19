@@ -1,1 +1,203 @@
-<p>company-assessment-edit works!</p>
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="mt-3 row flex-column">
+  <div class="d-flex mb-2">
+    <strong class="col mb-3">Edit Assign Assessment</strong>
+    <!-- TODO: fix the button -->
+    <div class="col-2 d-flex justify-content-around">
+      <button type="button" class="p-button">Save</button>
+      <button type="button" class="p-button" (click)="goBack()">Cancel</button>
+      <button type="button" class="p-button" (click)="downloadCredits()">Download Credits</button>
+    </div>
+  </div>
+  <ng-container [formGroup]="editForm">
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <div class="nl-card nl-border nl-border-1">
+            <div class="row mb-3 p-fluid">
+              <div class="col-6">
+                <label class="d-block" for="id">Id</label>
+                <input
+                  type="text"
+                  formControlName="id"
+                  id="id"
+                  class="p-inputtext" />
+              </div>
+              <div class="col-6">
+                <label class="d-block" for="companyId">Company</label>
+                  <p-dropdown
+                    [attr.id]="'parent'"
+                    formControlName="companyId"
+                    [options]="companies"
+                    placeholder="Select Company"></p-dropdown>
+              </div>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6">
+                <label class="d-block" for="assessment">Assessment</label>
+                  <p-dropdown
+                    [attr.id]="'parent'"
+                    formControlName="assessmentId"
+                    [options]="assessments"
+                    placeholder="Select Assessment"></p-dropdown>
+              </div>
+              <div class="col-6">
+                <label class="d-block" for="assessment">Assessment Date</label>
+                  <p-calendar
+                    id="assessment-date"
+                    dateFormat="yy-mm-dd"
+                    formControlName="scheduleDate"
+                    [showIcon]="true"></p-calendar>
+              </div>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6">
+                <label class="d-block" for="time-limit">Time Limit (in minutes)*</label>
+                <input
+                  type="text"
+                  formControlName="timeLimit"
+                  id="time-limit"
+                  class="p-inputtext" />
+              </div>
+              <div class="col-6">
+                <label class="d-block" for="total-credits">Total Credits*</label>
+                <input
+                  type="text"
+                  formControlName="totalCredits"
+                  id="total-credits"
+                  class="p-inputtext" />
+              </div>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6">
+                <label class="d-block" for="available-credits">Avaliable Credits*</label>
+                <input
+                  type="text"
+                  formControlName="availableCredits"
+                  id="available-credits"
+                  class="p-inputtext" />
+              </div>
+              <div class="col-6">
+                <label class="d-block" for="used-credits">Used Credits*</label>
+                <input
+                  type="text"
+                  formControlName="usedCredits"
+                  id="used-credits"
+                  class="p-inputtext" />
+              </div>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6">
+                <label class="d-block" for="allocated-credits">Allocated Credits*</label>
+                <input
+                  type="text"
+                  formControlName="allocatedCredits"
+                  id="allocated-credits"
+                  class="p-inputtext" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container [formGroup]="individualEditForm">
+    <div class="mt-4">
+      <h3>Individual</h3>
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <div class="nl-card nl-border nl-border-1">
+            <div class="row mb-3 p-fluid">
+              <div class="col-6">
+                <label class="d-block" for="generateUrl">Generate URL</label>
+                  <input
+                    type="text"
+                    formControlName="generateUrl"
+                    id="generateUrl"
+                    class="p-inputtext" />
+              </div>
+              <div class="col-6">
+                <label class="d-block" for="creditCode">Credit Code</label>
+                  <input
+                    type="text"
+                    formControlName="creditCode"
+                    id="creditCode"
+                    class="p-inputtext" />
+              </div>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6">
+                <label class="d-block" for="email">Email</label>
+                  <input
+                    type="text"
+                    formControlName="email"
+                    id="email"
+                    class="p-inputtext" />
+              </div>
+              <div class="col-6 d-flex flex-column">
+                <div class="d-flex">
+                  <div>
+                    <input type="checkbox" formControlName="emailReport"/>
+                    <label for="">Email Report</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" formControlName="embeddedCreditCode"/>
+                    <label for="">Generate Link Via Embedded Credit Code</label>
+                  </div>
+                </div>
+                <div class="d-flex">
+                    <button class="p-button">Generate Link</button>
+                    <button class="p-button">Generate & Email Link</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--card end-->
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container [formGroup]="bulkEditForm">
+    <div class="mt-4">
+      <h3>Bulk</h3>
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <div class="nl-card nl-border nl-border-1">
+            <div class="row mb-3 p-fluid">
+              <div class="col-6">
+                <label class="d-block" for="parent">Credits</label>
+                  <input
+                    type="text"
+                    formControlName="credits"
+                    id="email"
+                    class="p-inputtext" />
+                </div>
+                <div class="col-6 d-flex flex-column">
+                  <div class="d-flex">
+                    <div>
+                      <input type="checkbox" formControlName="emailReport"/>
+                      <label for="">Email Report</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" formControlName="embeddedCreditCode"/>
+                      <label for="">Generate Link Via Embedded Credit Code</label>
+                    </div>
+                  </div>
+                  <div class="d-flex row justify-content-around mt-2">
+                      <button class="p-button col-3">Download Template</button>
+                      <button class="p-button col-3">Upload User & Email Links</button>
+                      <button class="p-button col-3">Download Links</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--card end-->
+          </div>
+        </div>
+      </div>
+  </ng-container>
+</div>

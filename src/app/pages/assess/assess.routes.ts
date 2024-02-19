@@ -57,6 +57,10 @@ export const DASHBOARD_ROUTES: Route[] = [
         path: 'data',
         loadChildren: () => import('./data/data.route').then(c => c.dataRoute),
       },
+      {
+        path: 'association',
+        loadChildren: () => import('./association/association.route').then(r => r.associationRoutes),
+      },
     ],
   },
 ];

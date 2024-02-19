@@ -39,4 +39,13 @@ export const API_URL = {
 
   payment: BASE_URL + '/payments',
   assignGroup: BASE_URL + '/company-assessment-groups',
+  downloadCredits: BASE_URL + '/download-credits',
+
+  assessments: BASE_URL + '/assessments',
+  assessmentCompetencies: BASE_URL + '/assessment-competencies',
+  competencyAspects: BASE_URL + '/competency-aspects',
+  aspectItems: BASE_URL + '/aspect-items',
+  assessmentGroup: BASE_URL + '/assessment-group-assessments',
+  competenciesForDropdown: BASE_URL + '/competencies-forDropdown',
+  assessmentsForDropdown: BASE_URL + '/assessments-fordropdown',
 };

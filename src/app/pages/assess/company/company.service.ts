@@ -26,6 +26,16 @@ export class CompanyService {
       .pipe(map(resp => (this.companiesData = resp)));
   }
 
+  getCompanyById(companyId: string) {
+    const params: any = {
+      'parent.equals': companyId,
+    };
+    return this.http
+      .get<Company[]>(API_URL.companies, {
+        params: params,
+      })
+  }
+
   getCompany(companyId: number) {
     return this.http.get<Company>(`${API_URL.companies}/${companyId}`);
   }

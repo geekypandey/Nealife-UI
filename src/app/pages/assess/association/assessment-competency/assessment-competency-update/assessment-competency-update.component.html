@@ -1,0 +1,48 @@
+<div class="mt-3 row flex-column">
+  <div class="d-flex mb-2">
+    <strong class="col mb-3">Assessment Competency</strong>
+    <!-- TODO: fix the button -->
+    <div class="col-2 d-flex justify-content-around">
+      <button type="button" class="p-button">Save</button>
+      <button type="button" class="p-button" (click)="goBack()">Cancel</button>
+    </div>
+  </div>
+  <ng-container [formGroup]="editForm">
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <div class="nl-card nl-border nl-border-1">
+            <div class="row mb-3 p-fluid">
+              <div class="col-6" [hidden]="">
+                <label class="d-block" for="id">Id</label>
+                <input
+                  type="text"
+                  formControlName="id"
+                  id="id"
+                  class="p-inputtext" readonly/>
+              </div>
+              <div class="col-6">
+                <label class="d-block" for="assessmentId">Assessment</label>
+                  <p-dropdown
+                    [attr.id]="'parent'"
+                    formControlName="assessmentId"
+                    [options]="assessments"
+                    placeholder="Select Assessment"></p-dropdown>
+              </div>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6">
+                <label class="d-block" for="assessment">Competencies</label>
+                  <p-dropdown
+                    [attr.id]="'parent'"
+                    formControlName="competencyId"
+                    [options]="competencies"
+                    placeholder="Select Competency"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

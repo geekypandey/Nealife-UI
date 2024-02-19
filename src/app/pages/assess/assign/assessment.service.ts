@@ -18,9 +18,9 @@ export class AssessmentService {
           .get<Assessment>(`${API_URL.companyAssessments}/${id}`);
   }
 
-  getAssessmentsForDropDown() {
+  getAssessmentsForDropDown(companyId: string) {
     const params: any = {
-      'companyId.equals': 1,
+      'companyId.equals': companyId,
       'displayInSignup.equals': true,
     };
 
@@ -45,5 +45,12 @@ export class AssessmentService {
         if (res.body) {
         }
         return res;
+    }
+
+    downloadCredits(companyAssessmentId: string) {
+        const params = {
+            'companyAssessmentId.equals': companyAssessmentId,
+        }
+        return this.http.get(`${API_URL.downloadCredits}?companyAssessmentId.equals=${companyAssessmentId}`, { responseType: 'blob'});
     }
 }

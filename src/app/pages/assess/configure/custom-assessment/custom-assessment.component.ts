@@ -8,15 +8,16 @@ import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.mode
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { Assessment } from '../../assess.model';
 
+
 @Component({
-  selector: 'nl-assessment',
+  selector: 'nl-custom-assessment',
   standalone: true,
   imports: [CommonModule, TableComponent, RouterLink],
-  templateUrl: './assessment.component.html',
-  styleUrls: ['./assessment.component.scss'],
+  templateUrl: './custom-assessment.component.html',
+  styleUrls: ['./custom-assessment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AssessmentComponent {
+export class CustomAssessmentComponent {
   assessments$: Observable<Array<Assessment>>;
   activatedRoute = inject(ActivatedRoute);
 
@@ -55,3 +56,4 @@ export class AssessmentComponent {
   }
 
 }
+
