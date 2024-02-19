@@ -4,6 +4,18 @@ import { AspectDetailComponent } from './aspect-detail/aspect-detail.component';
 import { AspectUpdateComponent } from './aspect-update/aspect-update.component';
 import { AspectComponent } from './aspect.component';
 
+// export const aspectResolver: ResolveFn<ICompetency> = (
+//   route: ActivatedRouteSnapshot,
+//   state: RouterStateSnapshot
+// ): Observable<ICompetency> => {
+//   const spinnerService = inject(NgxSpinnerService);
+//   const crudService: CRUDService = inject(CRUDService);
+//   spinnerService.show();
+//   return crudService
+//     .find<ICompetency>(API_URL.competencies, route.paramMap.get('id') || '')
+//     .pipe(finalize(() => spinnerService.hide()));
+// };
+
 export const aspectRoute: Routes = [
   {
     path: '',

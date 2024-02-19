@@ -21,6 +21,7 @@ export const API_URL = {
   downloadHtmlReportUrl: BASE_URL + '/downloadHtmlReport',
   downloadPdfReportUrl: BASE_URL + '/downloadPdfReport',
   competencies: BASE_URL + '/competencies',
+  aspects: BASE_URL + '/aspects',
 
   assessment: BASE_URL + '/assessments/renderNewAssesment',
   assessmentJson: BASE_URL + '/assessments/getAssessmentJson',
