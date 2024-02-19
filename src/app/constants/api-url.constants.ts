@@ -23,6 +23,7 @@ export const API_URL = {
   competencies: BASE_URL + '/competencies',
   aspects: BASE_URL + '/aspects',
   items: BASE_URL + '/items',
+  responseOptions: BASE_URL + '/response-options',
 
   assessment: BASE_URL + '/assessments/renderNewAssesment',
   assessmentJson: BASE_URL + '/assessments/getAssessmentJson',

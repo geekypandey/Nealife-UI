@@ -1,1 +1,72 @@
-<p>response-option-update works!</p>
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="mt-3 row flex-column">
+  <strong class="col mb-3">{{ responseOption ? 'Edit' : 'Add' }} Response Option</strong>
+  <ng-container [formGroup]="editForm" *ngIf="editForm">
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <div class="nl-card nl-border nl-border-1">
+            <div class="row mb-3 p-fluid">
+              <div class="col-6" [hidden]="!editForm.get('id')!.value">
+                <label class="d-block" for="id">ID</label>
+                <input type="text" formControlName="id" id="id" class="p-inputtext p-disabled" />
+              </div>
+            </div>
+            <div class="row mb-3 p-fluid gy-2">
+              <div class="col-6">
+                <label class="d-block" for="responseOption">Response Option</label>
+                <input
+                  type="text"
+                  formControlName="responseOption"
+                  id="responseOption"
+                  class="p-inputtext" />
+                <ng-container
+                  *ngTemplateOutlet="
+                    errorTpl;
+                    context: { $implicit: editForm, fieldName: 'responseOption' }
+                  "></ng-container>
+              </div>
+              <div class="col-6">
+                <label class="d-block" for="choices">Choices</label>
+                <input type="text" formControlName="choices" id="choices" class="p-inputtext" />
+                <ng-container
+                  *ngTemplateOutlet="
+                    errorTpl;
+                    context: { $implicit: editForm, fieldName: 'choices' }
+                  "></ng-container>
+              </div>
+            </div>
+
+            <div class="row justify-content-end">
+              <div class="col-3 d-block d-flex justify-content-around">
+                <button type="button" class="p-button" (click)="goBack()">Cancel</button>
+                <button
+                  type="button"
+                  class="p-button"
+                  (click)="save()"
+                  [disabled]="editForm.invalid">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+          <!--card end-->
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #errorTpl let-editForm let-fieldName="fieldName">
+  <small
+    *ngIf="editForm.controls[fieldName].invalid && editForm.controls[fieldName].dirty"
+    class="p-error">
+    <div *ngIf="editForm.controls[fieldName].errors?.['required']">
+      {{ fieldName | titlecase }} is required.
+    </div>
+    <div *ngIf="editForm.controls[fieldName].errors?.['maxlength']">
+      This field cannot be longer than
+      {{ editForm.controls[fieldName].errors?.['maxlength']?.['requiredLength'] }} characters.
+    </div>
+  </small>
+</ng-template>
