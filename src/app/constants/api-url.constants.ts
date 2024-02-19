@@ -41,4 +41,5 @@ export const API_URL = {
   downloadCredits: BASE_URL + '/download-credits',
 
   assessments: BASE_URL + '/assessments',
+  assessmentCompetencies: BASE_URL + '/assessment-competencies',
 };
