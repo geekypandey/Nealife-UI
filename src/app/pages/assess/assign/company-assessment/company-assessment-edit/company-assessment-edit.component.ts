@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FileSaverService } from 'ngx-filesaver';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -10,6 +9,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { Authority } from 'src/app/constants/authority.constants';
 import { DropdownOption } from 'src/app/models/common.model';
 import { Assessment } from '../../../assess.model';
+import { saveFile } from '../../../assess.util';
 import { CompanyService } from '../../../company/company.service';
 import { ProfileService } from '../../../services/profile.service';
 import { AssessmentService } from '../../assessment.service';
@@ -30,7 +30,7 @@ export class CompanyAssessmentEditComponent implements OnInit {
   individualEditForm: FormGroup;
   bulkEditForm: FormGroup;
   companies: DropdownOption[] = [];
-  assessments: DropdownOption[] = []; 
+  assessments: DropdownOption[] = [];
   loggedInUser: any;
 
   private activatedRoute = inject(ActivatedRoute);
@@ -38,7 +38,6 @@ export class CompanyAssessmentEditComponent implements OnInit {
   private profileService = inject(ProfileService);
   private spinner = inject(NgxSpinnerService);
   private fb = inject(FormBuilder);
-  private _fileSaver = inject(FileSaverService);
   private companyService = inject(CompanyService);
 
   constructor() {
@@ -143,7 +142,7 @@ export class CompanyAssessmentEditComponent implements OnInit {
     const id = this.assessment.id;
     this.assessmentService.downloadCredits(id).subscribe((value: any) => {
       const blob = new Blob([value], { type: 'application/octect-stream' });
-      this._fileSaver.save(blob, 'Available_Credits.xlsx');
+      saveFile(blob, 'Available_Credits.xlsx')
     });
   }
 
