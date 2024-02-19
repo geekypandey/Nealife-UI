@@ -20,6 +20,7 @@ export const API_URL = {
   assessmentsByGroupDetails: BASE_URL + '/get-assessments-by-assessments-group',
   downloadHtmlReportUrl: BASE_URL + '/downloadHtmlReport',
   downloadPdfReportUrl: BASE_URL + '/downloadPdfReport',
+  competencies: BASE_URL + '/competencies',
 
   assessment: BASE_URL + '/assessments/renderNewAssesment',
   assessmentJson: BASE_URL + '/assessments/getAssessmentJson',

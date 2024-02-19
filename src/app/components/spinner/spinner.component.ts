@@ -16,6 +16,6 @@ export class SpinnerComponent {
   @Input() type: string = 'ball-clip-rotate-multiple';
   @Input() size: Size = 'medium';
   @Input() name: string = 'primary';
-  @Input() fullScreen: boolean = true;
+  @Input() fullScreen: boolean = false;
   @Input() loadingTextStyle: { [key: string]: any } = { color: '#fff' };
 }

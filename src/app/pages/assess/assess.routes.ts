@@ -50,7 +50,12 @@ export const DASHBOARD_ROUTES: Route[] = [
       },
       {
         path: 'configure',
-        loadComponent: () => import('./configure/configure.component').then(r => r.ConfigureComponent),
+        loadComponent: () =>
+          import('./configure/configure.component').then(r => r.ConfigureComponent),
+      },
+      {
+        path: 'data',
+        loadChildren: () => import('./data/data.route').then(c => c.dataRoute),
       },
     ],
   },
