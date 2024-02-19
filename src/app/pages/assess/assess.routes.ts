@@ -54,7 +54,7 @@ export const DASHBOARD_ROUTES: Route[] = [
       },
       {
         path: 'association',
-        loadComponent: () => import('./association/association.component').then(r => r.AssociationComponent),
+        loadChildren: () => import('./association/association.route').then(r => r.associationRoutes),
       },
     ],
   },

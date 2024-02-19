@@ -1,6 +1,6 @@
 <div class="mt-3 row flex-column">
   <strong class="col mb-3">Association</strong>
-  <p-tabView>
+  <p-tabView (onChange)="changeTab($event)" [(activeIndex)]="selectedTabIndex">
     <p-tabPanel header="Assessment Competency">
         <nl-assessment-competency />
     </p-tabPanel>
