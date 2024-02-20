@@ -17,9 +17,9 @@ import { DropdownOption } from 'src/app/models/common.model';
 })
 export class CompetencyAspectUpdateComponent implements OnInit {
   editForm: FormGroup;
-  assessmentCompetency: any;
+  competencyAspect: any;
   competencies: DropdownOption[] = [];
-  assessments: DropdownOption[] = [];
+  aspects: DropdownOption[] = [];
 
   private fb = inject(FormBuilder);
   private activateRoute = inject(ActivatedRoute);
@@ -29,15 +29,15 @@ export class CompetencyAspectUpdateComponent implements OnInit {
     this.editForm = this.fb.group({
       id: [],
       competencyId: [null, Validators.required],
-      assessmentId: [null, Validators.required]
+      aspectId: [null, Validators.required]
     })
-    this.http.get<any>(API_URL.competenciesForDropdown).subscribe((data) => {
+    this.http.get<any>(API_URL.competencies).subscribe((data) => {
       this.competencies = data.map((v: any) => {
         return { label: v.name, value: v.id}
       })
     });
-    this.http.get<any>(API_URL.assessmentsForDropdown).subscribe((data) => {
-      this.assessments = data.map((v: any) => {
+    this.http.get<any>(API_URL.aspects).subscribe((data) => {
+      this.aspects = data.map((v: any) => {
         return { label: v.name, value: v.id}
       })
     });
@@ -46,8 +46,8 @@ export class CompetencyAspectUpdateComponent implements OnInit {
   ngOnInit(): void {
     const id = this.activateRoute.snapshot.params['id'];
     if (id) {
-      this.http.get<any>(API_URL.assessmentCompetencies + '/' + id).subscribe((value) => {
-        this.assessmentCompetency = value;
+      this.http.get<any>(API_URL.competencyAspects + '/' + id).subscribe((value) => {
+        this.competencyAspect = value;
         this.patchEditForm();
       })
     }
@@ -55,9 +55,9 @@ export class CompetencyAspectUpdateComponent implements OnInit {
 
   patchEditForm(): void {
     this.editForm.patchValue({
-      id: this.assessmentCompetency.id,
-      competencyId: this.assessmentCompetency.competencyId,
-      assessmentId: this.assessmentCompetency.assessmentId
+      id: this.competencyAspect.id,
+      competencyId: this.competencyAspect.competencyId,
+      aspectId: this.competencyAspect.aspectId
     })
 
   }
@@ -68,23 +68,24 @@ export class CompetencyAspectUpdateComponent implements OnInit {
 
   save() {
     if (this.editForm.valid) {
-      const assessmentCompetency = {
+      const competencyAspect = {
         id: this.editForm.get(['id'])!.value,
         competencyId: this.editForm.get(['competencyId'])!.value,
-        assessmentId: this.editForm.get(['assessmentId'])!.value,
+        aspectId: this.editForm.get(['aspectId'])!.value,
       }
-      console.log(assessmentCompetency.id)
-      if (assessmentCompetency.id != undefined) {
-        this.http.put<any>(API_URL.assessmentCompetencies, assessmentCompetency).subscribe({
+      console.log(competencyAspect.id)
+      if (competencyAspect.id != undefined) {
+        this.http.put<any>(API_URL.competencyAspects, competencyAspect).subscribe({
           next: () => this.goBack(),
-          error: () => {},
+          error: () => { },
         })
       } else {
         // TODO: fix this
-        delete assessmentCompetency['id'];
-        this.http.post<any>(API_URL.assessmentCompetencies, assessmentCompetency).subscribe({
+        console.log('POST')
+        delete competencyAspect['id'];
+        this.http.post<any>(API_URL.competencyAspects, competencyAspect).subscribe({
           next: () => this.goBack(),
-          error: () => {},
+          error: () => { },
         })
       }
     }

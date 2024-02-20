@@ -48,4 +48,5 @@ export const API_URL = {
   assessmentGroup: BASE_URL + '/assessment-group-assessments',
   competenciesForDropdown: BASE_URL + '/competencies-forDropdown',
   assessmentsForDropdown: BASE_URL + '/assessments-fordropdown',
+  aspects: BASE_URL + '/aspects',
 };
