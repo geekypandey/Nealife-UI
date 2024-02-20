@@ -35,15 +35,15 @@ export function ErrorInterceptor(request: HttpRequest<unknown>, next: HttpHandle
           id: 'badGateway',
         });
       }
-      if (error.status === HttpStatusCode.NotFound) {
-        toastService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: '404 Not found. Please contact administrator.',
-          sticky: true,
-          id: 'notFound',
-        });
-      }
+      // if (error.status === HttpStatusCode.NotFound) {
+      //   toastService.add({
+      //     severity: 'error',
+      //     summary: 'Error',
+      //     detail: '404 Not found. Please contact administrator.',
+      //     sticky: true,
+      //     id: 'notFound',
+      //   });
+      // }
       return throwError(() => error);
     })
   );
