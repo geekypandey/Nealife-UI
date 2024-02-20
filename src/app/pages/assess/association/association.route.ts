@@ -45,10 +45,9 @@ export const associationRoutes: Route[] = [
   },
   {
     path: 'aspect-item',
-    loadComponent: () =>
-      import('./association.component').then(c => c.AssociationComponent),
+    loadChildren: () =>
+      import('./aspect-item/aspect-item.route').then(c => c.aspectItemRoutes),
     data: {
-      tabIndex: ASSOCIATION_TAB_INDEX.ASPECT_ITEM,
       authorities: [
         Authority.ACCOUNT_ADMIN,
         Authority.NEA_ADMIN,

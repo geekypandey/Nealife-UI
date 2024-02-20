@@ -49,4 +49,7 @@ export const API_URL = {
   competenciesForDropdown: BASE_URL + '/competencies-forDropdown',
   assessmentsForDropdown: BASE_URL + '/assessments-fordropdown',
   aspects: BASE_URL + '/aspects',
+  itemsForDropdown: BASE_URL + '/items-fordropdown',
+  aspectsForDropdown: BASE_URL + '/aspects-fordropdown',
+  responseOptionsForDropdown: BASE_URL + '/response-options-fordropdown',
 };
