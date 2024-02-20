@@ -6,19 +6,20 @@ import { Observable, finalize } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { CRUDService } from '../../../services/crud.service';
-import { ICompetency } from '../competency.model';
+import { IAspect } from '../../aspect/aspect.model';
+import { INorm } from '../norm.model';
 
 @Component({
-  selector: 'nl-competency-detail',
+  selector: 'nl-norm-detail',
   standalone: true,
   imports: [CommonModule, SpinnerComponent],
-  templateUrl: './competency-detail.component.html',
-  styleUrls: ['./competency-detail.component.scss'],
+  templateUrl: './norm-detail.component.html',
+  styleUrls: ['./norm-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CompetencyDetailComponent {
-  spinnerName = 'competency-detail';
-  competency$: Observable<ICompetency>;
+export class NormDetailComponent {
+  spinnerName = 'norm-detail';
+  norm$: Observable<INorm>;
 
   private activatedRoute = inject(ActivatedRoute);
   private crudService = inject(CRUDService);
@@ -26,10 +27,10 @@ export class CompetencyDetailComponent {
   private router = inject(Router);
 
   constructor() {
-    const competencyId = this.activatedRoute.snapshot.params['id'];
+    const aspectId = this.activatedRoute.snapshot.params['id'];
     this.spinner.show(this.spinnerName);
-    this.competency$ = this.crudService
-      .find<ICompetency>(API_URL.competencies, competencyId)
+    this.norm$ = this.crudService
+      .find<IAspect>(API_URL.norms, aspectId)
       .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
   }
 

@@ -8,31 +8,37 @@ import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { CRUDService } from '../../services/crud.service';
-import { IAspect } from './aspect.model';
+import { IInterpretation } from './interpretation.model';
 
 @Component({
-  selector: 'nl-aspect',
+  selector: 'nl-interpretation',
   standalone: true,
   imports: [CommonModule, SpinnerComponent, TableComponent, RouterLink],
-  templateUrl: './aspect.component.html',
-  styleUrls: ['./aspect.component.scss'],
+  templateUrl: './interpretation.component.html',
+  styleUrls: ['./interpretation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AspectComponent {
-  spinnerName = 'aspects-spinner';
+export class InterpretationComponent {
+  spinnerName = 'interpretation-spinner';
   cols: ColDef[] = [
     { field: 'id', header: 'Id' },
-    { field: 'name', header: 'Name' },
-    { field: 'description', header: 'Description' },
-    { field: 'type', header: 'Type' },
-    { field: 'parent', header: 'Parent' },
+    { field: 'aspectName', header: 'Aspect' },
+    { field: 'high', header: 'High' },
+    { field: 'low', header: 'Low' },
+    { field: 'medium', header: 'Medium' },
+    { field: 'interpretation1', header: 'Interpretation 1', width: '9rem' },
+    { field: 'interpretation2', header: 'Interpretation 2' },
+    { field: 'interpretation3', header: 'Interpretation 3' },
+    { field: 'interpretation4', header: 'Interpretation 4' },
+    { field: 'interpretation5', header: 'Interpretation 5' },
+    { field: 'interpretation6', header: 'Interpretation 6' },
   ];
   activatedRoute = inject(ActivatedRoute);
 
   private crudService: CRUDService = inject(CRUDService);
   private spinner = inject(NgxSpinnerService);
   private router = inject(Router);
-  aspects$: Observable<IAspect[]>;
+  interpretations$: Observable<IInterpretation[]>;
   actionsList: Action[] = [];
 
   constructor() {
@@ -48,8 +54,8 @@ export class AspectComponent {
       },
     ];
     this.spinner.show(this.spinnerName);
-    this.aspects$ = this.crudService
-      .query<IAspect[]>(API_URL.aspects)
+    this.interpretations$ = this.crudService
+      .query<IInterpretation[]>(API_URL.interpretations)
       .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
   }
 }

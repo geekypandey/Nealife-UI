@@ -24,6 +24,22 @@ export class DataComponent {
         header: 'Aspect',
         url: 'aspect',
       },
+      {
+        header: 'Items',
+        url: 'items',
+      },
+      {
+        header: 'Response Option',
+        url: 'response-option',
+      },
+      {
+        header: 'Norm',
+        url: 'norm',
+      },
+      {
+        header: 'Interpretation',
+        url: 'interpretation',
+      },
     ];
   }
 }

@@ -8,31 +8,30 @@ import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { CRUDService } from '../../services/crud.service';
-import { IAspect } from './aspect.model';
+import { IItem } from './items.model';
 
 @Component({
-  selector: 'nl-aspect',
+  selector: 'nl-items',
   standalone: true,
-  imports: [CommonModule, SpinnerComponent, TableComponent, RouterLink],
-  templateUrl: './aspect.component.html',
-  styleUrls: ['./aspect.component.scss'],
+  imports: [CommonModule, SpinnerComponent, RouterLink, TableComponent],
+  templateUrl: './items.component.html',
+  styleUrls: ['./items.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AspectComponent {
-  spinnerName = 'aspects-spinner';
+export class ItemsComponent {
+  spinnerName = 'competency-spinner';
   cols: ColDef[] = [
     { field: 'id', header: 'Id' },
-    { field: 'name', header: 'Name' },
-    { field: 'description', header: 'Description' },
-    { field: 'type', header: 'Type' },
-    { field: 'parent', header: 'Parent' },
+    { field: 'key', header: 'Key' },
+    { field: 'question', header: 'Question' },
+    { field: 'choices', header: 'Choice' },
   ];
   activatedRoute = inject(ActivatedRoute);
 
   private crudService: CRUDService = inject(CRUDService);
   private spinner = inject(NgxSpinnerService);
   private router = inject(Router);
-  aspects$: Observable<IAspect[]>;
+  items$: Observable<IItem[]>;
   actionsList: Action[] = [];
 
   constructor() {
@@ -48,8 +47,8 @@ export class AspectComponent {
       },
     ];
     this.spinner.show(this.spinnerName);
-    this.aspects$ = this.crudService
-      .query<IAspect[]>(API_URL.aspects)
+    this.items$ = this.crudService
+      .query<IItem[]>(API_URL.items)
       .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
   }
 }

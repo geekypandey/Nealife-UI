@@ -1,26 +1,26 @@
 <nl-spinner [name]="spinnerName"></nl-spinner>
 <div class="mt-3 row flex-column">
-  <strong class="col mb-3">Competency</strong>
+  <strong class="col mb-3">Response Option</strong>
 
-  <ng-container *ngIf="competency$ | async as competency">
+  <ng-container *ngIf="responseOption$ | async as rsOption">
     <div class="row mt-3">
       <div class="col-12 mb-3">
         <div class="nl-card nl-border nl-border-1">
           <div class="row gy-3">
             <div class="col-md-4">
-              <strong>Name</strong>
-              <div>{{ competency.name }}</div>
+              <strong>Response Option</strong>
+              <div>{{ rsOption.responseOption }}</div>
             </div>
             <div class="col-md-4">
-              <strong>Description</strong>
-              <div>{{ competency.description }}</div>
+              <strong>Choices</strong>
+              <div>{{ rsOption.choices }}</div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-12">
         <button class="p-button" (click)="goBack()">Back</button>
-        <button class="p-button mx-3" (click)="editRecord(competency.id)">Edit</button>
+        <button class="p-button mx-3" (click)="editRecord(rsOption.id)">Edit</button>
       </div>
     </div>
   </ng-container>
