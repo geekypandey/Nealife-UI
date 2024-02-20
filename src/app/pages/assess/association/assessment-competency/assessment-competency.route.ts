@@ -29,4 +29,16 @@ export const assessmentCompetencyRoute: Route[] = [
       ],
     },
   },
+  {
+    path: 'add',
+    loadComponent: () => import('./assessment-competency-update/assessment-competency-update.component').then(c => c.AssessmentCompetencyUpdateComponent),
+    data: {
+      authorities: [
+        Authority.ACCOUNT_ADMIN,
+        Authority.NEA_ADMIN,
+        Authority.ADMIN,
+        Authority.SUPER_ADMIN,
+      ],
+    },
+  },
 ]

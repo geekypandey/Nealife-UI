@@ -45,7 +45,6 @@ export class AssessmentCompetencyUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.activateRoute.snapshot.params['id'];
-    console.log(id);
     if (id) {
       this.http.get<any>(API_URL.assessmentCompetencies + '/' + id).subscribe((value) => {
         this.assessmentCompetency = value;
@@ -65,6 +64,30 @@ export class AssessmentCompetencyUpdateComponent implements OnInit {
 
   goBack() {
     window.history.back();
+  }
+
+  save() {
+    if (this.editForm.valid) {
+      const assessmentCompetency = {
+        id: this.editForm.get(['id'])!.value,
+        competencyId: this.editForm.get(['competencyId'])!.value,
+        assessmentId: this.editForm.get(['assessmentId'])!.value,
+      }
+      console.log(assessmentCompetency.id)
+      if (assessmentCompetency.id != undefined) {
+        this.http.put<any>(API_URL.assessmentCompetencies, assessmentCompetency).subscribe({
+          next: () => this.goBack(),
+          error: () => {},
+        })
+      } else {
+        // TODO: fix this
+        delete assessmentCompetency['id'];
+        this.http.post<any>(API_URL.assessmentCompetencies, assessmentCompetency).subscribe({
+          next: () => this.goBack(),
+          error: () => {},
+        })
+      }
+    }
   }
 
 }

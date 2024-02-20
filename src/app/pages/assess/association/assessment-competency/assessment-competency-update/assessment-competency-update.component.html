@@ -3,7 +3,7 @@
     <strong class="col mb-3">Assessment Competency</strong>
     <!-- TODO: fix the button -->
     <div class="col-2 d-flex justify-content-around">
-      <button type="button" class="p-button">Save</button>
+      <button type="button" class="p-button" (click)="save()">Save</button>
       <button type="button" class="p-button" (click)="goBack()">Cancel</button>
     </div>
   </div>
@@ -13,7 +13,7 @@
         <div class="col">
           <div class="nl-card nl-border nl-border-1">
             <div class="row mb-3 p-fluid">
-              <div class="col-6" [hidden]="">
+              <div class="col-6" [hidden]="!this.editForm.get('id')!.value">
                 <label class="d-block" for="id">Id</label>
                 <input
                   type="text"
