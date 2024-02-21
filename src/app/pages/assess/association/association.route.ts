@@ -1,7 +1,6 @@
 
 import { Route } from '@angular/router';
 import { Authority } from 'src/app/constants/authority.constants';
-import { ASSOCIATION_TAB_INDEX } from './association.component';
 
 export const associationRoutes: Route[] = [
   {
@@ -32,10 +31,9 @@ export const associationRoutes: Route[] = [
   },
   {
     path: 'competency-aspect',
-    loadComponent: () =>
-      import('./association.component').then(c => c.AssociationComponent),
+    loadChildren: () =>
+      import('./competency-aspect/competency-aspect.route').then(c => c.competencyAspectRoutes),
     data: {
-      tabIndex: ASSOCIATION_TAB_INDEX.COMPETENCY_ASPECT,
       authorities: [
         Authority.ACCOUNT_ADMIN,
         Authority.NEA_ADMIN,
@@ -46,10 +44,9 @@ export const associationRoutes: Route[] = [
   },
   {
     path: 'aspect-item',
-    loadComponent: () =>
-      import('./association.component').then(c => c.AssociationComponent),
+    loadChildren: () =>
+      import('./aspect-item/aspect-item.route').then(c => c.aspectItemRoutes),
     data: {
-      tabIndex: ASSOCIATION_TAB_INDEX.ASPECT_ITEM,
       authorities: [
         Authority.ACCOUNT_ADMIN,
         Authority.NEA_ADMIN,
@@ -60,10 +57,9 @@ export const associationRoutes: Route[] = [
   },
   {
     path: 'group-assessments',
-    loadComponent: () =>
-      import('./association.component').then(c => c.AssociationComponent),
+    loadChildren: () => 
+      import('./group-assessments/group-assessments.route').then(c => c.groupAssessmentsRoutes),
     data: {
-      tabIndex: ASSOCIATION_TAB_INDEX.GROUP_ASSESSMENTS,
       authorities: [
         Authority.ACCOUNT_ADMIN,
         Authority.NEA_ADMIN,

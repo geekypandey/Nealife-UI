@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -6,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
+import { API_URL } from 'src/app/constants/api-url.constants';
 import { Authority } from 'src/app/constants/authority.constants';
 import { DropdownOption } from 'src/app/models/common.model';
 import { Assessment } from '../../../assess.model';
@@ -18,11 +20,11 @@ import { AssessmentService } from '../../assessment.service';
   selector: 'nl-company-assessment-edit',
   standalone: true,
   imports: [CommonModule, SpinnerComponent, ReactiveFormsModule, DropdownModule, CalendarModule],
-  templateUrl: './company-assessment-edit.component.html',
-  styleUrls: ['./company-assessment-edit.component.scss'],
+  templateUrl: './company-assessment-update.component.html',
+  styleUrls: ['./company-assessment-update.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CompanyAssessmentEditComponent implements OnInit {
+export class CompanyAssessmentUpdateComponent implements OnInit {
   spinnerName: string = 'company-assessment-edit';
   // TODO: fix this
   assessment: Assessment | any;
@@ -39,6 +41,9 @@ export class CompanyAssessmentEditComponent implements OnInit {
   private spinner = inject(NgxSpinnerService);
   private fb = inject(FormBuilder);
   private companyService = inject(CompanyService);
+  private http = inject(HttpClient);
+
+  private generateLinkPayload: any = {};
 
   constructor() {
     this.editForm = this.fb.group({
@@ -65,7 +70,7 @@ export class CompanyAssessmentEditComponent implements OnInit {
       creditCode: [],
       email: [],
       emailReport: [],
-      embeddCreditCode: [],
+      embedCreditCode: [],
     });
 
     this.bulkEditForm = this.fb.group({
@@ -73,7 +78,7 @@ export class CompanyAssessmentEditComponent implements OnInit {
       creditCode: [],
       email: [],
       emailReport: [],
-      embeddCreditCode: [],
+      embedCreditCode: [],
       credits: [],
     });
 
@@ -110,6 +115,14 @@ export class CompanyAssessmentEditComponent implements OnInit {
         return { label: assessment.assessmentName, value: assessment.assessmentId };
       })
     })
+    // TODO: fix this call made twice
+    const assessmentId = this.activatedRoute.snapshot.params['id'];
+    if (assessmentId) {
+      this.assessmentService.getAssessment(assessmentId).subscribe((value) => {
+        this.assessment = value;
+        this.patchEditForm();
+      });
+    }
   }
 
 
@@ -148,6 +161,35 @@ export class CompanyAssessmentEditComponent implements OnInit {
 
   save(): void {
     if (this.editForm.valid) {
+      const companyAssessment: any = {
+        id: this.editForm.get(['id'])!.value,
+        companyId: this.editForm.get(['companyId'])!.value,
+        assessmentId: this.editForm.get(['assessmentId'])!.value,
+        scheduleDate: this.editForm.get(['scheduleDate'])!.value,
+        reportTemplate: this.editForm.get(['reportTemplate'])!.value,
+        emailTemplate: this.editForm.get(['emailTemplate'])!.value,
+        timeLimit: this.editForm.get(['timeLimit'])!.value,
+        availableCredits: this.editForm.get(['availableCredits'])!.value,
+        usedCredits: this.editForm.get(['usedCredits'])!.value,
+        allocatedCredits: this.editForm.get(['allocatedCredits'])!.value,
+        totalCredits: this.editForm.get(['totalCredits'])!.value,
+        url: this.editForm.get(['url'])!.value,
+      }
+
+      companyAssessment['parentCompanyId'] = this.loggedInUser.companyId;
+      if (companyAssessment.id != null) {
+        this.http.put<any>(API_URL.companyAssessments, companyAssessment).subscribe({
+          next: () => this.goBack(),
+          error: () => {},
+        })
+      } else {
+        delete companyAssessment['id'];
+        this.http.post<any>(API_URL.companyAssessments, companyAssessment).subscribe({
+          next: () => this.goBack(),
+          error: () => {},
+        })
+      }
+      // if (compa)
       // TODO
     }
   }
@@ -155,4 +197,67 @@ export class CompanyAssessmentEditComponent implements OnInit {
   goBack() {
     window.history.back();
   }
+
+  generateLink() {
+    this.generateLinkPayload = {
+      ...this.generateLinkPayload,
+      companyAssessmentId: this.editForm.get('id')?.value,
+      email: this.individualEditForm.get('email')?.value,
+
+      emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
+      embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
+
+      sendAssignmentEmail: 'N',
+      companyAssessmentGroupId: null,
+      creditCode: null,
+      link: null,
+      message: null,
+      error: null,
+    }
+    this.generateLinkCall();
+  }
+
+  generateLinkCall() {
+    this.http.post<any>(API_URL.assignAssessment, this.generateLinkPayload).subscribe({
+      next: (data) => {
+        this.individualEditForm.patchValue({generateUrl: data.link, creditCode: data.creditCode })
+      },
+      error: () => {
+
+      }
+    })
+  }
+
+  generateAndEmailLink() {
+    this.generateLinkPayload = {
+      ...this.generateLinkPayload,
+      companyAssessmentId: this.editForm.get('id')?.value,
+      email: this.individualEditForm.get('email')?.value,
+
+      emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
+      embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
+
+      sendAssignmentEmail: 'Y',
+      companyAssessmentGroupId: null,
+      creditCode: null,
+      link: null,
+      message: null,
+      error: null,
+    }
+    console.log(this.generateLinkPayload)
+    if (this.generateLinkPayload['email'] != null) {
+      this.generateLinkCall();
+    }
+  }
+
+  downloadTemplate() {
+    this.http.get(API_URL.downloadNotificationTemplate, { responseType: 'blob' }).subscribe({
+      next: (value: any) => {
+        const blob = new Blob([value], { type: 'application/octet-stream' });
+        saveFile(blob, 'download-template.xlsx');
+      },
+      error: () => {},
+    })
+  }
+
 }
