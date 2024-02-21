@@ -22,30 +22,48 @@
                   class="p-inputtext" readonly/>
               </div>
               <div class="col-6">
-                <label class="d-block" for="itemId">Item</label>
+                <label class="d-block" for="assessmentGroupId">Assessment Group Name</label>
                   <p-dropdown
                     [attr.id]="'parent'"
-                    formControlName="itemId"
-                    [options]="items"
-                    placeholder="Select Item"></p-dropdown>
+                    formControlName="assessmentGroupId"
+                    [options]="assessmentGroups"
+                    placeholder="Select Assessment Group Name"></p-dropdown>
               </div>
             </div>
             <div class="row mb-3 p-fluid">
               <div class="col-6">
-                <label class="d-block" for="aspectId">Aspect</label>
-                  <p-dropdown
-                    [attr.id]="'parent'"
-                    formControlName="aspectId"
-                    [options]="aspects"
-                    placeholder="Select Aspect"></p-dropdown>
+                <label class="d-block" for="assessmentDescription">Description</label>
+                <input
+                  type="text"
+                  formControlName="assessmentDescription"
+                  id="assessmentDescription"
+                  class="p-inputtext" />
               </div>
               <div class="col-6">
-                <label class="d-block" for="aspectId">Response Option</label>
+                <label class="d-block" for="assessmentId">Assessment</label>
                   <p-dropdown
                     [attr.id]="'parent'"
-                    formControlName="responseOptionId"
-                    [options]="responseOptions"
-                    placeholder="Select Response Options"></p-dropdown>
+                    formControlName="assessmentId"
+                    [options]="assessments"
+                    placeholder="Select Assessments"></p-dropdown>
+              </div>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6">
+                <label class="d-block" for="sequence">Sequence</label>
+                <input
+                  type="text"
+                  formControlName="sequence"
+                  id="sequence"
+                  class="p-inputtext" />
+              </div>
+              <div class="col-6">
+                <label class="d-block" for="timeLimit">Time Limit</label>
+                <input
+                  type="text"
+                  formControlName="timeLimit"
+                  id="timeLimit"
+                  class="p-inputtext" />
               </div>
             </div>
           </div>
