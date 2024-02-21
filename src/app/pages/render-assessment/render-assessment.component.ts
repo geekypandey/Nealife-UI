@@ -147,6 +147,7 @@ export class RenderAssessmentComponent implements OnInit {
         .pipe(
           switchMap(resp => {
             if (resp && resp.data) {
+              this.preAssessDetailsReqPayload.creditCode = this.codeCtrl.value;
               this.queryParamcc = this.codeCtrl.value;
               this.cd.markForCheck();
               return this.isCreditUsedBefore();
