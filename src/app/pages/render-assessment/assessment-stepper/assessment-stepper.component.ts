@@ -100,6 +100,7 @@ export class AssessmentStepperComponent implements OnChanges {
   private destroyRef = inject(DestroyRef);
   private toastService = inject(MessageService);
   freezeAssessment$!: Observable<number>;
+  clearTimer!: any;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes['selectedLanguage'] && changes['assessmentsData']) {
@@ -127,10 +128,13 @@ export class AssessmentStepperComponent implements OnChanges {
 
   onAnswerSelection(questionIndex: number) {
     this.setSkippedCtrlVal(questionIndex, false);
-    setTimeout(()=>{
+    if (this.clearTimer) {
+      clearTimeout(this.clearTimer);
+    }
+    this.clearTimer = setTimeout(() => {
       this.modifyQuestionCount(true);
-    },500)
-    
+      this.cd.markForCheck();
+    }, 400);
   }
 
   onBack() {
@@ -150,6 +154,24 @@ export class AssessmentStepperComponent implements OnChanges {
   submitSectionDetails() {
     if (!this.activeAssessmentFormGroup) {
       return;
+    }
+    if (this.assessmentsData?.compulsory) {
+      let answersList1 = (<any[]>this.activeAssessmentFormGroup.value.itemAspectsFormArray).map(
+        val => {
+          return val.selectedAnswer;
+        }
+      );
+      const isUnAnswered = answersList1.some(v => v === null);
+      if (isUnAnswered) {
+        this.toastService.add({
+          severity: 'warn',
+          summary: 'Warning',
+          detail: 'All the Questions are compulsory. Please attempt All!!!',
+          sticky: false,
+          id: 'assessmentCompulsory',
+        });
+        return;
+      }
     }
     let answersList = (<any[]>this.activeAssessmentFormGroup.value.itemAspectsFormArray).map(
       val => {

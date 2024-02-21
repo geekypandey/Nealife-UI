@@ -130,16 +130,24 @@
           </div>
           <div class="row flex-column">
             <div class="col-12">
-              <strong
-                >{{
-                  reportType === 'NSQFREPORT'
-                    ? 'Sectors'
-                    : reportType === 'ECFEREPORT'
-                      ? 'Engineering Branch'
-                      : 'MBA Branch'
-                }}
-                <span class="p-error" *ngIf="sectorsCtrl.hasError('required')">*</span></strong
-              >
+              <div class="mb-2">
+                <strong
+                  >{{
+                    reportType === 'NSQFREPORT'
+                      ? 'Sectors'
+                      : reportType === 'ECFEREPORT'
+                        ? 'Engineering Branch'
+                        : 'MBA Branch'
+                  }}
+                  <span class="p-error" *ngIf="sectorsCtrl.hasError('required')">*</span></strong
+                >
+                <span class="mx-2"
+                  >(You can select max. {{ maxBranchSelection }}
+                  {{ reportType === 'NSQFREPORT' ? 'sectors' : 'branches' }}. You can view
+                  description of the {{ reportType === 'NSQFREPORT' ? 'sector' : 'branch' }} by
+                  clicking on arrow icon.)</span
+                >
+              </div>
               <nl-accordion>
                 <nl-accordion-item *ngFor="let accordionItem of accordions">
                   <ng-template #header>

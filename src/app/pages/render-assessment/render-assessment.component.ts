@@ -20,7 +20,7 @@ import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { forkJoin } from 'rxjs';
+import { Observable, finalize, forkJoin, switchMap, tap, throwError } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { REPORT_TYPE } from 'src/app/constants/assessment.constants';
 import { DropdownOption } from 'src/app/models/common.model';
@@ -29,6 +29,7 @@ import { AssessmentStepperComponent } from './assessment-stepper/assessment-step
 import { PersonalInfoComponent } from './personal-info/personal-info.component';
 import {
   Assessment,
+  CheckCreditUsed,
   Demographic,
   PreAssessDetailsReqPayload,
   PreAssessmentDetailsDemographics,
@@ -68,7 +69,7 @@ export class RenderAssessmentComponent implements OnInit {
 
   renderAssessmentData: RenderAssessmentResponse | null = null;
   languagesOptions: DropdownOption[] = [];
-  assessmentForm: FormGroup;
+  assessmentForm!: FormGroup;
   landingPage: boolean = false;
   personalInfoPage: boolean = false;
   isValidCreditCode: boolean = false;
@@ -111,13 +112,17 @@ export class RenderAssessmentComponent implements OnInit {
         this.paramAssessmentId = params['assessmentId'];
       }
 
-      this.validateCreditCode(this.queryParamcc);
-    });
+      if (this.queryParamcc) {
+        this.validateCreditCode(this.queryParamcc).subscribe();
+      } else {
+        this.isValidCreditCode = true;
+      }
 
-    this.assessmentForm = this.fb.group({
-      code: [{ value: null, disabled: true }, [Validators.required]],
-      language: [null, [Validators.required]],
-      isChecked: [{ value: null, disabled: true }, [Validators.required]],
+      this.assessmentForm = this.fb.group({
+        code: [{ value: null, disabled: this.queryParamcc }, [Validators.required]],
+        language: [null, [Validators.required]],
+        isChecked: [{ value: null, disabled: true }, [Validators.required]],
+      });
     });
   }
 
@@ -136,23 +141,48 @@ export class RenderAssessmentComponent implements OnInit {
 
   onSubmit() {
     this.preAssessDetailsReqPayload.language = this.languageCtrl.value;
-    this.spinner.show(this.spinnerName);
-    this.assementService.isCreditUsedBefore(this.queryParamcc).subscribe({
-      next: resp => {
-        if (resp) {
-          this.preAssessmentDetailsResponse = resp;
-          this.preAssessmentDemographics =
-            resp && resp.demographics ? resp.demographics : undefined;
-        }
-        this.spinner.hide(this.spinnerName);
-        this.navigateToDemographicsPage();
-      },
-      error: _ => {
-        console.error('No demographics details');
-        this.spinner.hide(this.spinnerName);
-        this.navigateToDemographicsPage();
-      },
-    });
+    if (!this.queryParamcc) {
+      this.spinner.show(this.spinnerName);
+      this.validateCreditCode(this.codeCtrl.value)
+        .pipe(
+          switchMap(resp => {
+            if (resp && resp.data) {
+              this.preAssessDetailsReqPayload.creditCode = this.codeCtrl.value;
+              this.queryParamcc = this.codeCtrl.value;
+              this.cd.markForCheck();
+              return this.isCreditUsedBefore();
+            }
+            return throwError(() => new Error('Invalid credit code'));
+          }),
+          finalize(() => {
+            this.spinner.hide(this.spinnerName);
+          })
+        )
+        .subscribe();
+    } else {
+      this.isCreditUsedBefore().subscribe();
+    }
+  }
+
+  private isCreditUsedBefore(): Observable<PreAssessmentDetailsResponse> {
+    return this.assementService.isCreditUsedBefore(this.queryParamcc).pipe(
+      tap({
+        next: resp => {
+          if (resp) {
+            this.preAssessmentDetailsResponse = resp;
+            this.preAssessmentDemographics =
+              resp && resp.demographics ? resp.demographics : undefined;
+          }
+          this.spinner.hide(this.spinnerName);
+          this.navigateToDemographicsPage();
+        },
+        error: _ => {
+          console.error('No demographics details');
+          this.spinner.hide(this.spinnerName);
+          this.navigateToDemographicsPage();
+        },
+      })
+    );
   }
 
   onSubmitPersonalInfoForm(value: any) {
@@ -260,30 +290,37 @@ export class RenderAssessmentComponent implements OnInit {
     }
   }
 
-  private validateCreditCode(creditCode: string) {
-    this.assementService.checkCreditUsed(creditCode).subscribe({
-      next: resp => {
-        this.isValidCreditCode = true;
-        this.toastService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: resp.data,
-          sticky: false,
-          id: 'creditCode',
-        });
-        this.cd.markForCheck();
-      },
-      error: _ => {
-        this.isValidCreditCode = false;
-        this.toastService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Invalid credit code or credit code already in use,Please contact administrator',
-          sticky: false,
-          id: 'creditCode',
-        });
-      },
-    });
+  private validateCreditCode(creditCode: string): Observable<CheckCreditUsed> {
+    return this.assementService.checkCreditUsed(creditCode).pipe(
+      tap({
+        next: resp => {
+          this.isValidCreditCode = true;
+          this.toastService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: resp.data,
+            sticky: false,
+            id: 'creditCode',
+          });
+          this.cd.markForCheck();
+        },
+        error: _ => {
+          if (this.queryParamcc) {
+            // when no queryparam cc , keep it true
+            this.isValidCreditCode = false;
+          }
+          this.toastService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+              'Invalid credit code or credit code already in use,Please contact administrator',
+            sticky: false,
+            id: 'creditCode',
+          });
+          this.cd.markForCheck();
+        },
+      })
+    );
   }
 
   private getLanguages(demographics: Demographic[]) {
