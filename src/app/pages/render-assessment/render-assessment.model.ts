@@ -105,6 +105,7 @@ export class PreAssessDetailsReqPayload {
   companyId: string | null;
   assessmentGroupId: number | null;
   companyAssessmentGroupId: number | null;
+  companyAssessmentGroupBranchMappingId: number | null;
   groupId: null;
   isGroup: string | null;
   assessmentUUID: string | null;
@@ -119,6 +120,7 @@ export class PreAssessDetailsReqPayload {
     this.companyId = null;
     this.assessmentGroupId = null;
     this.companyAssessmentGroupId = null;
+    this.companyAssessmentGroupBranchMappingId = null;
     this.groupId = null;
     this.isGroup = null;
     this.assessmentUUID = null;
