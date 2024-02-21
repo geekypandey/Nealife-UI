@@ -77,7 +77,7 @@ export class CompanyEditComponent {
 
   constructor() {
     const statusBaseStr = 'nealifeApp.ActivityStatus.';
-    const statusValues = ['ACTIVE', 'INACTIVE', 'TERMINATED', 'EXPIRED'];
+    const statusValues = ['ACTIVE', 'INACTIVE'];
     this.statusList = statusValues.map(value => ({
       label: this.translateService.instant(statusBaseStr + value),
       value: value,
@@ -155,8 +155,8 @@ export class CompanyEditComponent {
       contactNumber1: this.editForm.get(['contactNumber1'])!.value,
       contactNumber2: this.editForm.get(['contactNumber2'])!.value,
       status: this.editForm.get(['status'])!.value,
-      validFrom: this.editForm.get(['validFrom'])!.value,
-      validTo: this.editForm.get(['validTo'])!.value,
+      // validFrom: this.editForm.get(['validFrom'])!.value,
+      // validTo: this.editForm.get(['validTo'])!.value,
       companyType: this.editForm.get('companyType')!.value,
       partnerType: this.editForm.get('partnerType')!.value,
       website: this.editForm.get(['website'])!.value,
@@ -209,8 +209,8 @@ export class CompanyEditComponent {
         [Validators.maxLength(10), Validators.minLength(10), Validators.pattern('^[0-9]*$')],
       ],
       status: [company.status, Validators.required],
-      validFrom: [company.validFrom, [Validators.required]],
-      validTo: [company.validTo, [Validators.required]],
+      // validFrom: [company.validFrom, [Validators.required]],
+      // validTo: [company.validTo, [Validators.required]],
       companyType: [company.companyType, Validators.required],
       partnerType: [company.partnerType, Validators.required],
       website: [company.website],

@@ -272,6 +272,7 @@ export class RenderAssessmentComponent implements OnInit {
         assessmentGroupId,
         companyAssessmentGroupId,
         companyAssessmentId,
+        companyAssessmentGroupBranchMappingId,
       } = renderAssessmentData;
       this.preAssessDetailsReqPayload.assessmentGroupId = assessmentGroupId;
       this.preAssessDetailsReqPayload.companyAssessmentGroupId = companyAssessmentGroupId;
@@ -279,6 +280,8 @@ export class RenderAssessmentComponent implements OnInit {
       this.preAssessDetailsReqPayload.assessmentUUID = this.queryParamaa;
       this.preAssessDetailsReqPayload.creditCode = this.queryParamcc;
       this.preAssessDetailsReqPayload.companyAssessmentId = companyAssessmentId;
+      this.preAssessDetailsReqPayload.companyAssessmentGroupBranchMappingId =
+        companyAssessmentGroupBranchMappingId;
       this.reportType = reportType;
       this.getbranches(reportType);
       this.languages = this.getLanguages(demographics);
