@@ -27,5 +27,18 @@ export const companyAssessmentRoutes: Route[] = [
         Authority.SUPER_ADMIN,
       ],
     },
+  },
+  {
+    path: 'add',
+    loadComponent: () =>
+      import('./company-assessment-update/company-assessment-update.component').then(c => c.CompanyAssessmentUpdateComponent),
+    data: {
+      authorities: [
+        Authority.ACCOUNT_ADMIN,
+        Authority.NEA_ADMIN,
+        Authority.ADMIN,
+        Authority.SUPER_ADMIN,
+      ],
+    },
   }
 ]

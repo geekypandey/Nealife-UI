@@ -57,4 +57,6 @@ export const API_URL = {
   aspectsForDropdown: BASE_URL + '/aspects-fordropdown',
   responseOptionsForDropdown: BASE_URL + '/response-options-fordropdown',
   assessmentGroups: BASE_URL + '/assessment-groups',
+  assignAssessment: BASE_URL + '/notifications/assign-assessment',
+  downloadNotificationTemplate: BASE_URL + '/notifications/downloadNotificationTemplate',
 };
