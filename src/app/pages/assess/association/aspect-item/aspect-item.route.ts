@@ -2,13 +2,13 @@ import { Route } from '@angular/router';
 import { Authority } from 'src/app/constants/authority.constants';
 import { ASSOCIATION_TAB_INDEX } from '../association.component';
 
-export const assessmentCompetencyRoute: Route[] = [
+export const aspectItemRoutes: Route[] = [
   {
     path: '',
     loadComponent: () =>
       import('../association.component').then(c => c.AssociationComponent),
     data: {
-      tabIndex: ASSOCIATION_TAB_INDEX.ASSESSMENT_COMPETENCY,
+      tabIndex: ASSOCIATION_TAB_INDEX.ASPECT_ITEM,
       authorities: [
         Authority.ACCOUNT_ADMIN,
         Authority.NEA_ADMIN,
@@ -19,7 +19,7 @@ export const assessmentCompetencyRoute: Route[] = [
   },
   {
     path: ':id/edit',
-    loadComponent: () => import('./assessment-competency-update/assessment-competency-update.component').then(c => c.AssessmentCompetencyUpdateComponent),
+    loadComponent: () => import('./aspect-item-update/aspect-item-update.component').then(c => c.AspectItemUpdateComponent),
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -31,7 +31,7 @@ export const assessmentCompetencyRoute: Route[] = [
   },
   {
     path: 'add',
-    loadComponent: () => import('./assessment-competency-update/assessment-competency-update.component').then(c => c.AssessmentCompetencyUpdateComponent),
+    loadComponent: () => import('./aspect-item-update/aspect-item-update.component').then(c => c.AspectItemUpdateComponent),
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
