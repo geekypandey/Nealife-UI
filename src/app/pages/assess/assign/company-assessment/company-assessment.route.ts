@@ -18,7 +18,7 @@ export const companyAssessmentRoutes: Route[] = [
   {
     path: ':id/edit',
     loadComponent: () =>
-      import('./company-assessment-edit/company-assessment-edit.component').then(c => c.CompanyAssessmentEditComponent),
+      import('./company-assessment-update/company-assessment-update.component').then(c => c.CompanyAssessmentUpdateComponent),
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
