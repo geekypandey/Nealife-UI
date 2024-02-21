@@ -8,31 +8,31 @@ import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { CRUDService } from '../../services/crud.service';
-import { IAspect } from './aspect.model';
+import { ICompetency } from '../competency/competency.model';
+import { IResponseOption } from './response-option.model';
 
 @Component({
-  selector: 'nl-aspect',
+  selector: 'nl-response-option',
   standalone: true,
-  imports: [CommonModule, SpinnerComponent, TableComponent, RouterLink],
-  templateUrl: './aspect.component.html',
-  styleUrls: ['./aspect.component.scss'],
+  imports: [CommonModule, TableComponent, SpinnerComponent, RouterLink],
+  templateUrl: './response-option.component.html',
+  styleUrls: ['./response-option.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AspectComponent {
-  spinnerName = 'aspects-spinner';
+export class ResponseOptionComponent {
+  spinnerName = 'response-option-spinner';
   cols: ColDef[] = [
     { field: 'id', header: 'Id' },
-    { field: 'name', header: 'Name' },
-    { field: 'description', header: 'Description' },
-    { field: 'type', header: 'Type' },
-    { field: 'parent', header: 'Parent' },
+    { field: 'responseOption', header: 'Response Option' },
+    { field: 'choices', header: 'Choices' },
+    { field: 'definition', header: 'Definition' },
   ];
   activatedRoute = inject(ActivatedRoute);
 
   private crudService: CRUDService = inject(CRUDService);
   private spinner = inject(NgxSpinnerService);
   private router = inject(Router);
-  aspects$: Observable<IAspect[]>;
+  responseOptions$: Observable<IResponseOption[]>;
   actionsList: Action[] = [];
 
   constructor() {
@@ -48,8 +48,8 @@ export class AspectComponent {
       },
     ];
     this.spinner.show(this.spinnerName);
-    this.aspects$ = this.crudService
-      .query<IAspect[]>(API_URL.aspects)
+    this.responseOptions$ = this.crudService
+      .query<ICompetency[]>(API_URL.responseOptions)
       .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
   }
 }

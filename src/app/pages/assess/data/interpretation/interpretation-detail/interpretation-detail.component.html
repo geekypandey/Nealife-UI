@@ -1,0 +1,59 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="mt-3 row flex-column">
+  <strong class="col mb-3">Interpretation</strong>
+
+  <ng-container *ngIf="interpretation$ | async as interpretation">
+    <div class="row mt-3">
+      <div class="col-12 mb-3">
+        <div class="nl-card nl-border nl-border-1">
+          <div class="row gy-3">
+            <div class="col-md-4">
+              <strong>High</strong>
+              <div>{{ interpretation.high }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Low</strong>
+              <div>{{ interpretation.low }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Medium</strong>
+              <div>{{ interpretation.medium }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Interpretation 1</strong>
+              <div>{{ interpretation.interpretation1 }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Interpretation 2</strong>
+              <div>{{ interpretation.interpretation2 }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Interpretation 3</strong>
+              <div>{{ interpretation.interpretation3 }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Interpretation 4</strong>
+              <div>{{ interpretation.interpretation4 }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Interpretation 5</strong>
+              <div>{{ interpretation.interpretation5 }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Interpretation 6</strong>
+              <div>{{ interpretation.interpretation6 }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Aspect</strong>
+              <div>{{ interpretation.aspectId }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <button class="p-button" (click)="goBack()">Back</button>
+        <button class="p-button mx-3" (click)="editRecord(interpretation.id)">Edit</button>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,51 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="mt-3 row flex-column">
+  <strong class="col mb-3">Norm</strong>
+
+  <ng-container *ngIf="norm$ | async as norm">
+    <div class="row mt-3">
+      <div class="col-12 mb-3">
+        <div class="nl-card nl-border nl-border-1">
+          <div class="row gy-3">
+            <div class="col-md-4">
+              <strong>Stanine</strong>
+              <div>{{ norm.stanine }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Percentile</strong>
+              <div>{{ norm.percentile }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Grade</strong>
+              <div>{{ norm.grade }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Aspect</strong>
+              <div>{{ norm.aspect }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Traits</strong>
+              <div>{{ norm.trait }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Value</strong>
+              <div>{{ norm.value }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Color</strong>
+              <div>{{ norm.color }}</div>
+            </div>
+            <div class="col-md-4">
+              <strong>Traits</strong>
+              <div>{{ norm.traitId }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <button class="p-button" (click)="goBack()">Back</button>
+        <button class="p-button mx-3" (click)="editRecord(norm.id)">Edit</button>
+      </div>
+    </div>
+  </ng-container>
+</div>

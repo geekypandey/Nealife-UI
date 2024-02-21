@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
 import { Authority } from 'src/app/constants/authority.constants';
-import { AspectDetailComponent } from './aspect-detail/aspect-detail.component';
-import { AspectUpdateComponent } from './aspect-update/aspect-update.component';
-import { AspectComponent } from './aspect.component';
+import { NormDetailComponent } from './norm-detail/norm-detail.component';
+import { NormUpdateComponent } from './norm-update/norm-update.component';
+import { NormComponent } from './norm.component';
 
-export const aspectRoute: Routes = [
+export const normRoute: Routes = [
   {
     path: '',
-    component: AspectComponent,
+    component: NormComponent,
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -16,12 +16,12 @@ export const aspectRoute: Routes = [
         Authority.SUPER_ADMIN,
       ],
       defaultSort: 'id,desc',
-      pageTitle: 'nealifeApp.aspect.home.title',
+      pageTitle: 'nealifeApp.norm.home.title',
     },
   },
   {
     path: ':id/view',
-    component: AspectDetailComponent,
+    component: NormDetailComponent,
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -29,12 +29,12 @@ export const aspectRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      pageTitle: 'nealifeApp.aspect.home.title',
+      pageTitle: 'nealifeApp.norm.home.title',
     },
   },
   {
     path: 'new',
-    component: AspectUpdateComponent,
+    component: NormUpdateComponent,
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -42,12 +42,12 @@ export const aspectRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      pageTitle: 'nealifeApp.aspect.home.title',
+      pageTitle: 'nealifeApp.norm.home.title',
     },
   },
   {
     path: ':id/edit',
-    component: AspectUpdateComponent,
+    component: NormUpdateComponent,
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -55,7 +55,7 @@ export const aspectRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      pageTitle: 'nealifeApp.aspect.home.title',
+      pageTitle: 'nealifeApp.norm.home.title',
     },
   },
 ];

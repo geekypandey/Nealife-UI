@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
 import { Authority } from 'src/app/constants/authority.constants';
-import { AspectDetailComponent } from './aspect-detail/aspect-detail.component';
-import { AspectUpdateComponent } from './aspect-update/aspect-update.component';
-import { AspectComponent } from './aspect.component';
+import { ItemsDetailComponent } from './items-detail/items-detail.component';
+import { ItemsUpdateComponent } from './items-update/items-update.component';
+import { ItemsComponent } from './items.component';
 
-export const aspectRoute: Routes = [
+export const itemsRoute: Routes = [
   {
     path: '',
-    component: AspectComponent,
+    component: ItemsComponent,
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -16,12 +16,15 @@ export const aspectRoute: Routes = [
         Authority.SUPER_ADMIN,
       ],
       defaultSort: 'id,desc',
-      pageTitle: 'nealifeApp.aspect.home.title',
+      pageTitle: 'nealifeApp.item.home.title',
     },
   },
   {
     path: ':id/view',
-    component: AspectDetailComponent,
+    component: ItemsDetailComponent,
+    // resolve: {
+    //   item: ItemResolve,
+    // },
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -29,12 +32,15 @@ export const aspectRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      pageTitle: 'nealifeApp.aspect.home.title',
+      pageTitle: 'nealifeApp.item.home.title',
     },
   },
   {
     path: 'new',
-    component: AspectUpdateComponent,
+    component: ItemsUpdateComponent,
+    // resolve: {
+    //   item: ItemResolve,
+    // },
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -42,12 +48,15 @@ export const aspectRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      pageTitle: 'nealifeApp.aspect.home.title',
+      pageTitle: 'nealifeApp.item.home.title',
     },
   },
   {
     path: ':id/edit',
-    component: AspectUpdateComponent,
+    component: ItemsUpdateComponent,
+    // resolve: {
+    //   item: ItemResolve,
+    // },
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -55,7 +64,7 @@ export const aspectRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      pageTitle: 'nealifeApp.aspect.home.title',
+      pageTitle: 'nealifeApp.item.home.title',
     },
   },
 ];

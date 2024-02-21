@@ -1,17 +1,17 @@
 <nl-spinner [name]="spinnerName"></nl-spinner>
 <div class="row flex-column">
   <div class="mb-3 d-flex justify-content-between align-items-center">
-    <strong class="">Competency</strong>
+    <strong class="">Response Option</strong>
     <button
       type="button"
       routerLink="new"
       [relativeTo]="activatedRoute"
       class="p-button ml-auto d-block">
-      Add Competency
+      Add Response Option
     </button>
   </div>
-  <ng-container *ngIf="competencies$ | async as competencies">
-    <nl-table [cols]="cols" [value]="competencies" [actionsList]="actionsList">
+  <ng-container *ngIf="responseOptions$ | async as responseOptions">
+    <nl-table [cols]="cols" [value]="responseOptions" [actionsList]="actionsList">
       <ng-template #customBodyTpl let-rowData let-columns="columns">
         <ng-template ngFor let-col [ngForOf]="columns" let-i="index">
           <td *ngIf="col.visible">
@@ -19,7 +19,7 @@
               <ng-container *ngSwitchCase="'id'">
                 <span
                   class="link-primary nl-cursor-pointer"
-                  [routerLink]="['/assess/data/competency', rowData['id'], 'view']"
+                  [routerLink]="['/assess/data/response-option', rowData['id'], 'view']"
                   >{{ rowData[col.field] }}</span
                 >
               </ng-container>
