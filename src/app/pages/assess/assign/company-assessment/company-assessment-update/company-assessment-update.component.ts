@@ -79,7 +79,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       email: [],
       emailReport: [],
       embedCreditCode: [],
-      credits: [],
+      credits: [null, Validators.required],
     });
 
     const assessmentId = this.activatedRoute.snapshot.params['id'];
@@ -244,7 +244,6 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       message: null,
       error: null,
     }
-    console.log(this.generateLinkPayload)
     if (this.generateLinkPayload['email'] != null) {
       this.generateLinkCall();
     }
@@ -258,6 +257,48 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       },
       error: () => {},
     })
+  }
+
+  uploadUserAndEmailLinks() {
+    if (!this.bulkEditForm.valid) {
+      // TODO: inform user of the same
+      console.log('Please enter the credits')
+      return;
+    }
+    if (this.bulkEditForm.controls['credits'].value < this.editForm.controls['availableCredits'].value) {
+
+    }
+  }
+
+  downloadBulkLinks() {
+    if (!this.bulkEditForm.valid) {
+      // TODO: inform user of the same
+      console.log('Please enter the credits')
+      return;
+    }
+
+    if (this.bulkEditForm.controls['credits'].value < this.editForm.controls['availableCredits'].value) {
+      console.log('here')
+      this.generateLinkPayload = {
+        ...this.generateLinkPayload,
+        companyAssessmentId: this.editForm.get('id')?.value,
+        companyAssessmentGroupId: null,
+        email: this.individualEditForm.get('email')?.value,
+        emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
+        embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
+        credits: this.bulkEditForm.get('credits')?.value,
+        creditCode: null,
+        sendAssignmentEmail: 'N',
+        link: null,
+        message: null,
+        error: null,
+      }
+      this.http.post(API_URL.downloadBulkLinks, this.generateLinkPayload, { responseType: 'blob' }).subscribe((data: any) => {
+        const blob = new Blob([data], { type: 'application/octet-stream' });
+        saveFile(blob, 'Download-Links.xlsx');
+        this.loadData();
+      })
+    }
   }
 
 }
