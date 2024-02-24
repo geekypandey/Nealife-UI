@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { HttpEventType } from '@angular/common/http';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MessageService } from 'primeng/api';
 import { TableRowSelectEvent } from 'primeng/table';
-import { Observable, finalize, tap } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import {
   AssessCard,
   AssessCardsComponent,
@@ -15,7 +18,6 @@ import { CompetencyAspectItemROCount, ICompetencyAspectProjection } from '../ass
 import { saveFile } from '../assess.util';
 import { AssessService } from '../services/assess.service';
 import { CRUDService } from '../services/crud.service';
-import { ProfileService } from '../services/profile.service';
 
 @Component({
   selector: 'nl-master-data',
@@ -34,48 +36,55 @@ export class MasterDataComponent {
     { field: 'parentAspect', header: 'Parent Aspect' },
     { field: 'parentAspectType', header: 'Parent Aspect Type' },
   ];
-  masterData$: Observable<ICompetencyAspectProjection[]>;
+  compProjectionsData: ICompetencyAspectProjection[] = [];
   assessCards: AssessCard[] = [];
+  refreshCount = true;
   competencyAspectROCount$: Observable<CompetencyAspectItemROCount>;
 
   private spinner = inject(NgxSpinnerService);
   private assessService = inject(AssessService);
   private crudService = inject(CRUDService);
-  private profileService = inject(ProfileService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
+  private toastService = inject(MessageService);
+  private cd = inject(ChangeDetectorRef);
+  fileUploadProgress: number = 0;
 
   constructor() {
-    this.competencyAspectROCount$ = this.assessService.getCompetencyAspectItemROCount().pipe(
-      tap(resp => {
-        this.assessCards = [
-          {
-            label: 'Aspects',
-            icon: 'alloted-assess',
-            count: resp.aspectCount,
-          },
-          {
-            label: 'Competencies',
-            icon: 'alloted-assess',
-            count: resp.competencyCount,
-          },
-          {
-            label: 'Response Options',
-            icon: 'used-assess',
-            count: resp.responseOptionCount,
-          },
-          {
-            label: 'Items',
-            icon: 'balance-assess',
-            count: resp.itemCount,
-          },
-        ];
-      })
-    );
+    this.assessCards = [
+      {
+        label: 'Aspects',
+        icon: 'alloted-assess',
+        count: 'aspectCount',
+      },
+      {
+        label: 'Competencies',
+        icon: 'alloted-assess',
+        count: 'competencyCount',
+      },
+      {
+        label: 'Response Options',
+        icon: 'used-assess',
+        count: 'responseOptionCount',
+      },
+      {
+        label: 'Items',
+        icon: 'balance-assess',
+        count: 'itemCount',
+      },
+    ];
+    this.competencyAspectROCount$ = this.assessService.getCompetencyAspectItemROCount();
     this.spinner.show(this.spinnerName);
-    this.masterData$ = this.assessService
+    this.assessService
       .getCompetencyAspectProjections()
-      .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: resp => {
+          this.compProjectionsData = resp;
+          this.cd.markForCheck();
+        },
+        complete: () => this.spinner.hide(this.spinnerName),
+      });
   }
 
   onRowSelect(event: TableRowSelectEvent) {
@@ -122,5 +131,66 @@ export class MasterDataComponent {
       },
       error: _ => this.spinner.hide(this.spinnerName),
     });
+  }
+
+  onMasterDataSelected(event: any): void {
+    const file = event.target.files[0];
+    if (
+      file?.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+      file?.type === 'application/vnd.ms-excel'
+    ) {
+      const formData: FormData = new FormData();
+      formData.append('file', file, file.name);
+      formData.append('DocId', `${file.name}-1`);
+      this.assessService
+        .uploadMasterData(formData)
+        .pipe(
+          map((mapEvent: any) => {
+            if (mapEvent.type === HttpEventType.UploadProgress) {
+              this.fileUploadProgress = Math.round((100 / mapEvent.total) * mapEvent.loaded);
+              if (this.fileUploadProgress === 100) {
+                this.toastService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'File uploaded successfully !!',
+                  sticky: false,
+                  id: 'master-data-file',
+                });
+              }
+            } else if (mapEvent.type === HttpEventType.Response) {
+              if (mapEvent && mapEvent.body !== null) {
+                this.compProjectionsData = JSON.parse(mapEvent.body);
+                this.refreshCount = false; // To update count
+                setTimeout(() => {
+                  this.refreshCount = true;
+                  this.cd.markForCheck();
+                }, 100);
+                this.cd.markForCheck();
+              }
+              this.fileUploadProgress = 0;
+            }
+          }),
+          catchError((err: any) => {
+            this.fileUploadProgress = 0;
+            this.toastService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to upload file',
+              sticky: false,
+              id: 'master-data-file',
+            });
+            return throwError(() => new Error(err.message));
+          })
+        )
+        .subscribe();
+    } else {
+      this.toastService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please select Excel file',
+        sticky: false,
+        id: 'master-data-file',
+      });
+    }
   }
 }

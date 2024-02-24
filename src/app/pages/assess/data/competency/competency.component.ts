@@ -24,7 +24,6 @@ export class CompetencyComponent {
     { field: 'id', header: 'Id' },
     { field: 'name', header: 'Name' },
     { field: 'description', header: 'Description' },
-    { field: 'action', header: 'Action' },
   ];
   activatedRoute = inject(ActivatedRoute);
 

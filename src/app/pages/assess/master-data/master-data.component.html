@@ -2,8 +2,9 @@
 <div class="row flex-column py-3">
   <strong class="col-12 mb-3">Master Data</strong>
   <nl-assess-cards
+    *ngIf="refreshCount"
     [assessCards]="assessCards"
-    *ngIf="competencyAspectROCount$ | async"></nl-assess-cards>
+    [response]="competencyAspectROCount$ | async"></nl-assess-cards>
   <div class="col-md-12 mb-3">
     <div class="d-flex justify-content-end column-gap-2">
       <div class="file-input-container">
@@ -11,27 +12,19 @@
         <input
           type="file"
           id="fileInput"
+          (change)="onMasterDataSelected($event)"
           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
           #uploadMasterData />
       </div>
-      <!-- <button class="p-button">
-        Upload Assessment Data
-        <input
-          type="file"
-          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-          class="form-control custom-file-input dasboardCustom"
-          id="customFileBootstrap"
-          #uploadMasterData />
-      </button> -->
       <button class="p-button" (click)="downloadErrorSummary()">Download Summary</button>
       <button class="p-button" (click)="downloadTemplate()">Download Template</button>
       <button class="p-button" (click)="downloadResultSheet()">Export Results</button>
     </div>
   </div>
-  <ng-container *ngIf="masterData$ | async as masterData">
+  <ng-container>
     <nl-table
       [cols]="cols"
-      [value]="masterData"
+      [value]="compProjectionsData"
       [selectionMode]="'single'"
       (onRowSelect)="onRowSelect($event)" />
   </ng-container>

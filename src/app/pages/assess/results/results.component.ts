@@ -2,13 +2,15 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, finalize, switchMap, tap } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { Observable, finalize, map, switchMap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
-import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
+import { Action, ColDef } from 'src/app/components/table/table.model';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { IApplicationUserAssessment } from '../assess.model';
 import { saveFile } from '../assess.util';
+import { AssessService } from '../services/assess.service';
 import { CRUDService } from '../services/crud.service';
 import { ProfileService } from '../services/profile.service';
 
@@ -23,20 +25,28 @@ import { ProfileService } from '../services/profile.service';
 export class ResultsComponent {
   cols: ColDef[] = [
     { field: 'id', header: 'Id' },
-    { field: 'activationkey', header: 'Activation key' },
-    { field: 'activated', header: 'Activated' },
-    { field: 'status', header: 'Status' },
-    { field: 'userName', header: 'User' },
-    { field: 'assessmentName', header: 'Assessment' },
-    { field: 'assessmentGroupName', header: 'Assessment Group' },
     { field: 'companyName', header: 'Company' },
-    { field: 'notificationSent', header: 'Notification Sent' },
+    { field: 'assessmentName', header: 'Assessment' },
+    { field: 'status', header: 'Status' },
+    { field: 'notificationSent', header: 'Report Sent' },
+    { field: 'reportUrl', header: 'Download Report' },
+    { field: 'resendToPhone', header: 'Resend Report to Phone' },
+    { field: 'resendToEmail', header: 'Resend Report to Email' },
+
+    // { field: 'activationkey', header: 'Activation key' },
+    // { field: 'activated', header: 'Activated' },
+    // { field: 'userName', header: 'User' },
+    // { field: 'assessmentGroupName', header: 'Assessment Group' },
+    // { field: 'companyName', header: 'Company' },
+    // { field: 'notificationSent', header: 'Notification Sent' },
   ];
   actionsList: Action[] = [];
 
   readonly spinnerName = 'results-spinner';
   private profileService = inject(ProfileService);
   private crudService = inject(CRUDService);
+  private assessService = inject(AssessService);
+  private toastService = inject(MessageService);
   private spinner = inject(NgxSpinnerService);
   activatedRoute = inject(ActivatedRoute);
   result$: Observable<IApplicationUserAssessment[]>;
@@ -49,24 +59,20 @@ export class ResultsComponent {
           [`companyId.equals`]: account.companyId,
         })
       ),
-      tap({
-        next: _ => {
-          this.spinner.hide(this.spinnerName);
-        },
-      }),
+      map(resp => resp.map(v => ({ ...v, notificationSent: v.notificationSent ? 'Yes' : 'No' }))),
       finalize(() => this.spinner.hide(this.spinnerName))
     );
 
-    this.actionsList = [
-      {
-        icon: ACTION_ICON.DOWNLOAD,
-        field: 'reportUrl',
-        onClick: (reportUrl: string) => {
-          console.info(reportUrl);
-          this.downloadPdfReport(reportUrl);
-        },
-      },
-    ];
+    // this.actionsList = [
+    //   {
+    //     icon: ACTION_ICON.DOWNLOAD,
+    //     field: 'reportUrl',
+    //     onClick: (reportUrl: string) => {
+    //       console.info(reportUrl);
+    //       this.downloadPdfReport(reportUrl);
+    //     },
+    //   },
+    // ];
   }
 
   downloadPdfReport(reportUrl: string): any {
@@ -75,9 +81,51 @@ export class ResultsComponent {
       next: (response: Blob) => {
         const blob = new Blob([response], { type: 'application/pdf' });
         saveFile(blob, 'report.pdf');
+        this.toastService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Report donwloaded successfully !!',
+          sticky: false,
+          id: 'app-assessment-pdf-report',
+        });
         this.spinner.hide(this.spinnerName);
       },
-      error: _ => this.spinner.hide(this.spinnerName),
+      error: _ => {
+        this.toastService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to download pdf',
+          sticky: true,
+          id: 'app-assessment-pdf-report',
+        });
+        this.spinner.hide(this.spinnerName);
+      },
+    });
+  }
+
+  resendReport(id: string) {
+    this.spinner.show(this.spinnerName);
+    this.assessService.resendReport(id).subscribe({
+      next: _ => {
+        this.toastService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Report sent successfully !!',
+          sticky: false,
+          id: 'app-assessment-notification-report',
+        });
+        this.spinner.hide(this.spinnerName);
+      },
+      error: _ => {
+        this.toastService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to send report',
+          sticky: true,
+          id: 'app-assessment-notification-report',
+        });
+        this.spinner.hide(this.spinnerName);
+      },
     });
   }
 }

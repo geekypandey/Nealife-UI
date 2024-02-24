@@ -16,8 +16,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
 import { Observable, forkJoin, map } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
+import { ShowErrorMsgDirective } from 'src/app/directives/show-error-msg.directive';
 import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
+import { markFormGroupDirty } from 'src/app/util/util';
+import { ProfileService } from '../../services/profile.service';
 import { CompanyService } from '../company.service';
 import { Company, ICompany } from './../../assess.model';
 
@@ -33,6 +36,7 @@ import { Company, ICompany } from './../../assess.model';
     FileUploadModule,
     ReactiveFormsModule,
     TranslateModule,
+    ShowErrorMsgDirective,
   ],
   templateUrl: './company-edit.component.html',
   styleUrls: ['./company-edit.component.scss'],
@@ -70,6 +74,7 @@ export class CompanyEditComponent {
 
   private companyService = inject(CompanyService);
   private sharedApiService = inject(SharedApiService);
+  private profileService = inject(ProfileService);
   private spinner = inject(NgxSpinnerService);
   private fb = inject(FormBuilder);
   private cdRef = inject(ChangeDetectorRef);
@@ -122,11 +127,10 @@ export class CompanyEditComponent {
   save() {
     console.log(this.editForm.value);
     if (this.editForm.valid) {
-      const form = this.editForm.value;
-      const uploadData = new FormData();
+      const form = this.createFromForm();
       const companyId = this.editForm.get('id')?.value;
+      const uploadData = new FormData();
 
-      const company = this.createFromForm();
       uploadData.append('data', JSON.stringify(form));
       if (this.imagesUrl === undefined || this.imagesUrl === 'undefined') {
         uploadData.append('file', '');
@@ -134,33 +138,39 @@ export class CompanyEditComponent {
         uploadData.append('file', this.imagesUrl);
       }
 
-      console.info(uploadData.getAll('data'), uploadData.getAll('file'));
+      // console.info(uploadData.getAll('data'), uploadData.getAll('file'));
       this.spinner.show(this.spinnerName);
-      if (company.id !== undefined) {
+      if (!!companyId) {
         this.subscribeToSaveResponse(this.companyService.updateCompany(uploadData));
       } else {
         this.subscribeToSaveResponse(this.companyService.createCompany(uploadData));
       }
+    } else {
+      markFormGroupDirty(this.editForm);
+      this.editForm.updateValueAndValidity();
     }
   }
 
   private createFromForm(): ICompany {
     return {
       ...new Company(),
-      id: this.editForm.get(['id'])!.value,
-      name: this.editForm.get(['name'])!.value,
-      contactPerson: this.editForm.get(['contactPerson'])!.value,
-      email: this.editForm.get(['email'])!.value,
-      address: this.editForm.get(['address'])!.value,
-      contactNumber1: this.editForm.get(['contactNumber1'])!.value,
-      contactNumber2: this.editForm.get(['contactNumber2'])!.value,
-      status: this.editForm.get(['status'])!.value,
+      id: this.editForm.get(['id'])?.value || undefined,
+      name: this.editForm.get(['name'])?.value,
+      email: this.editForm.get(['email'])?.value,
+      contactNumber1: this.editForm.get(['contactNumber1'])?.value,
+      status: this.editForm.get(['status'])?.value,
+      contactPerson: this.editForm.get(['contactPerson'])?.value || '',
+
+      // address: this.editForm.get(['address'])!.value,
+      // contactNumber2: this.editForm.get(['contactNumber2'])!.value,
+      // companyType: this.editForm.get('companyType')!.value,
+      // partnerType: this.editForm.get('partnerType')!.value,
+      // website: this.editForm.get(['website'])!.value,
+      // parentId: this.editForm.get(['parentId'])!.value,
+      // gstNumber: this.editForm.get(['gstNumber'])!.value,
+
       // validFrom: this.editForm.get(['validFrom'])!.value,
       // validTo: this.editForm.get(['validTo'])!.value,
-      companyType: this.editForm.get('companyType')!.value,
-      partnerType: this.editForm.get('partnerType')!.value,
-      website: this.editForm.get(['website'])!.value,
-      parentId: this.editForm.get(['parentId'])!.value,
     };
   }
 
@@ -189,12 +199,10 @@ export class CompanyEditComponent {
     return this.fb.group({
       id: [company.id],
       name: [company.name, [Validators.required, Validators.maxLength(75)]],
-      contactPerson: [company.contactPerson, [Validators.required, Validators.maxLength(75)]],
       email: [
         company.email,
         [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
       ],
-      address: [company.address, [Validators.required, Validators.maxLength(300)]],
       contactNumber1: [
         company.contactNumber1,
         [
@@ -204,17 +212,23 @@ export class CompanyEditComponent {
           Validators.pattern('^[0-9]*$'),
         ],
       ],
-      contactNumber2: [
-        company.contactNumber2,
-        [Validators.maxLength(10), Validators.minLength(10), Validators.pattern('^[0-9]*$')],
-      ],
       status: [company.status, Validators.required],
+      // contactPerson: [company.contactPerson, [Validators.required, Validators.maxLength(75)]],
+
+      // address: [company.address, [Validators.required, Validators.maxLength(300)]],
+      // contactNumber2: [
+      //   company.contactNumber2,
+      //   [Validators.maxLength(10), Validators.minLength(10), Validators.pattern('^[0-9]*$')],
+      // ],
+
+      // companyType: [company.companyType, Validators.required],
+      // partnerType: [company.partnerType, Validators.required],
+      // website: [company.website],
+      // parentId: [company.parentId],
+      // gstNumber: [company.gstNumber],
+
       // validFrom: [company.validFrom, [Validators.required]],
       // validTo: [company.validTo, [Validators.required]],
-      companyType: [company.companyType, Validators.required],
-      partnerType: [company.partnerType, Validators.required],
-      website: [company.website],
-      parentId: [company.parentId],
     });
   }
 }

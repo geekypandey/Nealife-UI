@@ -30,10 +30,9 @@ export class CompanyService {
     const params: any = {
       'parent.equals': companyId,
     };
-    return this.http
-      .get<Company[]>(API_URL.companies, {
-        params: params,
-      })
+    return this.http.get<Company[]>(API_URL.companies, {
+      params: params,
+    });
   }
 
   getCompany(companyId: number) {
@@ -50,6 +49,10 @@ export class CompanyService {
     return this.http
       .put<Company>(API_URL.companies, formData)
       .pipe(map(res => this.convertDateFromServer(res)));
+  }
+
+  deleteCompany(id: string) {
+    return this.http.delete(`${API_URL.companies}/${id}`);
   }
 
   getAllCompanies() {

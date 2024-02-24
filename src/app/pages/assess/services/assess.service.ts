@@ -1,30 +1,27 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Params } from '@angular/router';
 import * as moment from 'moment';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { DATE_FORMAT } from 'src/app/constants/assess.constants';
 import {
+  AccountDashboardDetails,
   CompetencyAspectItemROCount,
   ICompetencyAspectProjection,
   ILookup,
   MasterDataDetails,
+  SaDashboard,
 } from '../../assess/assess.model';
-import { AccountDashboard, AccountDashboardDetails } from '../assess.model';
+import { AccountDashboard } from '../assess.model';
 import { AssessmentGroupDetails, IAssessment } from '../assessment-group/assessment-group.model';
 
 @Injectable()
 export class AssessService {
   private http = inject(HttpClient);
-  private compProjectionsData: ICompetencyAspectProjection[] = [];
 
   getCompetencyAspectProjections() {
-    return this.http.get<ICompetencyAspectProjection[]>(API_URL.competencyAspectProjections).pipe(
-      tap(resp => {
-        this.compProjectionsData = resp;
-      })
-    );
+    return this.http.get<ICompetencyAspectProjection[]>(API_URL.competencyAspectProjections);
   }
 
   getCompetencyAspectItemROCount() {
@@ -47,6 +44,20 @@ export class AssessService {
 
   getAccountdashboardNotificationLookup(payload: any) {
     return this.http.get<AccountDashboardDetails>(API_URL.accountDashboardDetails, {
+      params: payload,
+    });
+  }
+
+  getDashboard(companyId: string) {
+    return this.http.get<AccountDashboard>(API_URL.dashboard, {
+      params: {
+        companyId,
+      },
+    });
+  }
+
+  getDashboardDetails(payload: any) {
+    return this.http.get<SaDashboard[]>(API_URL.dashboardDetails, {
       params: payload,
     });
   }
@@ -84,6 +95,22 @@ export class AssessService {
     return this.http.put<ILookup>(API_URL.lookup, lookup);
   }
 
+  resendReport(id: string) {
+    return this.http.get(API_URL.resendReport + '/' + id);
+  }
+
+  uploadMasterData(formData: FormData) {
+    const headers: any = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    return this.http.post(API_URL.uploadMasterData, formData, {
+      headers,
+      responseType: 'text',
+      reportProgress: true,
+      observe: 'events',
+    });
+  }
+
   protected convertDateFromServer(res: IAssessment) {
     if (res) {
       res.validFrom = res.validFrom ? moment(res.validFrom) : undefined;
@@ -104,9 +131,5 @@ export class AssessService {
           : undefined,
     });
     return copy;
-  }
-
-  get compProjections() {
-    return this.compProjectionsData;
   }
 }
