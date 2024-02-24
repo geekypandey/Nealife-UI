@@ -27,4 +27,17 @@ export const assignRoute: Route[] = [
       ],
     },
   },
+  {
+    path: 'company-assessment-group',
+    loadChildren: () =>
+      import('./company-assessment-group/company-assessment-group.route').then(c => c.companyAssessmentGroupRoutes),
+    data: {
+      authorities: [
+        Authority.ACCOUNT_ADMIN,
+        Authority.NEA_ADMIN,
+        Authority.ADMIN,
+        Authority.SUPER_ADMIN,
+      ],
+    },
+  },
 ]
