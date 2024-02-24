@@ -132,7 +132,8 @@ export class ShowErrorMsgDirective {
     switch (errorType) {
       case 'required':
         return 'This field is required';
-      // Add more cases for different error types
+      case 'pattern':
+        return 'Invalid pattern';
       case 'maxlength':
         return `This field cannot be longer than ${errorValue.requiredLength} characters.`;
       case 'minlength':
