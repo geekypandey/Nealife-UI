@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -190,6 +191,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         })
       } else {
         delete companyAssessment['id'];
+        companyAssessment['scheduleDate'] = moment(companyAssessment['scheduleDate']).format('YYYY-MM-DD');
         this.http.post<any>(API_URL.companyAssessments, companyAssessment).subscribe({
           next: () => this.goBack(),
           error: () => {},

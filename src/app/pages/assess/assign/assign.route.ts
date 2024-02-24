@@ -27,17 +27,4 @@ export const assignRoute: Route[] = [
       ],
     },
   },
-  {
-    path: 'add',
-    loadComponent: () =>
-      import('./assign-edit/assign-edit.component').then(c => c.AssignEditComponent),
-    data: {
-      authorities: [
-        Authority.ACCOUNT_ADMIN,
-        Authority.NEA_ADMIN,
-        Authority.ADMIN,
-        Authority.SUPER_ADMIN,
-      ],
-    },
-  },
 ]
