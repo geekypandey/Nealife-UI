@@ -141,6 +141,7 @@ export interface ICompany {
   website?: string;
   assessments?: ICompanyAssessment[];
   gstNumber?: string;
+  brandingId?: string;
 }
 
 export class Company implements ICompany {
@@ -161,7 +162,8 @@ export class Company implements ICompany {
     public parentId?: number,
     public website?: string,
     public assessments?: ICompanyAssessment[],
-    public gstNumber?: string
+    public gstNumber?: string,
+    public brandingId?: string
   ) {}
 }
 
