@@ -60,4 +60,5 @@ export const API_URL = {
   assignAssessment: BASE_URL + '/notifications/assign-assessment',
   downloadNotificationTemplate: BASE_URL + '/notifications/downloadNotificationTemplate',
   downloadBulkLinks: BASE_URL + '/notifications/download-bulk-links',
+  uploadUser: BASE_URL + '/notifications/uploadUser',
 };

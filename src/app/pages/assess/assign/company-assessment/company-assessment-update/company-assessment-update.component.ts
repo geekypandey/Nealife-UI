@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { Authority } from 'src/app/constants/authority.constants';
@@ -15,6 +16,7 @@ import { saveFile } from '../../../assess.util';
 import { CompanyService } from '../../../company/company.service';
 import { ProfileService } from '../../../services/profile.service';
 import { AssessmentService } from '../../assessment.service';
+import { UploadUserComponent } from './upload-user/upload-user.component';
 
 @Component({
   selector: 'nl-company-assessment-edit',
@@ -22,7 +24,8 @@ import { AssessmentService } from '../../assessment.service';
   imports: [CommonModule, SpinnerComponent, ReactiveFormsModule, DropdownModule, CalendarModule],
   templateUrl: './company-assessment-update.component.html',
   styleUrls: ['./company-assessment-update.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DialogService],
 })
 export class CompanyAssessmentUpdateComponent implements OnInit {
   spinnerName: string = 'company-assessment-edit';
@@ -34,6 +37,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   companies: DropdownOption[] = [];
   assessments: DropdownOption[] = [];
   loggedInUser: any;
+  visible: boolean = false;
+  ref: DynamicDialogRef | undefined;
 
   private activatedRoute = inject(ActivatedRoute);
   private assessmentService = inject(AssessmentService);
@@ -42,6 +47,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   private fb = inject(FormBuilder);
   private companyService = inject(CompanyService);
   private http = inject(HttpClient);
+  private dialogService = inject(DialogService);
 
   private generateLinkPayload: any = {};
 
@@ -266,7 +272,27 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       return;
     }
     if (this.bulkEditForm.controls['credits'].value < this.editForm.controls['availableCredits'].value) {
-
+      this.generateLinkPayload = {
+        ...this.generateLinkPayload,
+        companyAssessmentId: this.editForm.get('id')?.value,
+        companyAssessmentGroupId: null,
+        email: this.individualEditForm.get('email')?.value,
+        emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
+        embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
+        credits: this.bulkEditForm.get('credits')?.value,
+        creditCode: null,
+        sendAssignmentEmail: 'Y',
+        link: null,
+        message: null,
+        error: null,
+      }
+      this.ref = this.dialogService.open(UploadUserComponent, {
+        data: {
+          payload: this.generateLinkPayload,
+        },
+        header: 'Excel Upload',
+        width: '50%',
+      })
     }
   }
 
