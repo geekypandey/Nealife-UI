@@ -19,6 +19,9 @@
           (onRowSelect)="onRowSelect.emit($event)">
           <ng-template pTemplate="header" let-columns>
             <tr>
+              <th style="width: 4rem" *ngIf="viewCheckBox">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
               <ng-container *ngFor="let col of columns">
                 <th
                   [pSortableColumn]="col.field"
@@ -33,6 +36,9 @@
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr [pSelectableRow]="rowData">
+              <td>
+                <p-tableCheckbox [value]="columns"></p-tableCheckbox>
+              </td>
               <ng-container *ngIf="customBodyTpl; else defaultBodyTpl">
                 <ng-container
                   *ngTemplateOutlet="

@@ -48,6 +48,7 @@ export class TableComponent {
   }
 
   @Input() value: any[] = [];
+  @Input() viewCheckBox: boolean = false;
   @Input() paginator: boolean = true;
   @Input() showCurrentPageReport: boolean = true;
   @Input() defaultRowCount: number = 10;
