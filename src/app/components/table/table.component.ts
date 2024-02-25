@@ -61,7 +61,7 @@ export class TableComponent implements OnInit {
     'Showing {first} to {last} of {totalRecords} entries';
   @Input() actionsList: Action[] = [];
   @Input() selectionMode: 'single' | 'multiple' | undefined | null;
-  @Input() selectionKey: string | undefined;
+  @Input() selectionKey: string = 'id';
   @Output() onSelectionChange = new EventEmitter<Array<string>>();
 
   @ContentChild('customBodyTpl') customBodyTpl!: TemplateRef<any>;
