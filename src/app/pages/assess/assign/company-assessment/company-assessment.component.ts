@@ -69,8 +69,14 @@ export class CompanyAssessmentComponent {
         icon: ACTION_ICON.ALERT,
         field: 'id',
         onClick: (value: string) => {
-          this.router.navigate([value + '/edit'], {
-            relativeTo: this.activatedRoute,
+          this.assessmentService.notifyCompanyWiseUsers(value).subscribe({
+            next: () => {
+              this.toastService.add({
+                severity: 'success',
+                summary: `Notifications sent Successfully`,
+              })
+            },
+            error: () => {}
           });
         },
       },

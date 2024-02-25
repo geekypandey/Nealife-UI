@@ -62,4 +62,5 @@ export const API_URL = {
   downloadNotificationTemplate: BASE_URL + '/notifications/downloadNotificationTemplate',
   downloadBulkLinks: BASE_URL + '/notifications/download-bulk-links',
   uploadUser: BASE_URL + '/notifications/uploadUser',
+  notifyCompanyWiseUsers: BASE_URL + '/assessments/notifyCompanywiseUsers',
 };

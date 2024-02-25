@@ -80,4 +80,12 @@ export class AssessmentService {
         }
         return this.http.get(`${API_URL.downloadCredits}?companyAssessmentId.equals=${companyAssessmentId}`, { responseType: 'blob'});
     }
+
+    notifyCompanyWiseUsers(companyAssessmentId: string) {
+        const params = {
+            'companyAssessmentId': companyAssessmentId,
+            'isGroup': 'N'
+        }
+        return this.http.get<any>(API_URL.notifyCompanyWiseUsers, { params: params });
+    }
 }
