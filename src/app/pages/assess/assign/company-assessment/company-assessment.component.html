@@ -1,6 +1,6 @@
 <nl-spinner [name]="spinnerName"></nl-spinner>
 <ng-container *ngIf="assessments$ | async as assessments">
-    <div class="mb-3 d-flex justify-content-end">
+    <div class="mb-3 d-flex justify-content-end gap-2">
         <button type="button" routerLink="company-assessment/add" [relativeTo]="activatedRoute" class="p-button ml-auto d-block">Add</button>
         <button type="button" (click)="deleteItems()" class="p-button ml-auto d-block" [disabled]="!this.selectedItems.length">Delete</button>
     </div>
