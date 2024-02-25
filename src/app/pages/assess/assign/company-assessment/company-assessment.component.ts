@@ -18,6 +18,7 @@ import { AssessmentService } from '../assessment.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CompanyAssessmentComponent {
+  selectedItems: Array<string> = [];
   spinnerName = 'company-assessment';
   assessments$: Observable<Assessment[]>;
   actionsList: Array<Action>;
@@ -89,5 +90,10 @@ export class CompanyAssessmentComponent {
         },
       },
     ]
+  }
+
+  updateSelection(items: any) {
+    this.selectedItems = items;
+    console.log(items)
   }
 }
