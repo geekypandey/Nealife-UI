@@ -5,6 +5,7 @@ import {
   ContentChild,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   TemplateRef,
 } from '@angular/core';
@@ -34,7 +35,7 @@ type ExtendedColDef = ColDef & { visible: boolean };
   styleUrls: ['./table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableComponent {
+export class TableComponent implements OnInit {
   selectedItems: any;
   filterAccordion: ExtendedColDef[] = [];
   extendedColDefs: ExtendedColDef[] = [];
@@ -68,6 +69,11 @@ export class TableComponent {
   toggleColumn: boolean = false;
   toggleFilter: boolean = false;
   columnSearchText: string = '';
+  filteredValue: any[] = [];
+
+  ngOnInit(): void {
+    this.filteredValue = this.value;
+  }
 
   isSelectedAll(): boolean {
     return (
@@ -86,7 +92,13 @@ export class TableComponent {
   }
 
   onFilterInputText(fieldName: string, searchText: string) {
-    console.info(fieldName, searchText);
+    if (searchText) {
+      this.filteredValue = this.value.filter((row: any) => {
+        return row[fieldName].toString().toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
+      })
+    } else {
+      this.filteredValue = this.value;
+    }
   }
 
   emitSelectionEvent() {
