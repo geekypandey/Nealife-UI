@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Observable, finalize } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
@@ -36,6 +37,8 @@ export class CompanyAssessmentComponent {
   private assessmentService = inject(AssessmentService);
   private spinner = inject(NgxSpinnerService);
   private router = inject(Router);
+  private toastService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
 
 
   constructor() {
@@ -95,5 +98,28 @@ export class CompanyAssessmentComponent {
   updateSelection(items: any) {
     this.selectedItems = items;
     console.log(items)
+  }
+
+  deleteItems() {
+    // TODO: ask for confirmation
+    // inform that items have been sucessfully deleted and then refresh
+    this.confirmationService.confirm({
+      message: `Are you sure that you want to delete selected Company Assessment?`,
+      header: 'Confirm Delete Operation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.assessmentService.deleteAssessments(this.selectedItems);
+        this.toastService.add({
+          severity: 'success',
+          summary: `${this.selectedItems.length} items successfully deleted`
+        })
+        this.assessments$ = this.assessmentService.getAssessments().pipe(
+          finalize(() => this.spinner.hide(this.spinnerName))
+        );
+      },
+      reject: () => {}
+    })
+
+
   }
 }
