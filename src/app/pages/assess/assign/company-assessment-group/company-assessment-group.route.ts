@@ -28,6 +28,19 @@ export const companyAssessmentGroupRoutes: Route[] = [
       ],
     },
   },
+  {
+    path: 'add',
+    loadComponent: () =>
+      import('./company-assessment-group-update/company-assessment-group-update.component').then(c => c.CompanyAssessmentGroupUpdateComponent),
+    data: {
+      authorities: [
+        Authority.ACCOUNT_ADMIN,
+        Authority.NEA_ADMIN,
+        Authority.ADMIN,
+        Authority.SUPER_ADMIN,
+      ],
+    },
+  },
 //   {
 //     path: 'add',
 //     loadComponent: () =>
