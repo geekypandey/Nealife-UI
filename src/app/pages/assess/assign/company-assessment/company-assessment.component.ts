@@ -8,6 +8,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { Assessment } from '../../assess.model';
+import { saveFile } from '../../assess.util';
 import { AssessmentService } from '../assessment.service';
 
 @Component({
@@ -84,18 +85,35 @@ export class CompanyAssessmentComponent {
         icon: ACTION_ICON.DOWNLOAD,
         field: 'id',
         onClick: (value: string) => {
-          this.router.navigate([value + '/edit'], {
-            relativeTo: this.activatedRoute,
-          });
+          this.assessmentService.downloadCredits(value).subscribe({
+            next: (data: any) => {
+              const blob = new Blob([data], { type: 'application/octet-stream' });
+              saveFile(blob, 'Available_Credits.xlsx');
+            },
+            error: () => {}
+          })
         },
       },
       {
         icon: ACTION_ICON.DELETE,
         field: 'id',
         onClick: (value: string) => {
-          this.router.navigate([value + '/edit'], {
-            relativeTo: this.activatedRoute,
-          });
+          this.confirmationService.confirm({
+            message: `Are you sure that you want to delete Company Assessment ${value}?`,
+            header: 'Confirm Delete Operation',
+            icon: 'pi pi-info-circle',
+            accept: () => {
+              this.assessmentService.deleteAssessment(value);
+              this.toastService.add({
+                severity: 'success',
+                summary: `Company item ${value} successfully deleted`
+              })
+              this.assessments$ = this.assessmentService.getAssessments().pipe(
+                finalize(() => this.spinner.hide(this.spinnerName))
+              );
+            },
+            reject: () => {}
+          })
         },
       },
     ]

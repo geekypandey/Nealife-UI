@@ -60,11 +60,15 @@ export class AssessmentService {
 
     deleteAssessments(assessmentIds: Array<string>) {
         for (const assessmentId of assessmentIds) {
-            this.http.delete(`${API_URL.companyAssessments}/${assessmentId}`).subscribe({
-                next: () => { },
-                error: () => {}
-            })
+            this.deleteAssessment(assessmentId);
         }
+    }
+
+    deleteAssessment(assessmentId: string) {
+        this.http.delete(`${API_URL.companyAssessments}/${assessmentId}`).subscribe({
+            next: () => { },
+            error: () => {}
+        })
     }
 
 
