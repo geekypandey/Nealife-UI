@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { USER_ROLE } from 'src/app/constants/user-role.constants';
 import { ActivityStatus, ICompanyAssessment } from './assessment-group/assessment-group.model';
 
 export interface AccountDashboardDetails {
@@ -8,18 +9,6 @@ export interface AccountDashboardDetails {
   assessmentTaken: string;
   assessmentRemains: string;
   notifications: any[];
-}
-
-export interface AccountDashboard {
-  companyName: string;
-  companyId: string;
-  companyType?: any;
-  totalAssessments: string;
-  totalCredits: string;
-  availableCredits: string;
-  usedCredits: string;
-  assessments: Assessment[];
-  saDashboard?: any;
 }
 
 export interface Assessment {
@@ -45,9 +34,32 @@ export interface Assessment {
   url: string;
 }
 
+export interface AccountDashboard {
+  companyName?: any;
+  companyId?: any;
+  companyType?: any;
+  totalAssessments?: any;
+  totalCredits: string;
+  availableCredits: string;
+  usedCredits: string;
+  assessments?: any;
+  saDashboard: SaDashboard[];
+}
+
+export interface SaDashboard {
+  companyName: string;
+  companyId: number;
+  companyAssessmentId?: any;
+  companyAssessmentGroupId?: any;
+  companyAssessmentGroupBranchId?: any;
+  allottedAssessments: number;
+  assessmentsLeftToAssign: number;
+  assessmentName?: any;
+}
+
 export interface Profile {
   login: string;
-  role: 'ROLE_SUPER_ADMIN';
+  role: USER_ROLE;
   roleDisplayName: string;
   action: string;
   companyId: string;
@@ -128,6 +140,8 @@ export interface ICompany {
   parentId?: number;
   website?: string;
   assessments?: ICompanyAssessment[];
+  gstNumber?: string;
+  brandingId?: string;
 }
 
 export class Company implements ICompany {
@@ -147,7 +161,9 @@ export class Company implements ICompany {
     public parentName?: string,
     public parentId?: number,
     public website?: string,
-    public assessments?: ICompanyAssessment[]
+    public assessments?: ICompanyAssessment[],
+    public gstNumber?: string,
+    public brandingId?: string
   ) {}
 }
 
@@ -167,17 +183,27 @@ export interface SidebarMenu {
 }
 
 export interface IApplicationUserAssessment {
-  id?: number;
-  activationkey?: string;
-  rawScore?: number;
-  activated?: boolean;
-  userResponse?: any;
-  status?: AssesmentStatus;
-  reportId?: number;
-  userId?: number;
+  id: number;
+  activationkey?: any;
+  rawScore?: any;
+  activated: boolean;
+  userResponse: string;
+  status: string;
+  reportId: number;
+  userId: number;
+  companyId: number;
+  userName: string;
   assessmentId?: number;
-  companyName?: string;
-  companyId?: number;
+  assessmentName?: string;
+  notificationSent?: string;
+  linkAccessedOn: string;
+  companyName: string;
+  startTime?: any;
+  endTime?: any;
+  assessmentGroupId?: number;
+  assessmentGroupName?: string;
+  reportUrl: string;
+  contactNumber1: string;
 }
 
 export interface ILookup {

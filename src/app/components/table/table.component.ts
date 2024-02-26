@@ -83,4 +83,10 @@ export class TableComponent {
   onFilterInputText(fieldName: string, searchText: string) {
     console.info(fieldName, searchText);
   }
+
+  onActionClick(action: Action, rowData: any) {
+    const fields = action.field.split(',').map(field => rowData[field]);
+    action.onClick.apply(null, fields);
+    // action.onClick(rowData[action.field]);
+  }
 }
