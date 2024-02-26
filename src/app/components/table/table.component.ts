@@ -104,4 +104,10 @@ export class TableComponent implements OnInit {
   emitSelectionEvent() {
     this.onSelectionChange.emit(this.selectedItems.map((item: any) => item[this.selectionKey!]));
   }
+
+  onActionClick(action: Action, rowData: any) {
+    const fields = action.field.split(',').map(field => rowData[field]);
+    action.onClick.apply(null, fields);
+    // action.onClick(rowData[action.field]);
+  }
 }

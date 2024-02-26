@@ -17,4 +17,5 @@ export interface AssessCard {
 })
 export class AssessCardsComponent {
   @Input() assessCards: AssessCard[] = [];
+  @Input() response: any;
 }

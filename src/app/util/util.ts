@@ -1,3 +1,5 @@
+import { FormGroup } from '@angular/forms';
+
 export function getDropdownOptions<T>(arr: T[], label: keyof T, value: keyof T) {
   return arr.map(obj => ({ label: obj[label], value: obj[value] }));
 }
@@ -67,4 +69,17 @@ export function getCurrentTime(): string {
  */
 export function isEmptyObject(obj: Object) {
   return Object.keys(obj).length === 0;
+}
+
+/**
+ * Mark all controls under formGroup as dirty.
+ */
+export function markFormGroupDirty(formGroup: FormGroup) {
+  Object.values(formGroup.controls).forEach(control => {
+    if (control instanceof FormGroup) {
+      markFormGroupDirty(control);
+    } else {
+      control.markAsDirty();
+    }
+  });
 }

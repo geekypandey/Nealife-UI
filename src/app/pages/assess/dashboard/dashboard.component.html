@@ -1,12 +1,18 @@
 <nl-spinner [name]="spinnerName"></nl-spinner>
 <div class="row flex-column py-3">
   <strong class="col-12 mb-3">Assessment Dashboard</strong>
-  <ng-container *ngIf="accounts$ | async as accounts">
-    <nl-assess-cards [assessCards]="assessCards"></nl-assess-cards>
-    <nl-table
-      [cols]="cols"
-      [value]="accounts.assessments"
-      [selectionMode]="'single'"
-      (onRowSelect)="onRowSelect($event)" />
+  <ng-container *ngIf="dashboardStats$ | async as dashboardStats">
+    <ng-container *ngIf="profileService.profile$ | async as profile">
+      <nl-assess-cards [assessCards]="assessCards" [response]="dashboardStats"></nl-assess-cards>
+      <nl-table
+        [cols]="cols"
+        [value]="
+          profile.role === userRole.SUPER_ADMIN
+            ? dashboardStats.saDashboard
+            : dashboardStats.assessments
+        "
+        [selectionMode]="'single'"
+        (onRowSelect)="onRowSelect($event)" />
+    </ng-container>
   </ng-container>
 </div>

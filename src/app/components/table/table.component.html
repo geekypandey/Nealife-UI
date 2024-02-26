@@ -67,7 +67,7 @@
                 <td *ngIf="actionsList && actionsList.length">
                   <img
                     style="cursor: pointer; margin-left: 10px"
-                    (click)="action.onClick(rowData[action.field])"
+                    (click)="onActionClick(action, rowData)"
                     *ngFor="let action of actionsList"
                     width="16px"
                     height="16px"

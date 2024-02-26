@@ -1,36 +1,46 @@
 <nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="mt-3">
+  <button class="p-button nl-auto d-block" (click)="goBack()">Back</button>
+</div>
 <ng-container *ngIf="dashboardDetails$ | async as dashboardDetails">
-  <div class="py-3">
-    <div class="row mb-3">
-      <div class="col-md-3">
-        <div class="d-flex column-gap-2">
-          <strong>Company Name :</strong>
-          <span>{{ dashboardDetails.companyName }}</span>
+  <ng-container *ngIf="profileService.profile$ | async as profile">
+    <div class="py-3">
+      <div
+        class="row mb-3"
+        *ngIf="
+          [userRole.ADMIN, userRole.FRANCHISE].includes(profile.role) &&
+          accountDashboardNotificationsResp
+        ">
+        <div class="col-md-3">
+          <div class="d-flex column-gap-2">
+            <strong>Company Name :</strong>
+            <span>{{ accountDashboardNotificationsResp.companyName }}</span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="d-flex column-gap-2">
+            <strong>Total Notification :</strong>
+            <span>{{ accountDashboardNotificationsResp.totalNotification }}</span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="d-flex column-gap-2">
+            <strong>Assessment Taken :</strong>
+            <span>{{ accountDashboardNotificationsResp.assessmentTaken }}</span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="d-flex column-gap-2">
+            <strong>Assessment Remains :</strong>
+            <span>{{ accountDashboardNotificationsResp.assessmentRemains }}</span>
+          </div>
         </div>
       </div>
-      <div class="col-md-3">
-        <div class="d-flex column-gap-2">
-          <strong>Total Notification :</strong>
-          <span>{{ dashboardDetails.totalNotification }}</span>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="d-flex column-gap-2">
-          <strong>Assessment Taken :</strong>
-          <span>{{ dashboardDetails.assessmentTaken }}</span>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="d-flex column-gap-2">
-          <strong>Assessment Remains :</strong>
-          <span>{{ dashboardDetails.assessmentRemains }}</span>
+      <div class="row">
+        <div class="col-md-12">
+          <nl-table [cols]="cols" [value]="dashboardDetails" />
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <nl-table [cols]="cols" [value]="dashboardDetails.notifications" />
-      </div>
-    </div>
-  </div>
+  </ng-container>
 </ng-container>
