@@ -15,6 +15,8 @@ export const API_URL = {
   dashboard: BASE_URL + '/dashboard-stats',
   dashboardDetails: BASE_URL + '/dashboard-sa-stats',
   companies: BASE_URL + '/companies',
+  checkEmailExists: BASE_URL + '/companies/checkEmailExists',
+  checkNameExists: BASE_URL + '/companies/checkNameExists',
   lookup: BASE_URL + '/lookups',
   applicationUserAssessment: BASE_URL + '/application-user-assessments',
   resendReport: BASE_URL + '/application-user-assessments/resend-report',

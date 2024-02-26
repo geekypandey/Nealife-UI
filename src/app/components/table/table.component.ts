@@ -5,7 +5,6 @@ import {
   ContentChild,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   TemplateRef,
 } from '@angular/core';
@@ -29,13 +28,13 @@ type ExtendedColDef = ColDef & { visible: boolean };
     FilterPipe,
     AccordionComponent,
     AccordionItemComponent,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableComponent implements OnInit {
+export class TableComponent {
   selectedItems: any;
   filterAccordion: ExtendedColDef[] = [];
   extendedColDefs: ExtendedColDef[] = [];
@@ -51,7 +50,15 @@ export class TableComponent implements OnInit {
     }));
   }
 
-  @Input() value: any[] = [];
+  private _value: any[] = [];
+  @Input()
+  set value(value: any[]) {
+    this._value = value;
+    this.filteredValue = this.value;
+  }
+  get value() {
+    return this._value;
+  }
   @Input() viewCheckBox: boolean = false;
   @Input() paginator: boolean = true;
   @Input() showCurrentPageReport: boolean = true;
@@ -70,10 +77,6 @@ export class TableComponent implements OnInit {
   toggleFilter: boolean = false;
   columnSearchText: string = '';
   filteredValue: any[] = [];
-
-  ngOnInit(): void {
-    this.filteredValue = this.value;
-  }
 
   isSelectedAll(): boolean {
     return (
@@ -95,7 +98,7 @@ export class TableComponent implements OnInit {
     if (searchText) {
       this.filteredValue = this.value.filter((row: any) => {
         return row[fieldName].toString().toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
-      })
+      });
     } else {
       this.filteredValue = this.value;
     }

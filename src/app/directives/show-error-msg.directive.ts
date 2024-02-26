@@ -138,6 +138,8 @@ export class ShowErrorMsgDirective {
         return `This field cannot be longer than ${errorValue.requiredLength} characters.`;
       case 'minlength':
         return `This field cannot be lesser than ${errorValue.requiredLength} characters.`;
+      case 'nonUnique':
+        return `This field is not unique.`;
       default:
         return `Invalid ${errorType}`;
     }

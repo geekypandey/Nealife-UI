@@ -13,7 +13,7 @@
             </div>
             <div class="col">
               <div>{{ assessCardItem.label }}</div>
-              <strong>{{ response[assessCardItem.count] }}</strong>
+              <strong>{{ response ? response[assessCardItem.count] : '' }}</strong>
             </div>
           </div>
         </div>
