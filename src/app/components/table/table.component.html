@@ -8,7 +8,7 @@
         }">
         <p-table
           [columns]="extendedColDefs"
-          [value]="value"
+          [value]="filteredValue"
           [scrollable]="true"
           [paginator]="paginator"
           [showCurrentPageReport]="showCurrentPageReport"
@@ -16,9 +16,13 @@
           [currentPageReportTemplate]="currentPageReportTemplate"
           [rowsPerPageOptions]="rowsPerPageOptions"
           [selectionMode]="selectionMode"
-          (onRowSelect)="onRowSelect.emit($event)">
+          [(selection)]="selectedItems"
+          (selectionChange)="emitSelectionEvent()">
           <ng-template pTemplate="header" let-columns>
             <tr>
+              <th style="width: 4rem" *ngIf="viewCheckBox">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
               <ng-container *ngFor="let col of columns">
                 <th
                   [pSortableColumn]="col.field"
@@ -41,14 +45,24 @@
                   "></ng-container>
                 <ng-container *ngTemplateOutlet="actionTpl"></ng-container>
               </ng-container>
+
               <ng-template #defaultBodyTpl>
+                <td *ngIf="viewCheckBox">
+                  <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
                 <ng-container *ngFor="let col of columns">
                   <td *ngIf="col.visible" [ngStyle]="{ width: col.width || 'auto' }">
-                    {{ rowData[col.field] }}
+                    <span *ngIf="col.link; else plainText">
+                      <span [routerLink]="[col.linkStart, rowData[col.linkField], col.linkEnd]" class="link-primary nl-cursor-pointer" >{{ rowData[col.field] }}</span>
+                    </span>
+                    <ng-template #plainText>
+                      {{ rowData[col.field] }}
+                    </ng-template>
                   </td>
                 </ng-container>
                 <ng-container *ngTemplateOutlet="actionTpl"></ng-container>
               </ng-template>
+
               <ng-template #actionTpl>
                 <td *ngIf="actionsList && actionsList.length">
                   <img

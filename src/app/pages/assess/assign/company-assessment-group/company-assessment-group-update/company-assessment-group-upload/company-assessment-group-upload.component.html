@@ -1,0 +1,13 @@
+<div>
+    <label for="input-file" class="d-flex w-100">
+        <div class="d-flex border w-75 justify-content-between rounded" style="cursor: pointer;">
+           <div class="h-100 d-inline-block p-3">Choose file</div>
+           <div class="h-100 d-inline-block p-3 text-light" style="background-color: #03c988;">Browse</div>
+        </div>
+    </label>
+    <input type="file" id="input-file" (change)="onFileChange($event)" class="p-2" hidden>
+</div>
+<div class="d-flex mt-2" style="gap: 20px;">
+    <button (click)="upload()" class="p-button mr-2">Upload</button>
+    <button (click)="cancel()" class="p-button">Cancel</button>
+</div>

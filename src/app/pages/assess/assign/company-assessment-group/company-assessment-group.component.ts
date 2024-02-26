@@ -47,7 +47,7 @@ export class CompanyAssessmentGroupComponent {
         icon: ACTION_ICON.EDIT,
         field: 'id',
         onClick: (value: string) => {
-          this.router.navigate([value + '/edit'], {
+          this.router.navigate(['company-assessment-group/' + value + '/edit'], {
             relativeTo: this.activatedRoute,
           });
         },

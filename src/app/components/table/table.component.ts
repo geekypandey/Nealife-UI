@@ -5,11 +5,13 @@ import {
   ContentChild,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   TemplateRef,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TableModule, TableRowSelectEvent } from 'primeng/table';
+import { RouterLink } from '@angular/router';
+import { TableModule } from 'primeng/table';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
 import { AccordionItemComponent } from '../accordion/accordion-item/accordion-item.component';
 import { AccordionComponent } from '../accordion/accordion.component';
@@ -27,12 +29,14 @@ type ExtendedColDef = ColDef & { visible: boolean };
     FilterPipe,
     AccordionComponent,
     AccordionItemComponent,
+    RouterLink
   ],
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableComponent {
+export class TableComponent implements OnInit {
+  selectedItems: any;
   filterAccordion: ExtendedColDef[] = [];
   extendedColDefs: ExtendedColDef[] = [];
   @Input()
@@ -48,6 +52,7 @@ export class TableComponent {
   }
 
   @Input() value: any[] = [];
+  @Input() viewCheckBox: boolean = false;
   @Input() paginator: boolean = true;
   @Input() showCurrentPageReport: boolean = true;
   @Input() defaultRowCount: number = 10;
@@ -56,13 +61,19 @@ export class TableComponent {
     'Showing {first} to {last} of {totalRecords} entries';
   @Input() actionsList: Action[] = [];
   @Input() selectionMode: 'single' | 'multiple' | undefined | null;
-  @Output() onRowSelect = new EventEmitter<TableRowSelectEvent>();
+  @Input() selectionKey: string = 'id';
+  @Output() onSelectionChange = new EventEmitter<Array<string>>();
 
   @ContentChild('customBodyTpl') customBodyTpl!: TemplateRef<any>;
 
   toggleColumn: boolean = false;
   toggleFilter: boolean = false;
   columnSearchText: string = '';
+  filteredValue: any[] = [];
+
+  ngOnInit(): void {
+    this.filteredValue = this.value;
+  }
 
   isSelectedAll(): boolean {
     return (
@@ -81,7 +92,17 @@ export class TableComponent {
   }
 
   onFilterInputText(fieldName: string, searchText: string) {
-    console.info(fieldName, searchText);
+    if (searchText) {
+      this.filteredValue = this.value.filter((row: any) => {
+        return row[fieldName].toString().toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
+      })
+    } else {
+      this.filteredValue = this.value;
+    }
+  }
+
+  emitSelectionEvent() {
+    this.onSelectionChange.emit(this.selectedItems.map((item: any) => item[this.selectionKey!]));
   }
 
   onActionClick(action: Action, rowData: any) {

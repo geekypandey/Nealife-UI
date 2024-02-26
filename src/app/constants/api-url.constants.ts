@@ -45,6 +45,7 @@ export const API_URL = {
 
   companyAssessments: BASE_URL + '/company-assessments',
   assessmentForDropDown: BASE_URL + '/company-assessments/fordropdown',
+  companyAssessmentForDropDown: BASE_URL + '/company-assessment-groups/fordropdown',
 
   payment: BASE_URL + '/payments',
   assignGroup: BASE_URL + '/company-assessment-groups',
@@ -63,4 +64,7 @@ export const API_URL = {
   assessmentGroups: BASE_URL + '/assessment-groups',
   assignAssessment: BASE_URL + '/notifications/assign-assessment',
   downloadNotificationTemplate: BASE_URL + '/notifications/downloadNotificationTemplate',
+  downloadBulkLinks: BASE_URL + '/notifications/download-bulk-links',
+  uploadUser: BASE_URL + '/notifications/uploadUser',
+  notifyCompanyWiseUsers: BASE_URL + '/assessments/notifyCompanywiseUsers',
 };

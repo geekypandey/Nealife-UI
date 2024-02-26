@@ -28,9 +28,9 @@ export const assignRoute: Route[] = [
     },
   },
   {
-    path: 'add',
-    loadComponent: () =>
-      import('./assign-edit/assign-edit.component').then(c => c.AssignEditComponent),
+    path: 'company-assessment-group',
+    loadChildren: () =>
+      import('./company-assessment-group/company-assessment-group.route').then(c => c.companyAssessmentGroupRoutes),
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,

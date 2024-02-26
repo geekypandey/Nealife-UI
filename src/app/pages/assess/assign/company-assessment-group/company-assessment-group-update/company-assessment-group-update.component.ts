@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -12,26 +13,26 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { Authority } from 'src/app/constants/authority.constants';
 import { DropdownOption } from 'src/app/models/common.model';
-import { Assessment } from '../../../assess.model';
 import { saveFile } from '../../../assess.util';
+import { AssessmentGroup } from '../../../assessment-group/assessment-group.model';
 import { CompanyService } from '../../../company/company.service';
 import { ProfileService } from '../../../services/profile.service';
 import { AssessmentService } from '../../assessment.service';
-import { UploadUserComponent } from './upload-user/upload-user.component';
+import { CompanyAssessmentGroupUploadComponent } from './company-assessment-group-upload/company-assessment-group-upload.component';
 
 @Component({
-  selector: 'nl-company-assessment-edit',
+  selector: 'nl-company-assessment-group-edit',
   standalone: true,
   imports: [CommonModule, SpinnerComponent, ReactiveFormsModule, DropdownModule, CalendarModule],
-  templateUrl: './company-assessment-update.component.html',
-  styleUrls: ['./company-assessment-update.component.scss'],
+  templateUrl: './company-assessment-group-update.component.html',
+  styleUrls: ['./company-assessment-group-update.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DialogService],
 })
-export class CompanyAssessmentUpdateComponent implements OnInit {
+export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   spinnerName: string = 'company-assessment-edit';
   // TODO: fix this
-  assessment: Assessment | any;
+  companyAssessment: AssessmentGroup | any;
   editForm: FormGroup;
   individualEditForm: FormGroup;
   bulkEditForm: FormGroup;
@@ -51,25 +52,22 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   private dialogService = inject(DialogService);
 
   private generateLinkPayload: any = {};
+  private toastService = inject(MessageService);
 
   constructor() {
     this.editForm = this.fb.group({
       id: [],
       companyId: [null, Validators.required],
-      assessmentId: [null, Validators.required],
+      assessmentGroupId: [null, Validators.required],
       scheduleDate: [],
       reportTemplate: [],
       emailTemplate: [],
-      timeLimit: [null, [Validators.required, Validators.maxLength(75)]],
-      availableCredits: [0, [Validators.required, Validators.maxLength(75)]],
-      usedCredits: [0, [Validators.required, Validators.maxLength(75)]],
-      allocatedCredits: [0, [Validators.required, Validators.maxLength(75)]],
+      timeLimit: [],
+      availableCredits: [],
+      usedCredits: [],
+      allocatedCredits: [],
       url: [],
       totalCredits: [0, [Validators.required, Validators.maxLength(75)]],
-      generateUrl: [],
-      creditCode: [],
-      email: [],
-      credits: [],
     });
 
     this.individualEditForm = this.fb.group({
@@ -89,10 +87,10 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       credits: [null, Validators.required],
     });
 
-    const assessmentId = this.activatedRoute.snapshot.params['id'];
-    if (assessmentId) {
-      this.assessmentService.getAssessment(assessmentId).subscribe((value) => {
-        this.assessment = value;
+    const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
+    if (assessmentGroupId) {
+      this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe((value) => {
+        this.companyAssessment = value;
         this.patchEditForm();
         this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
       });
@@ -102,7 +100,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   ngOnInit() {
     this.profileService.getLoggedInUser().subscribe((value) => {
       this.loggedInUser = value;
-      if (this.loggedInUser.role === Authority.ACCOUNT_ADMIN && this.assessment.id) {
+      if (this.loggedInUser.role === Authority.ACCOUNT_ADMIN && this.companyAssessment.id) {
         this.editForm.disable();
       }
       this.loadData();
@@ -117,16 +115,16 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         return { label: company.name, value: company.id };
       })
     })
-    this.assessmentService.getAssessmentsForDropDown(companyId || '').subscribe((data) => {
+    this.assessmentService.getCompanyAssessmentsForDropDown(companyId || '').subscribe((data) => {
       this.assessments = data.map((assessment: any) => {
-        return { label: assessment.assessmentName, value: assessment.assessmentId };
+        return { label: assessment.assessmentGroupName, value: assessment.assessmentGroupId };
       })
     })
     // TODO: fix this call made twice
-    const assessmentId = this.activatedRoute.snapshot.params['id'];
-    if (assessmentId) {
-      this.assessmentService.getAssessment(assessmentId).subscribe((value) => {
-        this.assessment = value;
+    const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
+    if (assessmentGroupId) {
+      this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe((value) => {
+        this.companyAssessment = value;
         this.patchEditForm();
       });
     }
@@ -135,16 +133,16 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
 
   patchEditForm() {
     this.editForm.patchValue({
-      id: this.assessment.id,
-      companyId: this.assessment.companyId,
-      assessmentId: this.assessment.assessmentId,
-      scheduleDate: this.assessment.scheduleDate,
-      timeLimit: this.assessment.timeLimit,
-      availableCredits: this.assessment.availableCredits,
-      usedCredits: this.assessment.usedCredits,
-      allocatedCredits: this.assessment.allocatedCredits,
-      url: this.assessment.url,
-      totalCredits: this.assessment.totalCredits,
+      id: this.companyAssessment.id,
+      companyId: this.companyAssessment.companyId,
+      assessmentGroupId: this.companyAssessment.assessmentGroupId,
+      scheduleDate: this.companyAssessment.scheduleDate,
+      url: this.companyAssessment.url,
+      timeLimit: this.companyAssessment.timeLimit,
+      availableCredits: this.companyAssessment.availableCredits,
+      usedCredits: this.companyAssessment.usedCredits,
+      allocatedCredits: this.companyAssessment.allocatedCredits,
+      totalCredits: this.companyAssessment.totalCredits,
     })
 
     if (this.editForm.value['usedCredits'] == null) {
@@ -159,8 +157,9 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   }
 
   downloadCredits() {
-    const id = this.assessment.id;
-    this.assessmentService.downloadCredits(id).subscribe((value: any) => {
+    const id = this.companyAssessment.id;
+
+    this.http.get(`${API_URL.downloadCredits}?companyAssessmentGroupsId.equals=${id}`, { responseType: 'blob'}).subscribe((value: any) => {
       const blob = new Blob([value], { type: 'application/octect-stream' });
       saveFile(blob, 'Available_Credits.xlsx')
     });
@@ -171,7 +170,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       const companyAssessment: any = {
         id: this.editForm.get(['id'])!.value,
         companyId: this.editForm.get(['companyId'])!.value,
-        assessmentId: this.editForm.get(['assessmentId'])!.value,
+        assessmentGroupId: this.editForm.get(['assessmentGroupId'])!.value,
         scheduleDate: this.editForm.get(['scheduleDate'])!.value,
         reportTemplate: this.editForm.get(['reportTemplate'])!.value,
         emailTemplate: this.editForm.get(['emailTemplate'])!.value,
@@ -185,14 +184,14 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
 
       companyAssessment['parentCompanyId'] = this.loggedInUser.companyId;
       if (companyAssessment.id != null) {
-        this.http.put<any>(API_URL.companyAssessments, companyAssessment).subscribe({
+        this.http.put<any>(API_URL.assignGroup, companyAssessment).subscribe({
           next: () => this.goBack(),
           error: () => {},
         })
       } else {
         delete companyAssessment['id'];
         companyAssessment['scheduleDate'] = moment(companyAssessment['scheduleDate']).format('YYYY-MM-DD');
-        this.http.post<any>(API_URL.companyAssessments, companyAssessment).subscribe({
+        this.http.post<any>(API_URL.assignGroup, companyAssessment).subscribe({
           next: () => this.goBack(),
           error: () => {},
         })
@@ -209,14 +208,14 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   generateLink() {
     this.generateLinkPayload = {
       ...this.generateLinkPayload,
-      companyAssessmentId: this.editForm.get('id')?.value,
+      companyAssessmentId: null,
+      companyAssessmentGroupId: this.editForm.get('id')?.value,
       email: this.individualEditForm.get('email')?.value,
 
       emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
       embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
 
       sendAssignmentEmail: 'N',
-      companyAssessmentGroupId: null,
       creditCode: null,
       link: null,
       message: null,
@@ -231,7 +230,10 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         this.individualEditForm.patchValue({generateUrl: data.link, creditCode: data.creditCode })
       },
       error: () => {
-
+        // TODO: complete this call
+        // this.toastService.add({
+          
+        // })
       }
     })
   }
@@ -239,14 +241,14 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   generateAndEmailLink() {
     this.generateLinkPayload = {
       ...this.generateLinkPayload,
-      companyAssessmentId: this.editForm.get('id')?.value,
+      companyAssessmentId: null,
+      companyAssessmentGroupId: this.editForm.get('id')?.value,
       email: this.individualEditForm.get('email')?.value,
 
       emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
       embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
 
       sendAssignmentEmail: 'Y',
-      companyAssessmentGroupId: null,
       creditCode: null,
       link: null,
       message: null,
@@ -276,8 +278,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
     if (this.bulkEditForm.controls['credits'].value < this.editForm.controls['availableCredits'].value) {
       this.generateLinkPayload = {
         ...this.generateLinkPayload,
-        companyAssessmentId: this.editForm.get('id')?.value,
-        companyAssessmentGroupId: null,
+        companyAssessmentId: null,
+        companyAssessmentGroupId: this.editForm.get('id')?.value,
         email: this.individualEditForm.get('email')?.value,
         emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
         embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
@@ -288,7 +290,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         message: null,
         error: null,
       }
-      this.ref = this.dialogService.open(UploadUserComponent, {
+      this.ref = this.dialogService.open(CompanyAssessmentGroupUploadComponent, {
         data: {
           payload: this.generateLinkPayload,
         },
@@ -309,8 +311,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       console.log('here')
       this.generateLinkPayload = {
         ...this.generateLinkPayload,
-        companyAssessmentId: this.editForm.get('id')?.value,
-        companyAssessmentGroupId: null,
+        companyAssessmentId: null,
+        companyAssessmentGroupId: this.editForm.get('id')?.value,
         email: this.individualEditForm.get('email')?.value,
         emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
         embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
