@@ -3,7 +3,7 @@
   <div class="d-flex mb-2">
     <strong class="col mb-3">{{ this.editForm.get('id')?.value ? 'Edit': 'Add'}} Assign Assessment Group</strong>
     <!-- TODO: fix the button -->
-    <div class="col-2 d-flex justify-content-around">
+    <div class="d-flex gap-2">
       <button type="button" class="p-button" (click)="save()">Save</button>
       <button type="button" class="p-button" (click)="goBack()">Cancel</button>
       <button type="button" class="p-button" (click)="downloadCredits()" *ngIf="this.editForm.get('id')?.value">Download Credits</button>
@@ -137,7 +137,7 @@
                     class="p-inputtext" />
               </div>
               <div class="col-6 d-flex flex-column">
-                <div class="d-flex">
+                <div class="d-flex gap-3">
                   <div>
                     <input type="checkbox" formControlName="emailReport"/>
                     <label for="">Email Report</label>
@@ -147,9 +147,9 @@
                     <label for="">Generate Link Via Embedded Credit Code</label>
                   </div>
                 </div>
-                <div class="d-flex">
-                    <button class="p-button" (click)="generateLink()">Generate Link</button>
-                    <button class="p-button" (click)="generateAndEmailLink()">Generate & Email Link</button>
+                <div class="d-flex mt-1 gap-2">
+                    <button class="p-button justify-content-center" (click)="generateLink()">Generate Link</button>
+                    <button class="p-button justify-content-center" (click)="generateAndEmailLink()">Generate & Email Link</button>
                 </div>
               </div>
             </div>
@@ -176,7 +176,7 @@
                     id="email"
                     class="p-inputtext" />
                 </div>
-                <div class="col-6 d-flex flex-column">
+                <div class="col-6 d-flex flex-column gap-3">
                   <div class="d-flex">
                     <div>
                       <input type="checkbox" formControlName="emailReport"/>
@@ -187,10 +187,10 @@
                       <label for="">Generate Link Via Embedded Credit Code</label>
                     </div>
                   </div>
-                  <div class="d-flex row justify-content-around mt-2">
-                      <button class="p-button col-3" (click)="downloadTemplate()">Download Template</button>
-                      <button class="p-button col-3" (click)="uploadUserAndEmailLinks()">Upload User & Email Links</button>
-                      <button class="p-button col-3" (click)="downloadBulkLinks()">Download Links</button>
+                  <div class="d-flex mt-1 gap-2">
+                      <button class="p-button justify-content-center" (click)="downloadTemplate()">Download Template</button>
+                      <button class="p-button justify-content-center" (click)="uploadUserAndEmailLinks()">Upload User & Email Links</button>
+                      <button class="p-button justify-content-center" (click)="downloadBulkLinks()">Download Links</button>
                   </div>
                 </div>
               </div>
