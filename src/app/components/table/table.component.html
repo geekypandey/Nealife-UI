@@ -17,7 +17,8 @@
           [rowsPerPageOptions]="rowsPerPageOptions"
           [selectionMode]="selectionMode"
           [(selection)]="selectedItems"
-          (selectionChange)="emitSelectionEvent()">
+          (selectionChange)="emitSelectionEvent()"
+          (onRowSelect)="onRowSelect.emit($event)">
           <ng-template pTemplate="header" let-columns>
             <tr>
               <th style="width: 4rem" *ngIf="viewCheckBox">
@@ -53,7 +54,11 @@
                 <ng-container *ngFor="let col of columns">
                   <td *ngIf="col.visible" [ngStyle]="{ width: col.width || 'auto' }">
                     <span *ngIf="col.link; else plainText">
-                      <span [routerLink]="[col.linkStart, rowData[col.linkField], col.linkEnd]" class="link-primary nl-cursor-pointer" >{{ rowData[col.field] }}</span>
+                      <span
+                        [routerLink]="[col.linkStart, rowData[col.linkField], col.linkEnd]"
+                        class="link-primary nl-cursor-pointer"
+                        >{{ rowData[col.field] }}</span
+                      >
                     </span>
                     <ng-template #plainText>
                       {{ rowData[col.field] }}
