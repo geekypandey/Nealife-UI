@@ -3,11 +3,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Observable, finalize, switchMap, tap } from 'rxjs';
+import { Observable, finalize, forkJoin, map, switchMap, tap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { USER_ROLE } from 'src/app/constants/user-role.constants';
+import { SharedApiService } from 'src/app/services/shared-api.service';
 import { Company, Profile } from '../../assess/assess.model';
 import { ProfileService } from '../services/profile.service';
 import { CompanyService } from './company.service';
@@ -33,14 +34,30 @@ export class CompanyComponent {
   private companyService = inject(CompanyService);
   private confirmationService = inject(ConfirmationService);
   private toastService = inject(MessageService);
+  private sharedApiService = inject(SharedApiService);
   profile$: Observable<Profile>;
   refreshRecords: boolean = true;
   cd = inject(ChangeDetectorRef);
 
   constructor() {
     this.spinner.show(this.spinnerName);
-    this.companies$ = this.profileService.profile$.pipe(
-      switchMap(profile => this.companyService.getCompanies(profile.companyId)),
+
+    this.companies$ = forkJoin([
+      this.sharedApiService.lookup('COMPANY_TYPE'),
+      this.sharedApiService.lookup('PARTNER_TYPE'),
+    ]).pipe(
+      switchMap(([companyTypes, partnerTypes]) => {
+        return this.profileService.profile$.pipe(
+          switchMap(profile => this.companyService.getCompanies(profile.companyId)),
+          map(companies => {
+            return companies.map(c => {
+              const companyType = companyTypes.find(ct => ct.value === c.companyType)?.label;
+              const partnerType = partnerTypes.find(ct => ct.value === c['partnerType'])?.label;
+              return { ...c, companyType, partnerType };
+            });
+          })
+        );
+      }),
       finalize(() => this.spinner.hide(this.spinnerName))
     );
 
