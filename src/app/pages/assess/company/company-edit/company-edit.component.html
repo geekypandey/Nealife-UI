@@ -5,11 +5,15 @@
       [id]="id"></nl-company-edit-superadmin>
   </ng-container>
   <ng-container [ngSwitch]="profile.role">
-    <nl-company-edit-admin *ngSwitchCase="userRole.ADMIN" [id]="id"></nl-company-edit-admin>
+    <nl-company-edit-admin
+      *ngSwitchCase="userRole.ADMIN"
+      [id]="id"
+      [loggedInCompanyId]="profile.companyId"></nl-company-edit-admin>
   </ng-container>
   <ng-container [ngSwitch]="profile.role">
     <nl-company-edit-franchise
       *ngSwitchCase="userRole.FRANCHISE"
-      [id]="id"></nl-company-edit-franchise>
+      [id]="id"
+      [loggedInCompanyId]="profile.companyId"></nl-company-edit-franchise>
   </ng-container>
 </ng-container>

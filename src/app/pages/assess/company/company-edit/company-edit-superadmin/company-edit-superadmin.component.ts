@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,13 +13,14 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
-import { Observable, forkJoin, map } from 'rxjs';
+import { Observable, Subscription, forkJoin, map } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { ShowErrorMsgDirective } from 'src/app/directives/show-error-msg.directive';
 import { DropdownOption } from 'src/app/models/common.model';
 import { SharedApiService } from 'src/app/services/shared-api.service';
 import { markFormGroupDirty } from 'src/app/util/util';
 import { Company, ICompany } from '../../../assess.model';
+import { CustomAsyncValidators } from '../../../assess.validator';
 import { ProfileService } from '../../../services/profile.service';
 import { CompanyService } from '../../company.service';
 
@@ -43,34 +43,11 @@ import { CompanyService } from '../../company.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompanyEditSuperadminComponent {
-  spinnerName = 'register-edit';
-  imagesUrl: any;
   @Input()
-  set id(id: string) {
-    if (id) {
-      this.spinner.show(this.spinnerName);
-      this.companyService.getCompanies(id).subscribe({
-        next: resp => {
-          if (resp && resp.length) {
-            this.company = resp[0];
-            this.editForm = this.getEditForm(this.company);
-            this.spinner.hide(this.spinnerName);
-            this.cdRef.markForCheck();
-          }
-        },
-        complete: () => this.spinner.hide(this.spinnerName),
-      });
-    } else {
-      this.editForm = this.getEditForm(<Company>{});
-    }
-  }
+  id!: string;
 
-  parentCompanies: any[] = [];
-  statusList: DropdownOption[] = [];
-  company!: Company;
-  editForm!: FormGroup;
-  accountTypes: DropdownOption[] = [];
-  partnerTypes: DropdownOption[] = [];
+  @Input()
+  loggedInCompanyId!: string;
 
   private companyService = inject(CompanyService);
   private sharedApiService = inject(SharedApiService);
@@ -79,6 +56,19 @@ export class CompanyEditSuperadminComponent {
   private fb = inject(FormBuilder);
   private cdRef = inject(ChangeDetectorRef);
   private translateService = inject(TranslateService);
+  private customAsyncValidator = inject(CustomAsyncValidators);
+
+  parentCompanies: any[] = [];
+  statusList: DropdownOption[] = [];
+  company!: Company;
+  editForm!: FormGroup;
+  accountTypes: DropdownOption[] = [];
+  partnerTypes: DropdownOption[] = [];
+  spinnerName = 'register-edit';
+  imagesUrl: any;
+  invalidName: boolean = false;
+  checkNameExistSubscription!: Subscription;
+  invalidEmail: boolean = false;
 
   constructor() {
     const statusBaseStr = 'nealifeApp.ActivityStatus.';
@@ -94,25 +84,38 @@ export class CompanyEditSuperadminComponent {
   }
 
   ngOnInit() {
-    this.spinner.show(this.spinnerName);
-    forkJoin([
+    const initApiCalls: Observable<any>[] = [
       this.sharedApiService.lookup('COMPANY_TYPE'),
       this.sharedApiService.lookup('PARTNER_TYPE'),
-    ])
+    ];
+
+    if (this.id) {
+      initApiCalls.push(this.companyService.getCompany(Number(this.id)));
+    } else {
+      this.editForm = this.getEditForm(<Company>{});
+      // this.editForm.get('parentId')?.setValue(this.loggedInCompanyId); // set default value
+    }
+
+    this.spinner.show(this.spinnerName);
+    forkJoin(initApiCalls)
       .pipe(
-        map<[DropdownOption[], DropdownOption[]], { accountTypes: any[]; partnerTypes: any[] }>(
-          ([accountTypes, partnerTypes]) => {
-            return {
-              accountTypes: accountTypes,
-              partnerTypes: partnerTypes,
-            };
-          }
-        )
+        map(([accountTypes, partnerTypes, company]) => {
+          return {
+            accountTypes: accountTypes,
+            partnerTypes: partnerTypes,
+            company,
+          };
+        })
       )
       .subscribe({
         next: resp => {
           this.accountTypes = resp.accountTypes;
           this.partnerTypes = resp.partnerTypes;
+
+          if (resp && resp.company) {
+            this.company = resp.company;
+            this.editForm = this.getEditForm(this.company);
+          }
           this.spinner.hide(this.spinnerName);
           this.cdRef.markForCheck();
         },
@@ -163,7 +166,7 @@ export class CompanyEditSuperadminComponent {
     };
   }
 
-  private subscribeToSaveResponse(result: Observable<HttpResponse<Company>>): void {
+  private subscribeToSaveResponse(result: Observable<Company>): void {
     result.subscribe({
       next: () => this.onSaveSuccess(),
       error: () => this.onSaveError(),
@@ -187,10 +190,23 @@ export class CompanyEditSuperadminComponent {
   getEditForm(company: ICompany) {
     return this.fb.group({
       id: [company.id],
-      name: [company.name, [Validators.required, Validators.maxLength(75)]],
+      name: [
+        company.name,
+        {
+          valiators: [Validators.required, Validators.maxLength(75)],
+          updateOn: 'blur',
+        },
+      ],
+
       email: [
         company.email,
-        [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
+        {
+          validators: [
+            Validators.required,
+            Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+          ],
+          updateOn: 'blur',
+        },
       ],
       contactNumber1: [
         company.contactNumber1,
@@ -203,5 +219,59 @@ export class CompanyEditSuperadminComponent {
       ],
       status: [company.status, Validators.required],
     });
+  }
+
+  checkNameExist(evt: Event) {
+    const ctrlValue = this.editForm.get('name')?.value;
+    if (!ctrlValue) {
+      this.invalidName = false;
+      return;
+    }
+    if (this.checkNameExistSubscription) {
+      this.checkNameExistSubscription.unsubscribe();
+    }
+    this.checkNameExistSubscription = this.customAsyncValidator
+      .checkNameExists(ctrlValue)
+      .subscribe({
+        next: resp => {
+          if (resp) {
+            this.invalidName = true;
+          } else {
+            this.invalidName = false;
+          }
+          this.cdRef.markForCheck();
+        },
+        error: err => {
+          this.invalidName = true;
+          this.cdRef.markForCheck();
+        },
+      });
+  }
+
+  checkEmailExist(evt: Event) {
+    const ctrlValue = this.editForm.get('email')?.value;
+    if (!ctrlValue) {
+      this.invalidEmail = false;
+      return;
+    }
+    if (this.checkNameExistSubscription) {
+      this.checkNameExistSubscription.unsubscribe();
+    }
+    this.checkNameExistSubscription = this.customAsyncValidator
+      .checkEmailExists(ctrlValue)
+      .subscribe({
+        next: resp => {
+          if (resp) {
+            this.invalidEmail = true;
+          } else {
+            this.invalidEmail = false;
+          }
+          this.cdRef.markForCheck();
+        },
+        error: err => {
+          this.invalidEmail = true;
+          this.cdRef.markForCheck();
+        },
+      });
   }
 }

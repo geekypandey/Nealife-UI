@@ -6,53 +6,19 @@
         <strong class="mb-3 col-12">{{
           profile.role === userRole.SUPER_ADMIN ? 'Admin' : 'Customer'
         }}</strong>
-      </ng-container>
-      <div class="col-12 mb-3">
-        <div class="nl-card nl-border nl-border-1">
-          <div class="row gy-3">
-            <div class="col-md-4">
-              <strong>Name</strong>
-              <div>{{ company.name }}</div>
-            </div>
-            <div class="col-md-4">
-              <strong>Contact Person</strong>
-              <div>{{ company.contactPerson }}</div>
-            </div>
-            <div class="col-md-4">
-              <strong>Parent</strong>
-              <div>{{ company.parentName }}</div>
-            </div>
-            <div class="col-md-4">
-              <strong>Email</strong>
-              <div>{{ company.email }}</div>
-            </div>
-            <div class="col-md-4">
-              <strong>Contact Number 1</strong>
-              <div>{{ company.contactNumber1 }}</div>
-            </div>
-            <div class="col-md-4">
-              <strong>Contact Number 2</strong>
-              <div>{{ company.contactNumber2 }}</div>
-            </div>
-            <div class="col-md-4">
-              <strong>Status</strong>
-              <div>{{ company.status }}</div>
-            </div>
-            <!-- <div class="col-md-4">
-            <strong>Valid From</strong>
-            <div>{{ company.validFrom }}</div>
-            </div>
-            <div class="col-md-4">
-            <strong>Valid To</strong>
-            <div>{{ company.validTo }}</div>
-            </div> -->
-            <div class="col-md-4">
-              <strong>Account Type</strong>
-              <div>{{ company.companyType }}</div>
+        <div class="col-12 mb-3">
+          <div class="nl-card nl-border nl-border-1">
+            <div class="row gy-3">
+              <ng-container *ngIf="viewFields$ | async as viewFields">
+                <div class="col-md-4" *ngFor="let item of viewFields">
+                  <strong>{{ item.header }}</strong>
+                  <div>{{ company[item.field] }}</div>
+                </div>
+              </ng-container>
             </div>
           </div>
         </div>
-      </div>
+      </ng-container>
       <div class="col-12">
         <button class="p-button" (click)="goBack()">Back</button>
       </div>

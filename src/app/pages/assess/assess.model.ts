@@ -142,9 +142,11 @@ export interface ICompany {
   assessments?: ICompanyAssessment[];
   gstNumber?: string;
   brandingId?: string;
+  [key: string]: any;
 }
 
 export class Company implements ICompany {
+  [key: string]: any;
   constructor(
     public id?: number,
     public serialNo?: number,
