@@ -68,7 +68,7 @@ export class CompanyEditFranchiseComponent {
   accountTypes: DropdownOption[] = [];
   partnerTypes: DropdownOption[] = [];
   statusList: DropdownOption[] = [];
-  branding$: Observable<DropdownOption[]>;
+  branding$!: Observable<DropdownOption[]>;
   imagesUrl: any;
   invalidEmail: boolean = false;
   checkNameExistSubscription!: Subscription;
@@ -89,14 +89,6 @@ export class CompanyEditFranchiseComponent {
       label: this.translateService.instant(statusBaseStr + value),
       value: value,
     }));
-    this.branding$ = this.profileService.profile$.pipe(
-      map(profile => {
-        return [
-          { label: 'Nealife', value: '1' },
-          { label: profile.companyName, value: profile.companyId },
-        ];
-      })
-    );
   }
 
   ngOnInit() {
@@ -179,7 +171,6 @@ export class CompanyEditFranchiseComponent {
   }
 
   save() {
-    console.log(this.editForm.value);
     if (this.editForm.valid) {
       const form = this.createFromForm();
       const companyId = this.editForm.get('id')?.value;
@@ -260,10 +251,19 @@ export class CompanyEditFranchiseComponent {
 
   protected onStep1SaveSuccess(resp: Company): void {
     this.spinner.hide(this.spinnerName);
-    console.info('onStep1SaveSuccess ', resp);
     this.editForm.get('id')?.setValue(resp.id);
     this.editForm.addControl('brandingId', new FormControl(null, Validators.required));
     this.activeIndex = 1;
+    const { id, name } = this.editForm.value;
+    this.branding$ = this.profileService.profile$.pipe(
+      map(profile => {
+        return [
+          { label: 'Nealife', value: '1' },
+          { label: profile.companyName, value: profile.companyId },
+          { label: name, value: id },
+        ];
+      })
+    );
     this.cdRef.markForCheck();
   }
 
@@ -274,6 +274,11 @@ export class CompanyEditFranchiseComponent {
 
   goBack() {
     window.history.back();
+  }
+
+  goBackStep1() {
+    this.activeIndex = 0;
+    this.editForm.removeControl('brandingId');
   }
 
   onUpload(event: any) {

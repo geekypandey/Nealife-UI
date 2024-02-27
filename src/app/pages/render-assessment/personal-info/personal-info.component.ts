@@ -153,6 +153,9 @@ export class PersonalInfoComponent {
     return this._reportType;
   }
 
+  @Input()
+  logoUrl: string = '';
+
   @Output()
   onSubmitForm = new EventEmitter();
 
@@ -377,7 +380,7 @@ export class PersonalInfoComponent {
       'stream',
       'board',
       'engBranch',
-      'mbaBranch'
+      'mbaBranch',
     ];
   }
 

@@ -133,7 +133,7 @@ export class ShowErrorMsgDirective {
       case 'required':
         return 'This field is required';
       case 'pattern':
-        return 'Invalid pattern';
+        return 'Invalid'; // 'Invalid pattern';
       case 'maxlength':
         return `This field cannot be longer than ${errorValue.requiredLength} characters.`;
       case 'minlength':

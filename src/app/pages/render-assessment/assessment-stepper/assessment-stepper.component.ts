@@ -70,6 +70,9 @@ export class AssessmentStepperComponent implements OnChanges {
   @Input({ required: true })
   completedAssessments: Assessment[] = [];
 
+  @Input()
+  logoUrl: string = '';
+
   showGeneralInstructions: boolean = false;
   showStepper: boolean = false;
   steps: Step[] = [];
@@ -411,6 +414,8 @@ export class AssessmentStepperComponent implements OnChanges {
   private getInstructionsUrl(assessment: TotalAssessments) {
     return this.domSanitizer.bypassSecurityTrustResourceUrl(
       assessment?.instructionPage[this.selectedLanguage]
+        ? assessment?.instructionPage[this.selectedLanguage]
+        : 'about:blank'
     );
   }
 

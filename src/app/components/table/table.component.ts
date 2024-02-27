@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { TableModule } from 'primeng/table';
+import { TableModule, TableRowSelectEvent } from 'primeng/table';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
 import { AccordionItemComponent } from '../accordion/accordion-item/accordion-item.component';
 import { AccordionComponent } from '../accordion/accordion.component';
@@ -70,6 +70,7 @@ export class TableComponent {
   @Input() selectionMode: 'single' | 'multiple' | undefined | null;
   @Input() selectionKey: string = 'id';
   @Output() onSelectionChange = new EventEmitter<Array<string>>();
+  @Output() onRowSelect = new EventEmitter<TableRowSelectEvent>();
 
   @ContentChild('customBodyTpl') customBodyTpl!: TemplateRef<any>;
 
@@ -105,7 +106,9 @@ export class TableComponent {
   }
 
   emitSelectionEvent() {
-    this.onSelectionChange.emit(this.selectedItems.map((item: any) => item[this.selectionKey!]));
+    if (this.viewCheckBox) {
+      this.onSelectionChange.emit(this.selectedItems.map((item: any) => item[this.selectionKey!]));
+    }
   }
 
   onActionClick(action: Action, rowData: any) {

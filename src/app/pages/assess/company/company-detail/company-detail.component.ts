@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, finalize, map } from 'rxjs';
+import { Observable, finalize, forkJoin, map, switchMap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { USER_ROLE } from 'src/app/constants/user-role.constants';
+import { SharedApiService } from 'src/app/services/shared-api.service';
 import { Company } from '../../assess.model';
 import { ProfileService } from '../../services/profile.service';
 import { CompanyService } from '../company.service';
@@ -24,6 +25,7 @@ export class CompanyDetailComponent {
   private activatedRoute = inject(ActivatedRoute);
   private companyService = inject(CompanyService);
   private spinner = inject(NgxSpinnerService);
+  private sharedApiService = inject(SharedApiService);
   profileService = inject(ProfileService);
   viewFields$: Observable<{ header: string; field: string }[]>;
 
@@ -123,9 +125,21 @@ export class CompanyDetailComponent {
     );
     const companyId = this.activatedRoute.snapshot.params['id'];
     this.spinner.show(this.spinnerName);
-    this.company$ = this.companyService
-      .getCompany(companyId)
-      .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
+    this.company$ = forkJoin([
+      this.sharedApiService.lookup('COMPANY_TYPE'),
+      this.sharedApiService.lookup('PARTNER_TYPE'),
+    ]).pipe(
+      switchMap(([companyTypes, partnerTypes]) => {
+        return this.companyService.getCompany(companyId).pipe(
+          map(c => {
+            const companyType = companyTypes.find(ct => ct.value === c.companyType)?.label;
+            const partnerType = partnerTypes.find(ct => ct.value === c['partnerType'])?.label;
+            return { ...c, companyType, partnerType };
+          })
+        );
+      }),
+      finalize(() => this.spinner.hide(this.spinnerName))
+    );
   }
 
   goBack() {

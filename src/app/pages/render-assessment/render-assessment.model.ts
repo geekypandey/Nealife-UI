@@ -19,6 +19,7 @@ export interface RenderAssessmentResponse {
   compulsory: boolean;
   demographics: Demographic[];
   assessments: Assessment[];
+  logoUrl?: string;
 }
 
 export interface Assessment {

@@ -1,5 +1,9 @@
-<div class="nl-sticky-top bg-white assessment-header">
-  <div>
-    <img src="./../.././../../assets/login/logo.svg" alt="logo" width="150" height="60" />
-  </div>
+<div
+  class="align-items-center assessment-header bg-white d-flex justify-content-between nl-sticky-top px-4">
+  <img
+    [src]="logoUrl ? logoUrl : './../.././../../assets/render-assessment/default-header-logo.svg'"
+    alt="default-logo"
+    width="150"
+    height="40" />
+  <img src="./../.././../../assets/login/logo.svg" alt="logo" width="150" height="40" />
 </div>
