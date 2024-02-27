@@ -83,6 +83,7 @@
 </ng-container>
 <ng-container *ngIf="personalInfoPage">
   <nl-personal-info
+    [logoUrl]="logoUrl"
     [fields]="personalInfofields"
     [queryParamcc]="queryParamcc"
     [preAssessmentDemographics]="preAssessmentDemographics"
@@ -92,6 +93,7 @@
 
 <ng-container *ngIf="assessmentPage">
   <nl-assessment-stepper
+    [logoUrl]="logoUrl"
     [selectedLanguage]="languageCtrl.value"
     [assessmentsData]="renderAssessmentData"
     [preAssessmentDetailsResponse]="preAssessmentDetailsResponse"

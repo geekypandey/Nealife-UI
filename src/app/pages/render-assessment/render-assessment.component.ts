@@ -93,6 +93,7 @@ export class RenderAssessmentComponent implements OnInit {
   private reportType: string | null = null;
 
   defaultModelImage = './../../../assets/login/illustration.svg';
+  logoUrl: string = '';
 
   constructor() {
     this.preAssessDetailsReqPayload = new PreAssessDetailsReqPayload();
@@ -132,6 +133,7 @@ export class RenderAssessmentComponent implements OnInit {
       next: resp => {
         this.spinner.hide(this.spinnerName);
         this.renderAssessmentData = resp;
+        this.logoUrl = (this.renderAssessmentData && this.renderAssessmentData.logoUrl) || '';
         this.initialiseFields(this.renderAssessmentData);
         this.cd.markForCheck();
       },
