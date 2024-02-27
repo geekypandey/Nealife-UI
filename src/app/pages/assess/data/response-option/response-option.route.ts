@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Authority } from 'src/app/constants/authority.constants';
+import { authGuard } from 'src/app/guards/is-authorized.guard';
 import { ResponseOptionDetailComponent } from './response-option-detail/response-option-detail.component';
 import { ResponseOptionUpdateComponent } from './response-option-update/response-option-update.component';
 import { ResponseOptionComponent } from './response-option.component';
@@ -15,9 +16,9 @@ export const responseOptionRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      defaultSort: 'id,desc',
-      pageTitle: 'nealifeApp.competency.home.title',
+      pageTitle: 'nealifeApp.responseOption.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: ':id/view',
@@ -32,8 +33,9 @@ export const responseOptionRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      pageTitle: 'nealifeApp.competency.home.title',
+      pageTitle: 'nealifeApp.responseOption.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: 'new',
@@ -45,8 +47,9 @@ export const responseOptionRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      pageTitle: 'nealifeApp.competency.home.title',
+      pageTitle: 'nealifeApp.responseOption.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: ':id/edit',
@@ -61,7 +64,8 @@ export const responseOptionRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      pageTitle: 'nealifeApp.competency.home.title',
+      pageTitle: 'nealifeApp.responseOption.home.title',
     },
+    canActivate: [authGuard],
   },
 ];

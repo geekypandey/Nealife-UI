@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { Authority } from 'src/app/constants/authority.constants';
+import { authGuard } from 'src/app/guards/is-authorized.guard';
 
 export const assignRoute: Route[] = [
   {
@@ -12,7 +13,9 @@ export const assignRoute: Route[] = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
+      pageTitle: 'nealifeApp.companyAssessment.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: 'company-assessment',
@@ -25,12 +28,16 @@ export const assignRoute: Route[] = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
+      pageTitle: 'nealifeApp.companyAssessment.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: 'company-assessment-group',
     loadChildren: () =>
-      import('./company-assessment-group/company-assessment-group.route').then(c => c.companyAssessmentGroupRoutes),
+      import('./company-assessment-group/company-assessment-group.route').then(
+        c => c.companyAssessmentGroupRoutes
+      ),
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -38,6 +45,8 @@ export const assignRoute: Route[] = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
+      pageTitle: 'nealifeApp.companyAssessment.home.title',
     },
+    canActivate: [authGuard],
   },
-]
+];

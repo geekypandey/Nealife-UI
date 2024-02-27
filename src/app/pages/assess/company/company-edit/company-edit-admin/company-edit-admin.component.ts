@@ -76,7 +76,7 @@ export class CompanyEditAdminComponent {
       label: this.translateService.instant(statusBaseStr + value),
       value: value,
     }));
-    this.parentCompanies$ = this.profileService.profile$.pipe(
+    this.parentCompanies$ = this.profileService.getProfile().pipe(
       switchMap(profile => {
         return this.companyService.getCompanies(profile.companyId);
       }),
@@ -99,7 +99,7 @@ export class CompanyEditAdminComponent {
       initApiCalls.push(this.companyService.getCompany(Number(this.id)));
     } else {
       this.editForm = this.getEditForm(<Company>{});
-      this.profileService.profile$.subscribe(profile => {
+      this.profileService.getProfile().subscribe(profile => {
         this.editForm.get('parentId')?.setValue(profile.companyId); // set default value
       });
     }

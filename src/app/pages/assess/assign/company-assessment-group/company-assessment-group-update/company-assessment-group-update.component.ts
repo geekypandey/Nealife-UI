@@ -89,7 +89,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
 
     const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
     if (assessmentGroupId) {
-      this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe((value) => {
+      this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe(value => {
         this.companyAssessment = value;
         this.patchEditForm();
         this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
@@ -98,7 +98,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.profileService.getLoggedInUser().subscribe((value) => {
+    this.profileService.getProfile().subscribe(value => {
       this.loggedInUser = value;
       if (this.loggedInUser.role === Authority.ACCOUNT_ADMIN && this.companyAssessment.id) {
         this.editForm.disable();
@@ -109,27 +109,29 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
 
   loadData() {
     const companyId = this.loggedInUser.companyId;
-    const company$ = companyId !== '1' ? this.companyService.getCompanyById(companyId) : this.companyService.getAllCompanies();
-    company$.subscribe((data) => {
+    const company$ =
+      companyId !== '1'
+        ? this.companyService.getCompanyById(companyId)
+        : this.companyService.getAllCompanies();
+    company$.subscribe(data => {
       this.companies = data.map((company: any) => {
         return { label: company.name, value: company.id };
-      })
-    })
-    this.assessmentService.getCompanyAssessmentsForDropDown(companyId || '').subscribe((data) => {
+      });
+    });
+    this.assessmentService.getCompanyAssessmentsForDropDown(companyId || '').subscribe(data => {
       this.assessments = data.map((assessment: any) => {
         return { label: assessment.assessmentGroupName, value: assessment.assessmentGroupId };
-      })
-    })
+      });
+    });
     // TODO: fix this call made twice
     const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
     if (assessmentGroupId) {
-      this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe((value) => {
+      this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe(value => {
         this.companyAssessment = value;
         this.patchEditForm();
       });
     }
   }
-
 
   patchEditForm() {
     this.editForm.patchValue({
@@ -143,7 +145,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       usedCredits: this.companyAssessment.usedCredits,
       allocatedCredits: this.companyAssessment.allocatedCredits,
       totalCredits: this.companyAssessment.totalCredits,
-    })
+    });
 
     if (this.editForm.value['usedCredits'] == null) {
       this.editForm.controls['usedCredits'].setValue(0);
@@ -159,10 +161,14 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   downloadCredits() {
     const id = this.companyAssessment.id;
 
-    this.http.get(`${API_URL.downloadCredits}?companyAssessmentGroupsId.equals=${id}`, { responseType: 'blob'}).subscribe((value: any) => {
-      const blob = new Blob([value], { type: 'application/octect-stream' });
-      saveFile(blob, 'Available_Credits.xlsx')
-    });
+    this.http
+      .get(`${API_URL.downloadCredits}?companyAssessmentGroupsId.equals=${id}`, {
+        responseType: 'blob',
+      })
+      .subscribe((value: any) => {
+        const blob = new Blob([value], { type: 'application/octect-stream' });
+        saveFile(blob, 'Available_Credits.xlsx');
+      });
   }
 
   save(): void {
@@ -180,21 +186,23 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         allocatedCredits: this.editForm.get(['allocatedCredits'])!.value,
         totalCredits: this.editForm.get(['totalCredits'])!.value,
         url: this.editForm.get(['url'])!.value,
-      }
+      };
 
       companyAssessment['parentCompanyId'] = this.loggedInUser.companyId;
       if (companyAssessment.id != null) {
         this.http.put<any>(API_URL.assignGroup, companyAssessment).subscribe({
           next: () => this.goBack(),
           error: () => {},
-        })
+        });
       } else {
         delete companyAssessment['id'];
-        companyAssessment['scheduleDate'] = moment(companyAssessment['scheduleDate']).format('YYYY-MM-DD');
+        companyAssessment['scheduleDate'] = moment(companyAssessment['scheduleDate']).format(
+          'YYYY-MM-DD'
+        );
         this.http.post<any>(API_URL.assignGroup, companyAssessment).subscribe({
           next: () => this.goBack(),
           error: () => {},
-        })
+        });
       }
       // if (compa)
       // TODO
@@ -212,30 +220,29 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       companyAssessmentGroupId: this.editForm.get('id')?.value,
       email: this.individualEditForm.get('email')?.value,
 
-      emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
-      embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
+      emailReport: this.individualEditForm.get('emailReport')?.value ? 'Y' : 'N',
+      embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? 'Y' : 'N',
 
       sendAssignmentEmail: 'N',
       creditCode: null,
       link: null,
       message: null,
       error: null,
-    }
+    };
     this.generateLinkCall();
   }
 
   generateLinkCall() {
     this.http.post<any>(API_URL.assignAssessment, this.generateLinkPayload).subscribe({
-      next: (data) => {
-        this.individualEditForm.patchValue({generateUrl: data.link, creditCode: data.creditCode })
+      next: data => {
+        this.individualEditForm.patchValue({ generateUrl: data.link, creditCode: data.creditCode });
       },
       error: () => {
         // TODO: complete this call
         // this.toastService.add({
-          
         // })
-      }
-    })
+      },
+    });
   }
 
   generateAndEmailLink() {
@@ -245,15 +252,15 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       companyAssessmentGroupId: this.editForm.get('id')?.value,
       email: this.individualEditForm.get('email')?.value,
 
-      emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
-      embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
+      emailReport: this.individualEditForm.get('emailReport')?.value ? 'Y' : 'N',
+      embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? 'Y' : 'N',
 
       sendAssignmentEmail: 'Y',
       creditCode: null,
       link: null,
       message: null,
       error: null,
-    }
+    };
     if (this.generateLinkPayload['email'] != null) {
       this.generateLinkCall();
     }
@@ -266,69 +273,74 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         saveFile(blob, 'download-template.xlsx');
       },
       error: () => {},
-    })
+    });
   }
 
   uploadUserAndEmailLinks() {
     if (!this.bulkEditForm.valid) {
       // TODO: inform user of the same
-      console.log('Please enter the credits')
+      console.log('Please enter the credits');
       return;
     }
-    if (this.bulkEditForm.controls['credits'].value < this.editForm.controls['availableCredits'].value) {
+    if (
+      this.bulkEditForm.controls['credits'].value < this.editForm.controls['availableCredits'].value
+    ) {
       this.generateLinkPayload = {
         ...this.generateLinkPayload,
         companyAssessmentId: null,
         companyAssessmentGroupId: this.editForm.get('id')?.value,
         email: this.individualEditForm.get('email')?.value,
-        emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
-        embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
+        emailReport: this.individualEditForm.get('emailReport')?.value ? 'Y' : 'N',
+        embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? 'Y' : 'N',
         credits: this.bulkEditForm.get('credits')?.value,
         creditCode: null,
         sendAssignmentEmail: 'Y',
         link: null,
         message: null,
         error: null,
-      }
+      };
       this.ref = this.dialogService.open(CompanyAssessmentGroupUploadComponent, {
         data: {
           payload: this.generateLinkPayload,
         },
         header: 'Excel Upload',
         width: '50%',
-      })
+      });
     }
   }
 
   downloadBulkLinks() {
     if (!this.bulkEditForm.valid) {
       // TODO: inform user of the same
-      console.log('Please enter the credits')
+      console.log('Please enter the credits');
       return;
     }
 
-    if (this.bulkEditForm.controls['credits'].value < this.editForm.controls['availableCredits'].value) {
-      console.log('here')
+    if (
+      this.bulkEditForm.controls['credits'].value < this.editForm.controls['availableCredits'].value
+    ) {
+      console.log('here');
       this.generateLinkPayload = {
         ...this.generateLinkPayload,
         companyAssessmentId: null,
         companyAssessmentGroupId: this.editForm.get('id')?.value,
         email: this.individualEditForm.get('email')?.value,
-        emailReport: this.individualEditForm.get('emailReport')?.value ? "Y": "N",
-        embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? "Y": "N",
+        emailReport: this.individualEditForm.get('emailReport')?.value ? 'Y' : 'N',
+        embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? 'Y' : 'N',
         credits: this.bulkEditForm.get('credits')?.value,
         creditCode: null,
         sendAssignmentEmail: 'N',
         link: null,
         message: null,
         error: null,
-      }
-      this.http.post(API_URL.downloadBulkLinks, this.generateLinkPayload, { responseType: 'blob' }).subscribe((data: any) => {
-        const blob = new Blob([data], { type: 'application/octet-stream' });
-        saveFile(blob, 'Download-Links.xlsx');
-        this.loadData();
-      })
+      };
+      this.http
+        .post(API_URL.downloadBulkLinks, this.generateLinkPayload, { responseType: 'blob' })
+        .subscribe((data: any) => {
+          const blob = new Blob([data], { type: 'application/octet-stream' });
+          saveFile(blob, 'Download-Links.xlsx');
+          this.loadData();
+        });
     }
   }
-
 }

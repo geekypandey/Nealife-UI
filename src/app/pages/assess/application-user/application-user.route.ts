@@ -4,6 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, finalize } from 'rxjs';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { Authority } from 'src/app/constants/authority.constants';
+import { authGuard } from 'src/app/guards/is-authorized.guard';
 import { CRUDService } from '../services/crud.service';
 import { ApplicationUserDetailComponent } from './application-user-detail/application-user-detail.component';
 import { ApplicationUserUpdateComponent } from './application-user-update/application-user-update.component';
@@ -33,9 +34,9 @@ export const applicationUserRoute: Route[] = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      defaultSort: 'id,desc',
       pageTitle: 'nealifeApp.applicationUser.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: ':id/view',
@@ -52,11 +53,11 @@ export const applicationUserRoute: Route[] = [
       ],
       pageTitle: 'nealifeApp.applicationUser.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: 'new',
     component: ApplicationUserUpdateComponent,
-
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -66,11 +67,11 @@ export const applicationUserRoute: Route[] = [
       ],
       pageTitle: 'nealifeApp.applicationUser.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: ':id/edit',
     component: ApplicationUserUpdateComponent,
-
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -80,5 +81,6 @@ export const applicationUserRoute: Route[] = [
       ],
       pageTitle: 'nealifeApp.applicationUser.home.title',
     },
+    canActivate: [authGuard],
   },
 ];

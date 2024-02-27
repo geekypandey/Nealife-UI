@@ -30,7 +30,7 @@ export class CompanyDetailComponent {
   viewFields$: Observable<{ header: string; field: string }[]>;
 
   constructor() {
-    this.viewFields$ = this.profileService.profile$.pipe(
+    this.viewFields$ = this.profileService.getProfile().pipe(
       map(profile => {
         if (profile.role === USER_ROLE.SUPER_ADMIN) {
           return [

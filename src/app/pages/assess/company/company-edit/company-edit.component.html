@@ -1,4 +1,4 @@
-<ng-container *ngIf="profileService.profile$ | async as profile">
+<ng-container *ngIf="profileService.getProfile() | async as profile">
   <ng-container [ngSwitch]="profile.role">
     <nl-company-edit-superadmin
       *ngSwitchCase="userRole.SUPER_ADMIN"

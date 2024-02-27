@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Authority } from 'src/app/constants/authority.constants';
+import { authGuard } from 'src/app/guards/is-authorized.guard';
 import { MasterDataComponent } from './master-data.component';
 import { MasterDetailComponent } from './master-detail/master-detail.component';
 
@@ -13,9 +14,9 @@ export const masterDataRoutes: Routes = [
         Authority.NEA_ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      defaultSort: 'competency,desc',
       pageTitle: 'home.title',
     },
+    canActivate: [authGuard],
     component: MasterDataComponent,
   },
   {
@@ -28,9 +29,9 @@ export const masterDataRoutes: Routes = [
         Authority.NEA_ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      defaultSort: 'competency,desc',
       pageTitle: 'home.title',
     },
+    canActivate: [authGuard],
     component: MasterDetailComponent,
   },
 ];

@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TableRowSelectEvent } from 'primeng/table';
-import { Observable, finalize, switchMap, tap } from 'rxjs';
+import { Observable, filter, finalize, switchMap, tap } from 'rxjs';
 import {
   AssessCard,
   AssessCardsComponent,
@@ -13,7 +13,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ColDef } from 'src/app/components/table/table.model';
 import { USER_ROLE } from 'src/app/constants/user-role.constants';
-import { AccountDashboard } from '../assess.model';
+import { Account, AccountDashboard } from '../assess.model';
 import { AssessService } from '../services/assess.service';
 import { ProfileService } from '../services/profile.service';
 
@@ -41,7 +41,8 @@ export class DashboardComponent {
 
   constructor() {
     // Cols based on Role
-    this.profileService.profile$
+    this.profileService
+      .getProfile()
       .pipe(
         tap(profile => {
           if (profile.role === USER_ROLE.SUPER_ADMIN) {
@@ -128,13 +129,15 @@ export class DashboardComponent {
               },
             ];
           }
+          this.cd.markForCheck();
         }),
         takeUntilDestroyed()
       )
       .subscribe();
 
     this.spinner.show(this.spinnerName);
-    this.dashboardStats$ = this.profileService.account$.pipe(
+    this.dashboardStats$ = this.profileService.getAccount().pipe(
+      filter((account): account is Account => !!account),
       switchMap(account => this.assessService.getDashboard(account.companyId)),
       takeUntilDestroyed(),
       finalize(() => this.spinner.hide(this.spinnerName))

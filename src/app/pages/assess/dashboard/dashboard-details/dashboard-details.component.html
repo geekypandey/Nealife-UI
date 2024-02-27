@@ -3,7 +3,7 @@
   <button class="p-button nl-auto d-block" (click)="goBack()">Back</button>
 </div>
 <ng-container *ngIf="dashboardDetails$ | async as dashboardDetails">
-  <ng-container *ngIf="profileService.profile$ | async as profile">
+  <ng-container *ngIf="profileService.getProfile() | async as profile">
     <div class="py-3">
       <div
         class="row mb-3"

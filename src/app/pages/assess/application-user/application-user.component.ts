@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
-import { finalize, switchMap, tap } from 'rxjs/operators';
+import { filter, finalize, switchMap, tap } from 'rxjs/operators';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { API_URL } from 'src/app/constants/api-url.constants';
+import { Account } from '../assess.model';
 import { CRUDService } from '../services/crud.service';
 import { ProfileService } from '../services/profile.service';
 import { ApplicationUser } from './application-user.model';
@@ -35,7 +36,8 @@ export class ApplicationUserComponent {
 
   constructor() {
     this.spinner.show(this.spinnerName);
-    this.users$ = this.profileService.account$.pipe(
+    this.users$ = this.profileService.getAccount().pipe(
+      filter((account): account is Account => !!account),
       switchMap(account => this.crudService.query<ApplicationUser[]>(API_URL.applicationUsers)),
       tap({
         next: resp => {},

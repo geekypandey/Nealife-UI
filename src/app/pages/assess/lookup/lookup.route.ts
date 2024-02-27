@@ -4,6 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, finalize } from 'rxjs';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { Authority } from 'src/app/constants/authority.constants';
+import { authGuard } from 'src/app/guards/is-authorized.guard';
 import { ILookup, Lookup } from '../assess.model';
 import { CRUDService } from '../services/crud.service';
 import { LookupDetailComponent } from './lookup-detail/lookup-detail.component';
@@ -33,9 +34,9 @@ export const lookupRoute: Route[] = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      defaultSort: 'id,desc',
       pageTitle: 'nealifeApp.lookup.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: ':id/view',
@@ -52,6 +53,7 @@ export const lookupRoute: Route[] = [
       ],
       pageTitle: 'nealifeApp.lookup.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: 'new',
@@ -65,6 +67,7 @@ export const lookupRoute: Route[] = [
       ],
       pageTitle: 'nealifeApp.lookup.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: ':id/edit',
@@ -81,5 +84,6 @@ export const lookupRoute: Route[] = [
       ],
       pageTitle: 'nealifeApp.lookup.home.title',
     },
+    canActivate: [authGuard],
   },
 ];

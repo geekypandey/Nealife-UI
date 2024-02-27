@@ -2,7 +2,7 @@
 <div class="row flex-column py-3">
   <strong class="col-12 mb-3">Assessment Dashboard</strong>
   <ng-container *ngIf="dashboardStats$ | async as dashboardStats">
-    <ng-container *ngIf="profileService.profile$ | async as profile">
+    <ng-container *ngIf="profileService.getProfile() | async as profile">
       <nl-assess-cards [assessCards]="assessCards" [response]="dashboardStats"></nl-assess-cards>
       <nl-table
         [cols]="cols"
