@@ -1,58 +1,77 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { shareReplay, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { Authority } from 'src/app/constants/authority.constants';
 import { Account, Profile } from '../assess.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ProfileService {
   private http = inject(HttpClient);
-  private profileData!: Profile;
-  private accountData!: Account;
-  account$ = this.http.get<Account>(API_URL.account).pipe(
-    tap(resp => this.setAccount(resp)),
-    shareReplay()
-  );
-  profile$ = this.http.get<Profile>(API_URL.getLoggedInUser).pipe(
-    tap(resp => this.setProfile(resp)),
-    shareReplay()
-  );
+  private accountData!: Account | null;
+  private profileData!: Profile | null;
 
   constructor() {}
 
-  setProfile(profile: Profile) {
-    this.profileData = profile;
-  }
-
-  setAccount(account: Account) {
+  setAccount(account: Account | null) {
     this.accountData = account;
   }
 
-  getLoggedInUser() {
-    return this.profile$;
-  }
-
   getAccount() {
-    return this.account$;
+    if (!this.accountData) {
+      return this.fetchAccount();
+    }
+    return of(this.accountData);
   }
 
-  isAdminRole(): string {
+  private fetchAccount() {
+    return this.http.get<Account>(API_URL.account).pipe(
+      tap(account => {
+        this.setAccount(account);
+      })
+    );
+  }
+
+  setProfile(profile: Profile | null) {
+    this.profileData = profile;
+  }
+
+  getProfile() {
+    if (!this.profileData) {
+      return this.fetchProfile();
+    }
+    return of(this.profileData);
+  }
+
+  private fetchProfile() {
+    return this.http.get<Profile>(API_URL.getLoggedInUser).pipe(
+      tap(profile => {
+        this.setProfile(profile);
+      })
+    );
+  }
+
+  isAuthorized(routeAuthorities: string[] = []): Observable<boolean> {
+    return this.getAccount().pipe(
+      filter((account): account is Account => !!account),
+      map(account => {
+        return account ? account.authorities.some(auth => routeAuthorities.includes(auth)) : false;
+      })
+    );
+  }
+
+  isAdminRole(account: Account): string {
     if (
-      this.accountData?.authorities.includes(Authority.ADMIN) ||
-      this.accountData?.authorities.includes(Authority.ACCOUNT_ADMIN) ||
-      this.accountData?.authorities.includes(Authority.NEA_ADMIN) ||
-      this.accountData?.authorities.includes(Authority.SUPER_ADMIN)
+      account.authorities.includes(Authority.ADMIN) ||
+      account.authorities.includes(Authority.ACCOUNT_ADMIN) ||
+      account.authorities.includes(Authority.NEA_ADMIN) ||
+      account.authorities.includes(Authority.SUPER_ADMIN)
     ) {
       return Authority.ADMIN;
     }
     return Authority.USER;
-  }
-
-  get profile() {
-    return this.profileData;
-  }
-  get account() {
-    return this.accountData;
   }
 }

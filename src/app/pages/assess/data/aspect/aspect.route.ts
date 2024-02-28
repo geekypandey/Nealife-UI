@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Authority } from 'src/app/constants/authority.constants';
+import { authGuard } from 'src/app/guards/is-authorized.guard';
 import { AspectDetailComponent } from './aspect-detail/aspect-detail.component';
 import { AspectUpdateComponent } from './aspect-update/aspect-update.component';
 import { AspectComponent } from './aspect.component';
@@ -15,9 +16,9 @@ export const aspectRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      defaultSort: 'id,desc',
       pageTitle: 'nealifeApp.aspect.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: ':id/view',
@@ -31,6 +32,7 @@ export const aspectRoute: Routes = [
       ],
       pageTitle: 'nealifeApp.aspect.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: 'new',
@@ -44,6 +46,7 @@ export const aspectRoute: Routes = [
       ],
       pageTitle: 'nealifeApp.aspect.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: ':id/edit',
@@ -57,5 +60,6 @@ export const aspectRoute: Routes = [
       ],
       pageTitle: 'nealifeApp.aspect.home.title',
     },
+    canActivate: [authGuard],
   },
 ];

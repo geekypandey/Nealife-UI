@@ -3,12 +3,12 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
-import { Observable, finalize, map, switchMap } from 'rxjs';
+import { Observable, filter, finalize, map, switchMap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { Action, ColDef } from 'src/app/components/table/table.model';
 import { API_URL } from 'src/app/constants/api-url.constants';
-import { IApplicationUserAssessment } from '../assess.model';
+import { Account, IApplicationUserAssessment } from '../assess.model';
 import { saveFile } from '../assess.util';
 import { AssessService } from '../services/assess.service';
 import { CRUDService } from '../services/crud.service';
@@ -53,7 +53,8 @@ export class ResultsComponent {
 
   constructor() {
     this.spinner.show(this.spinnerName);
-    this.result$ = this.profileService.account$.pipe(
+    this.result$ = this.profileService.getAccount().pipe(
+      filter((account): account is Account => !!account),
       switchMap(account =>
         this.crudService.query<IApplicationUserAssessment[]>(API_URL.applicationUserAssessment, {
           [`companyId.equals`]: account.companyId,

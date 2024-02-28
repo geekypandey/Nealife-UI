@@ -25,7 +25,7 @@ export class CompanyEditComponent {
   id: string = '';
 
   constructor() {
-    // this.profileService.profile$.pipe(tap(profile=>{
+    // this.profileService.getProfile().pipe(tap(profile=>{
     //   if(profile.role === USER_ROLE.SUPER_ADMIN)
     // }))
   }

@@ -34,7 +34,7 @@ export class DashboardDetailsComponent {
   constructor() {
     const companyId = this.activatedRoute.snapshot.queryParamMap.get('companyId');
     this.spinner.show(this.spinnerName);
-    this.dashboardDetails$ = this.profileService.profile$.pipe(
+    this.dashboardDetails$ = this.profileService.getProfile().pipe(
       switchMap(profile => {
         let payload = {};
         if ([USER_ROLE.ADMIN, USER_ROLE.FRANCHISE].includes(profile.role)) {

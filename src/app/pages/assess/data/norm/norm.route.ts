@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Authority } from 'src/app/constants/authority.constants';
+import { authGuard } from 'src/app/guards/is-authorized.guard';
 import { NormDetailComponent } from './norm-detail/norm-detail.component';
 import { NormUpdateComponent } from './norm-update/norm-update.component';
 import { NormComponent } from './norm.component';
@@ -15,9 +16,9 @@ export const normRoute: Routes = [
         Authority.ADMIN,
         Authority.SUPER_ADMIN,
       ],
-      defaultSort: 'id,desc',
       pageTitle: 'nealifeApp.norm.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: ':id/view',
@@ -31,6 +32,7 @@ export const normRoute: Routes = [
       ],
       pageTitle: 'nealifeApp.norm.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: 'new',
@@ -44,6 +46,7 @@ export const normRoute: Routes = [
       ],
       pageTitle: 'nealifeApp.norm.home.title',
     },
+    canActivate: [authGuard],
   },
   {
     path: ':id/edit',
@@ -57,5 +60,6 @@ export const normRoute: Routes = [
       ],
       pageTitle: 'nealifeApp.norm.home.title',
     },
+    canActivate: [authGuard],
   },
 ];

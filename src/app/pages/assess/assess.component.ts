@@ -37,7 +37,7 @@ import { ProfileService } from './services/profile.service';
   styleUrls: ['./assess.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    ProfileService,
+    // ProfileService,
     AssessService,
     CompanyService,
     AssessmentService,
@@ -68,15 +68,18 @@ export class AssessComponent {
     ];
 
     this.spinner.show();
-    forkJoin([this.profileService.getLoggedInUser(), this.profileService.getAccount()])
+    forkJoin([this.profileService.getProfile(), this.profileService.getAccount()])
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: ([profile, account]) => {
-          this.sidebarMenus = this.navigationService.getSidebarMenus(
-            this.profileService.isAdminRole(),
-            account.privilege,
-            account.authorities
-          );
+          if (account) {
+            this.sidebarMenus = this.navigationService.getSidebarMenus(
+              this.profileService.isAdminRole(account),
+              account.privilege,
+              account.authorities
+            );
+          }
+
           this.username = profile.roleDisplayName;
           this.companyName = profile.companyName;
           this.spinner.hide();

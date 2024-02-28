@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { TokenService } from 'src/app/services/token.service';
+import { ProfileService } from '../pages/assess/services/profile.service';
 import { Login, LoginResponse } from '../pages/login/login.model';
 
 @Injectable({
@@ -12,6 +13,7 @@ import { Login, LoginResponse } from '../pages/login/login.model';
 export class AuthenticationService {
   private http = inject(HttpClient);
   private tokenService = inject(TokenService);
+  private profileService = inject(ProfileService);
   private router = inject(Router);
 
   authenticate(req: Login) {
@@ -23,6 +25,8 @@ export class AuthenticationService {
   logout() {
     this.tokenService.setApiKey('');
     localStorage.clear();
+    this.profileService.setAccount(null);
+    this.profileService.setProfile(null);
     this.router.navigate(['/login']);
   }
 

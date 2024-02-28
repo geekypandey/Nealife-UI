@@ -47,7 +47,7 @@ export class CompanyComponent {
       this.sharedApiService.lookup('PARTNER_TYPE'),
     ]).pipe(
       switchMap(([companyTypes, partnerTypes]) => {
-        return this.profileService.profile$.pipe(
+        return this.profileService.getProfile().pipe(
           switchMap(profile => this.companyService.getCompanies(profile.companyId)),
           map(companies => {
             return companies.map(c => {
@@ -61,7 +61,7 @@ export class CompanyComponent {
       finalize(() => this.spinner.hide(this.spinnerName))
     );
 
-    this.profile$ = this.profileService.profile$.pipe(
+    this.profile$ = this.profileService.getProfile().pipe(
       tap(profile => {
         if (profile.role === USER_ROLE.SUPER_ADMIN) {
           this.cols = [

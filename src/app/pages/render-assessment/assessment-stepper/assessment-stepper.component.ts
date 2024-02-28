@@ -104,6 +104,7 @@ export class AssessmentStepperComponent implements OnChanges {
   private toastService = inject(MessageService);
   freezeAssessment$!: Observable<number>;
   clearTimer!: any;
+  thanksNote: boolean = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes['selectedLanguage'] && changes['assessmentsData']) {
@@ -234,6 +235,10 @@ export class AssessmentStepperComponent implements OnChanges {
         .subscribe({
           next: _ => {
             this.showAssessmentLastPage = true;
+            setTimeout(() => {
+              this.thanksNote = true;
+              this.cd.markForCheck();
+            }, 7000);
             this.spinner.hide(this.spinnerName);
             this.toastService.add({
               severity: 'success',

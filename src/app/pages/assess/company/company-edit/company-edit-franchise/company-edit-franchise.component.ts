@@ -101,7 +101,7 @@ export class CompanyEditFranchiseComponent {
       initApiCalls.push(this.companyService.getCompany(Number(this.id)));
     } else {
       this.editForm = this.getEditForm(<Company>{});
-      this.profileService.profile$.subscribe(profile => {
+      this.profileService.getProfile().subscribe(profile => {
         this.editForm.get('parentId')?.setValue(profile.companyId); // set default value
       });
     }
@@ -255,7 +255,7 @@ export class CompanyEditFranchiseComponent {
     this.editForm.addControl('brandingId', new FormControl(null, Validators.required));
     this.activeIndex = 1;
     const { id, name } = this.editForm.value;
-    this.branding$ = this.profileService.profile$.pipe(
+    this.branding$ = this.profileService.getProfile().pipe(
       map(profile => {
         return [
           { label: 'Nealife', value: '1' },
