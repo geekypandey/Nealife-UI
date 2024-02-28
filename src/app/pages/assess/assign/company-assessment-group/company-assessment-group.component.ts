@@ -19,6 +19,7 @@ import { API_URL } from 'src/app/constants/api-url.constants';
 })
 export class CompanyAssessmentGroupComponent {
 
+  selectedItems: Array<string> = [];
   spinnerName = 'company-assessment';
   assessmentGroups$: Observable<any[]>;
   actionsList: Array<Action>;
@@ -53,5 +54,9 @@ export class CompanyAssessmentGroupComponent {
         },
       },
     ]
+  }
+
+  updateSelection(items: any) {
+    this.selectedItems = items;
   }
 }

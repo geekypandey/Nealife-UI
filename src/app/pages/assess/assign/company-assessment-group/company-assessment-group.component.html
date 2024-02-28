@@ -9,8 +9,9 @@
         Add
     </button>
     </div>
-    <nl-table [cols]="cols" [value]="assessmentGroups" [actionsList]="actionsList">
-        <ng-template #customBodyTpl let-rowData let-columns="columns">
+    <nl-table [cols]="cols" [value]="assessmentGroups" [actionsList]="actionsList" [viewCheckBox]="true" (onSelectionChange)="updateSelection($event)">
+    <!-- <nl-table [cols]="cols" [value]="assessmentGroups" [actionsList]="actionsList" (viewCheckbox)="true"> -->
+        <!-- <ng-template #customBodyTpl let-rowData let-columns="columns">
             <ng-template ngFor let-col [ngForOf]="columns" let-i="index">
             <td *ngIf="col.visible">
                 <ng-container [ngSwitch]="col.field">
@@ -32,6 +33,6 @@
                 </ng-container>
             </td>
             </ng-template>
-        </ng-template>
+        </ng-template> -->
     </nl-table>
 </ng-container>
