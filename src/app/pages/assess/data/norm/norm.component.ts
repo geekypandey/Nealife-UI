@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Observable, finalize } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
@@ -34,6 +36,10 @@ export class NormComponent {
   private crudService: CRUDService = inject(CRUDService);
   private spinner = inject(NgxSpinnerService);
   private router = inject(Router);
+  selectedItems: Array<string> = [];
+  private http = inject(HttpClient);
+  private toastService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
   norms$: Observable<INorm[]>;
   actionsList: Action[] = [];
 
@@ -48,10 +54,50 @@ export class NormComponent {
           });
         },
       },
+      {
+        icon: ACTION_ICON.DELETE,
+        field: 'id',
+        onClick: (value: string) => {
+          this.deleteItems([value]);
+        },
+      },
     ];
     this.spinner.show(this.spinnerName);
     this.norms$ = this.crudService
       .query<INorm[]>(API_URL.norms)
       .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
+  }
+
+  updateSelection(items: any) {
+    this.selectedItems = items;
+  }
+
+  deleteItems(ids: Array<string>) {
+    this.confirmationService.confirm({
+      message: ids.length == 1 ? `Are you sure that you want to delete Norms ${ids[0]}?`: `Are you sure that you want to delete selected ${ids.length} Norms?`,
+      header: 'Confirm Delete Operation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        for (const id of ids) {
+          this.http.delete(`${API_URL.norms}/${id}`).subscribe({
+            next: () => { },
+            error: () => {}
+          })
+        }
+        this.toastService.add({
+          severity: 'success',
+          summary: ids.length == 1 ? `Norms ${ids[0]} successfully deleted` : `${ids.length} Norms successfully deleted`
+        })
+        // TODO: complete functionality to refresh the page
+        this.norms$ = this.crudService
+          .query<INorm[]>(API_URL.norms)
+          .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
+      },
+      reject: () => {}
+    })
+  }
+
+  deleteSelectedItems() {
+    this.deleteItems(this.selectedItems);
   }
 }

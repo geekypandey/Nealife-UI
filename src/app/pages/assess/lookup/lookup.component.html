@@ -3,15 +3,19 @@
   <strong class="col-12 mb-3">Lookup</strong>
   <ng-container *ngIf="lookup$ | async as lookup">
     <div class="mb-3">
-      <button
-        type="button"
-        routerLink="new"
-        [relativeTo]="activatedRoute"
-        class="p-button d-block nl-auto">
-        Add Lookup
-      </button>
+      <div class="d-flex gap-2">
+        <button
+          type="button"
+          routerLink="new"
+          [relativeTo]="activatedRoute"
+          class="p-button d-block nl-auto">
+          Add Lookup
+        </button>
+        <button type="button" class="p-button ml-auto d-block" [disabled]="selectedItems.length == 0" (click)="deleteSelectedItems()">Delete</button>
+      </div>
     </div>
-    <nl-table [cols]="cols" [value]="lookup" [actionsList]="actionsList">
+    <nl-table [cols]="cols" [value]="lookup" [actionsList]="actionsList" [viewCheckBox]="true" (onSelectionChange)="updateSelection($event)">
+    <!-- <nl-table [cols]="cols" [value]="lookup" [actionsList]="actionsList">
       <ng-template #customBodyTpl let-rowData let-columns="columns">
         <ng-template ngFor let-col [ngForOf]="columns" let-i="index">
           <td *ngIf="col.visible">
@@ -27,7 +31,7 @@
             </ng-container>
           </td>
         </ng-template>
-      </ng-template>
+      </ng-template> -->
     </nl-table>
   </ng-container>
 </div>

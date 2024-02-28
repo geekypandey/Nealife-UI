@@ -1,20 +1,15 @@
 <ng-container *ngIf="aspectItems$ | async as aspectItems">
-    <div class="mb-3 d-flex justify-content-end">
-    <button
-        type="button"
-        routerLink="add"
-        [relativeTo]="activatedRoute"
-        class="p-button ml-auto d-block">
-        Add
-    </button>
+
+    <div class="mb-3 d-flex justify-content-end gap-2">
+        <button type="button" routerLink="add" [relativeTo]="activatedRoute" class="p-button ml-auto d-block">Add</button>
+        <button type="button" class="p-button ml-auto d-block" [disabled]="selectedItems.length == 0" (click)="deleteSelectedItems()">Delete</button>
     </div>
-    <nl-table [cols]="cols" [value]="aspectItems" [actionsList]="actionsList">
-        <ng-template #customBodyTpl let-rowData let-columns="columns">
+    <nl-table [cols]="cols" [value]="aspectItems" [actionsList]="actionsList" [viewCheckBox]="true" (onSelectionChange)="updateSelection($event)">
+        <!-- <ng-template #customBodyTpl let-rowData let-columns="columns">
             <ng-template ngFor let-col [ngForOf]="columns" let-i="index">
             <td *ngIf="col.visible">
                 <ng-container [ngSwitch]="col.field">
                 <ng-container *ngSwitchCase="'id'">
-                    <!-- TODO: update this link -->
                     <span
                     class="link-primary nl-cursor-pointer"
                     [routerLink]="['/assess/assign/company-assessment/', rowData['companyId'], 'view']"
@@ -25,6 +20,6 @@
                 </ng-container>
             </td>
             </ng-template>
-        </ng-template>
+        </ng-template> -->
     </nl-table>
 </ng-container>
