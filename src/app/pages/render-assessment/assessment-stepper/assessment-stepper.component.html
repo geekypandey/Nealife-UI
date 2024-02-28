@@ -181,6 +181,7 @@
                       <!-- <div>{{ activeSectionFormGroup.value | json }}</div> -->
                       <!-- For debug purpose-->
                       <ng-container *ngTemplateOutlet="choicesTpl"></ng-container>
+                      <ng-container *ngTemplateOutlet="assessmentNoteTpl"></ng-container>
                     </ng-container>
                   </nl-step>
                 </nl-stepper>
@@ -219,6 +220,15 @@
     <div class="skipped col-6 col-sm-auto d-flex gap-2 align-items-center">
       <div class="box"></div>
       <div>Skipped</div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #assessmentNoteTpl>
+  <div class="row mt-5 justify-content-sm-center">
+    <div class="col-sm-auto">
+      Note: Please do not &apos;Refresh&apos; or click the &apos;Back&apos; button while attempting
+      the Assessment.
     </div>
   </div>
 </ng-template>
