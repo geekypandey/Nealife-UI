@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MessageService } from 'primeng/api';
 import { Observable, finalize } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
@@ -39,6 +40,7 @@ export class CompanyAssessmentGroupComponent {
   private http = inject(HttpClient);
   private spinner = inject(NgxSpinnerService);
   private router = inject(Router);
+  private toastService = inject(MessageService);
 
   constructor() {
     this.spinner.show(this.spinnerName);
@@ -58,5 +60,21 @@ export class CompanyAssessmentGroupComponent {
 
   updateSelection(items: any) {
     this.selectedItems = items;
+  }
+
+  deleteSelectedItems() {
+    // TODO: give a popup for confirmation
+    // TODO: use forkJoin for this operation to get collective result
+    for (const item of this.selectedItems) {
+      this.http.delete(`${API_URL.assignGroup}/${item}`).subscribe({
+        next: () => { },
+        error: () => {}
+      })
+    }
+    this.toastService.add({
+      severity: 'success',
+      summary: `${this.selectedItems.length} Company Assessment successfully deleted`
+    })
+    this.assessmentGroups$ = this.http.get<any[]>(API_URL.assignGroup).pipe(finalize(() => this.spinner.hide(this.spinnerName)));
   }
 }

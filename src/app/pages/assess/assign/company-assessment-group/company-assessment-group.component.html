@@ -1,13 +1,8 @@
 <nl-spinner [name]="spinnerName"></nl-spinner>
 <ng-container *ngIf="assessmentGroups$ | async as assessmentGroups">
-    <div class="mb-3 d-flex justify-content-end">
-    <button
-        type="button"
-        routerLink="company-assessment-group/add"
-        [relativeTo]="activatedRoute"
-        class="p-button ml-auto d-block">
-        Add
-    </button>
+    <div class="mb-3 d-flex justify-content-end gap-2">
+    <button type="button" routerLink="company-assessment-group/add" [relativeTo]="activatedRoute" class="p-button ml-auto d-block">Add</button>
+    <button type="button" class="p-button ml-auto d-block" [disabled]="selectedItems.length == 0" (click)="deleteSelectedItems()">Delete</button>
     </div>
     <nl-table [cols]="cols" [value]="assessmentGroups" [actionsList]="actionsList" [viewCheckBox]="true" (onSelectionChange)="updateSelection($event)">
     <!-- <nl-table [cols]="cols" [value]="assessmentGroups" [actionsList]="actionsList" (viewCheckbox)="true"> -->
