@@ -16,6 +16,7 @@ import { API_URL } from 'src/app/constants/api-url.constants';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AssessmentCompetencyComponent {
+  selectedItems: Array<string> = [];
   assessmentCompetencies$: Observable<any>;
   activatedRoute = inject(ActivatedRoute)
 
@@ -51,5 +52,9 @@ export class AssessmentCompetencyComponent {
 
   constructor() {
     this.assessmentCompetencies$ = this.http.get<any>(`${API_URL.assessmentCompetencies}?page=0&size=5000&sort=id,desc`);
+  }
+
+  updateSelection(items: any) {
+    this.selectedItems = items;
   }
 }
