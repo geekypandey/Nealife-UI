@@ -47,12 +47,62 @@ export class CompanyAssessmentGroupComponent {
     this.assessmentGroups$ = this.http.get<any[]>(API_URL.assignGroup).pipe(finalize(() => this.spinner.hide(this.spinnerName)));
     this.actionsList = [
       {
+        icon: ACTION_ICON.VIEW,
+        field: 'id',
+        onClick: (value: string) => {
+          this.router.navigate(['company-assessment-group/' + value + '/edit'], {
+            relativeTo: this.activatedRoute,
+          });
+        },
+      },
+      {
         icon: ACTION_ICON.EDIT,
         field: 'id',
         onClick: (value: string) => {
           this.router.navigate(['company-assessment-group/' + value + '/edit'], {
             relativeTo: this.activatedRoute,
           });
+        },
+      },
+      {
+        icon: ACTION_ICON.ALERT,
+        field: 'id',
+        onClick: (value: string) => {
+          const params = {
+            companyAssessmentId: value,
+            isGroup: 'Y'
+          };
+          this.http.get(API_URL.notifyCompanyWiseUsers, { params: params}).subscribe({
+            next: () => {
+              this.toastService.add({
+                severity: 'success',
+                summary: `Notifications sent Successfully`,
+              })
+            },
+            error: () => {}
+          });
+        },
+      },
+      {
+        icon: ACTION_ICON.DELETE,
+        field: 'id',
+        onClick: (value: string) => {
+          // this.confirmationService.confirm({
+          //   message: `Are you sure that you want to delete Company Assessment ${value}?`,
+          //   header: 'Confirm Delete Operation',
+          //   icon: 'pi pi-info-circle',
+          //   accept: () => {
+          //     this.assessmentService.deleteAssessment(value);
+          //     this.toastService.add({
+          //       severity: 'success',
+          //       summary: `Company item ${value} successfully deleted`
+          //     })
+          //     this.assessments$ = this.assessmentService.getAssessments().pipe(
+          //       finalize(() => this.spinner.hide(this.spinnerName))
+          //     );
+          //   },
+          //   reject: () => {}
+          // })
         },
       },
     ]
