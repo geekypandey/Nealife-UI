@@ -5,7 +5,9 @@ export const companyAssessmentRoutes: Route[] = [
   {
     path: ':id/view',
     loadComponent: () =>
-      import('./company-assessment-details/company-assessment-details.component').then(c => c.CompanyAssessmentDetailsComponent),
+      import('./company-assessment-details/company-assessment-details.component').then(
+        c => c.CompanyAssessmentDetailsComponent
+      ),
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -18,7 +20,9 @@ export const companyAssessmentRoutes: Route[] = [
   {
     path: ':id/edit',
     loadComponent: () =>
-      import('./company-assessment-update/company-assessment-update.component').then(c => c.CompanyAssessmentUpdateComponent),
+      import('./company-assessment-update/company-assessment-update.component').then(
+        c => c.CompanyAssessmentUpdateComponent
+      ),
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -31,7 +35,9 @@ export const companyAssessmentRoutes: Route[] = [
   {
     path: 'add',
     loadComponent: () =>
-      import('./company-assessment-update/company-assessment-update.component').then(c => c.CompanyAssessmentUpdateComponent),
+      import('./company-assessment-update/company-assessment-update.component').then(
+        c => c.CompanyAssessmentUpdateComponent
+      ),
     data: {
       authorities: [
         Authority.ACCOUNT_ADMIN,
@@ -40,5 +46,14 @@ export const companyAssessmentRoutes: Route[] = [
         Authority.SUPER_ADMIN,
       ],
     },
-  }
-]
+  },
+  // {
+  //   path: 'view-assessment-test',
+  //   component: ViewAssessmentTestComponent,
+  //   data: {
+  //     authorities: [Authority.ACCOUNT_ADMIN, Authority.NEA_ADMIN, Authority.ADMIN, Authority.SUPER_ADMIN],
+  //     pageTitle: 'nealifeApp.competencyAspect.home.title',
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+];
