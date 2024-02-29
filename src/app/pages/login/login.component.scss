@@ -7,12 +7,15 @@
   background-repeat: no-repeat;
   background-color: var(--nl-body-bg-color);
 }
+.company-logo {
+  position: absolute;
+  left: 252px;
+  top: 78px;
+}
 .welcome-msg {
   position: absolute;
-  left: 35px;
-  top: 45px;
-  display: flex;
-  column-gap: 25px;
+  left: 70px;
+  top: 70px;
 }
 .login-welcome {
   font-size: 2rem;

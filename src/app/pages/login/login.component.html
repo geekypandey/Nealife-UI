@@ -1,24 +1,14 @@
-<div class="d-flex welcome-msg">
-  <h3 class="login-welcome">Welcome to</h3>
-  <img
-    class="company-logo"
-    src="./../../../assets/login/assess-log-white.svg"
-    alt="assess-log-white.svg"
-    height="48" />
-</div>
+<h3 class="login-welcome welcome-msg">Welcome to</h3>
+<img
+  class="company-logo"
+  src="./../../../assets/login/assess-log-white.svg"
+  alt="assess-log-white.svg"
+  height="48" />
 <form
   class="login-container row"
   [formGroup]="loginForm"
   (ngSubmit)="onSubmit()"
   autocomplete="off">
-  <!-- <div class="d-inline-flex justify-content-center">
-    <img
-      class="company-logo justify-content-center"
-      src="./../../../assets/login/logo.svg"
-      alt="logo-svg"
-      height="60" />
-  </div> -->
-
   <div class="signin-container">
     <h5 class="mt-4 p-0 fw-bold">Sign In</h5>
     <div class="d-block p-fluid mt-4 mb-3">
