@@ -34,7 +34,8 @@ export const API_URL = {
   interpretations: BASE_URL + '/interpretations',
 
   assessment: BASE_URL + '/assessments/renderNewAssesment',
-  assessmentJson: BASE_URL + '/assessments/getAssessmentJson',
+  getNewAssessmentJson: BASE_URL + '/assessments/getNewAssessmentJson',
+  getNewAssessmentGroupJson: BASE_URL + '/assessments/getNewAssessmentGroupJson',
   checkCreditCode: BASE_URL + '/checkCreditUsed',
   branchAssessmentCourseFitURL: BASE_URL + '/assessments/renderNewAssesmentForCourseFit',
   assessmentName: BASE_URL + '/signup-assessments-fordropdown',

@@ -15,6 +15,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -26,6 +27,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { StepComponent } from 'src/app/components/stepper/step/step.component';
 import { StepperComponent } from 'src/app/components/stepper/stepper.component';
 import { Step } from 'src/app/components/stepper/stepper.model';
+import { SafeType, SanitizePipe } from 'src/app/pipes/sanitize.pipe';
 import { MinuteSecondsPipe } from 'src/app/pipes/seconds-to-minutes.pipe';
 import { LayoutService } from 'src/app/services/layout.service';
 import { getCurrentTime } from 'src/app/util/util';
@@ -39,6 +41,7 @@ import {
 } from '../render-assessment.model';
 import { RenderAssessmentService } from '../render-assessment.service';
 import { PreAssessmentSectionDetailsRequest, Stat } from './assessment-section.model';
+import { InstructionUrlPipe } from './instruction-url.pipe';
 
 @Component({
   selector: 'nl-assessment-stepper',
@@ -52,6 +55,9 @@ import { PreAssessmentSectionDetailsRequest, Stat } from './assessment-section.m
     CustomCircleProgressComponent,
     SpinnerComponent,
     MinuteSecondsPipe,
+    FormsModule,
+    InstructionUrlPipe,
+    SanitizePipe,
   ],
   templateUrl: './assessment-stepper.component.html',
   styleUrls: ['./assessment-stepper.component.scss'],
@@ -61,17 +67,30 @@ export class AssessmentStepperComponent implements OnChanges {
   @Input({ required: true })
   selectedLanguage: string = 'English';
 
+  langOptions: string[] = ['English', 'Marathi'];
+  private _assessmentsData: RenderAssessmentResponse | null = null;
   @Input({ required: true })
-  assessmentsData: RenderAssessmentResponse | null = null;
+  set assessmentsData(value: RenderAssessmentResponse | null) {
+    if (value) {
+      this._assessmentsData = value;
+      // this.langOptions =
+    }
+  }
+  get assessmentsData() {
+    return this._assessmentsData;
+  }
 
-  @Input({ required: true })
-  preAssessmentDetailsResponse!: PreAssessmentDetailsResponse;
+  @Input()
+  preAssessmentDetailsResponse: PreAssessmentDetailsResponse | null = null;
 
   @Input({ required: true })
   completedAssessments: Assessment[] = [];
 
   @Input()
   logoUrl: string = '';
+
+  @Input()
+  readOnlyAssessment: boolean = false;
 
   showGeneralInstructions: boolean = false;
   showStepper: boolean = false;
@@ -117,9 +136,9 @@ export class AssessmentStepperComponent implements OnChanges {
         });
         this.activeAssessment = this.totalAssessments[0];
         this.showGeneralInstructions = true;
-        this.generalInstructionsUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
-          this.sanitizeGenInsPage(this.assessmentsData.instructionPage[this.selectedLanguage])
-        );
+        // this.generalInstructionsUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
+        //   this.sanitizeGenInsPage(this.assessmentsData.instructionPage[this.selectedLanguage])
+        // );
       }
     }
   }
@@ -190,30 +209,35 @@ export class AssessmentStepperComponent implements OnChanges {
         assessmentEndTime: getCurrentTime(),
       },
     ];
-    const sectionDetailsRequestPayload: PreAssessmentSectionDetailsRequest = {
-      answers,
-      assessmentId: this.activeAssessment.assessmentId,
-      preAssessmentDetailsId: this.preAssessmentDetailsResponse.id,
-      stats,
-    };
-    this.spinner.show(this.spinnerName);
-    this.assementService
-      .submitSectionDetails(sectionDetailsRequestPayload)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: resp => {
-          this.markStepCompleted();
-          this.activeAssessmentFormGroup = undefined;
-          this.nextAssessment();
-          // const targetEle = this.doc.getElementById(
-          //   this.SUB_TEST_CARD_LABEL + this.activeAssessmentIndex
-          // );
-          // scrollIntoView(targetEle);
-          this.spinner.hide(this.spinnerName);
-          this.cd.markForCheck();
-        },
-        error: _ => this.spinner.hide(this.spinnerName),
-      });
+
+    if (this.preAssessmentDetailsResponse && this.preAssessmentDetailsResponse.id) {
+      const sectionDetailsRequestPayload: PreAssessmentSectionDetailsRequest = {
+        answers,
+        assessmentId: this.activeAssessment.assessmentId,
+        preAssessmentDetailsId: this.preAssessmentDetailsResponse.id,
+        stats,
+      };
+      this.spinner.show(this.spinnerName);
+      this.assementService
+        .submitSectionDetails(sectionDetailsRequestPayload)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: resp => {
+            this.markStepCompleted();
+            this.activeAssessmentFormGroup = undefined;
+            this.nextAssessment();
+            // const targetEle = this.doc.getElementById(
+            //   this.SUB_TEST_CARD_LABEL + this.activeAssessmentIndex
+            // );
+            // scrollIntoView(targetEle);
+            this.spinner.hide(this.spinnerName);
+            this.cd.markForCheck();
+          },
+          error: _ => this.spinner.hide(this.spinnerName),
+        });
+    } else {
+      console.error('No preAssessmentDetails Id');
+    }
   }
 
   private nextAssessment() {
@@ -227,40 +251,44 @@ export class AssessmentStepperComponent implements OnChanges {
       }
     } else {
       // if it's last assessment
-      this.showStepper = false;
-      this.spinner.show(this.spinnerName);
-      this.assementService
-        .submitFinalAssessment(this.preAssessmentDetailsResponse.id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: _ => {
-            this.showAssessmentLastPage = true;
-            setTimeout(() => {
-              this.thanksNote = true;
+      if (this.preAssessmentDetailsResponse && this.preAssessmentDetailsResponse.id) {
+        this.showStepper = false;
+        this.spinner.show(this.spinnerName);
+        this.assementService
+          .submitFinalAssessment(this.preAssessmentDetailsResponse.id)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: _ => {
+              this.showAssessmentLastPage = true;
+              setTimeout(() => {
+                this.thanksNote = true;
+                this.cd.markForCheck();
+              }, 7000);
+              this.spinner.hide(this.spinnerName);
+              this.toastService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Assessment Submitted Successfully !',
+                sticky: false,
+                id: 'assessmentSubmit',
+              });
               this.cd.markForCheck();
-            }, 7000);
-            this.spinner.hide(this.spinnerName);
-            this.toastService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: 'Assessment Submitted Successfully !',
-              sticky: false,
-              id: 'assessmentSubmit',
-            });
-            this.cd.markForCheck();
-          },
-          error: _ => {
-            this.spinner.hide(this.spinnerName);
-            this.toastService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Something went wrong with assessment submit',
-              sticky: true,
-              id: 'assessmentSubmit',
-            });
-            this.cd.markForCheck();
-          },
-        });
+            },
+            error: _ => {
+              this.spinner.hide(this.spinnerName);
+              this.toastService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Something went wrong with assessment submit',
+                sticky: true,
+                id: 'assessmentSubmit',
+              });
+              this.cd.markForCheck();
+            },
+          });
+      } else {
+        console.error('No preAssessmentDetails Id');
+      }
     }
   }
 
@@ -487,4 +515,8 @@ export class AssessmentStepperComponent implements OnChanges {
   // get sections() {
   //   return this.activeAssessment.sections;
   // }
+
+  get safeType() {
+    return SafeType;
+  }
 }
