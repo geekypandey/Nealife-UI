@@ -15,6 +15,8 @@ export class CompanyService {
 
   getCompanies(id: string) {
     const query: CompanyQuery = {
+      page: '0',
+      size: '5000',
       'id.equals': id,
       'parent.equals': id,
     };

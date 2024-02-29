@@ -39,6 +39,11 @@
                   <i (click)="resendReport(rowData['id'])" class="bi bi-send nl-cursor-pointer"></i>
                 </div>
               </ng-container>
+              <ng-container *ngSwitchCase="'assessmentName'">
+                {{
+                  rowData['assessmentGroupId'] ? rowData['assessmentGroupName'] : rowData[col.field]
+                }}
+              </ng-container>
               <ng-container *ngSwitchDefault>{{ rowData[col.field] }}</ng-container>
             </ng-container>
           </td>
