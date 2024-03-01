@@ -17,7 +17,7 @@ import { AssessmentService } from '../assessment.service';
   imports: [CommonModule, SpinnerComponent, TableComponent, RouterLink],
   templateUrl: './company-assessment.component.html',
   styleUrls: ['./company-assessment.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompanyAssessmentComponent {
   selectedItems: Array<string> = [];
@@ -28,12 +28,12 @@ export class CompanyAssessmentComponent {
 
   cols: ColDef[] = [
     { header: 'Id', field: 'id' },
-    { header: 'Company', field: 'companyName'},
-    { header: 'Assessment', field: 'assessmentName'},
-    { header: 'Time limit', field: 'timeLimit'},
-    { header: 'Available Credits', field: 'availableCredits'},
-    { header: 'Used Credits', field: 'usedCredits'},
-  ]
+    { header: 'Company', field: 'companyName' },
+    { header: 'Assessment', field: 'assessmentName' },
+    { header: 'Time limit', field: 'timeLimit' },
+    { header: 'Available Credits', field: 'availableCredits' },
+    { header: 'Used Credits', field: 'usedCredits' },
+  ];
 
   private assessmentService = inject(AssessmentService);
   private spinner = inject(NgxSpinnerService);
@@ -41,19 +41,19 @@ export class CompanyAssessmentComponent {
   private toastService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
 
-
   constructor() {
-    this.assessments$ = this.assessmentService.getAssessments().pipe(
-      finalize(() => this.spinner.hide(this.spinnerName))
-    );
+    this.assessments$ = this.assessmentService
+      .getAssessments()
+      .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
 
     this.actionsList = [
       {
         icon: ACTION_ICON.VIEW,
         field: 'id',
         onClick: (value: string) => {
-          this.router.navigate([value + '/edit'], {
+          this.router.navigate(['view-assessment-test'], {
             relativeTo: this.activatedRoute,
+            queryParams: { assessmentId: value },
           });
         },
       },
@@ -75,9 +75,9 @@ export class CompanyAssessmentComponent {
               this.toastService.add({
                 severity: 'success',
                 summary: `Notifications sent Successfully`,
-              })
+              });
             },
-            error: () => {}
+            error: () => {},
           });
         },
       },
@@ -90,8 +90,8 @@ export class CompanyAssessmentComponent {
               const blob = new Blob([data], { type: 'application/octet-stream' });
               saveFile(blob, 'Available_Credits.xlsx');
             },
-            error: () => {}
-          })
+            error: () => {},
+          });
         },
       },
       {
@@ -106,22 +106,22 @@ export class CompanyAssessmentComponent {
               this.assessmentService.deleteAssessment(value);
               this.toastService.add({
                 severity: 'success',
-                summary: `Company item ${value} successfully deleted`
-              })
-              this.assessments$ = this.assessmentService.getAssessments().pipe(
-                finalize(() => this.spinner.hide(this.spinnerName))
-              );
+                summary: `Company item ${value} successfully deleted`,
+              });
+              this.assessments$ = this.assessmentService
+                .getAssessments()
+                .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
             },
-            reject: () => {}
-          })
+            reject: () => {},
+          });
         },
       },
-    ]
+    ];
   }
 
   updateSelection(items: any) {
     this.selectedItems = items;
-    console.log(items)
+    console.log(items);
   }
 
   deleteItems() {
@@ -135,15 +135,13 @@ export class CompanyAssessmentComponent {
         this.assessmentService.deleteAssessments(this.selectedItems);
         this.toastService.add({
           severity: 'success',
-          summary: `${this.selectedItems.length} items successfully deleted`
-        })
-        this.assessments$ = this.assessmentService.getAssessments().pipe(
-          finalize(() => this.spinner.hide(this.spinnerName))
-        );
+          summary: `${this.selectedItems.length} items successfully deleted`,
+        });
+        this.assessments$ = this.assessmentService
+          .getAssessments()
+          .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
       },
-      reject: () => {}
-    })
-
-
+      reject: () => {},
+    });
   }
 }

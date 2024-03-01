@@ -4,10 +4,15 @@
   <div class="col overflow-auto">
     <div class="container-fluid h-100">
       <ng-container *ngIf="showGeneralInstructions">
+        <ng-container *ngTemplateOutlet="langTpl"></ng-container>
         <div class="row flex-column gy-2 h-100">
           <div class="col">
             <iframe
-              [src]="generalInstructionsUrl"
+              [src]="
+                assessmentsData && assessmentsData.instructionPage
+                  | instructionUrl: selectedLanguage
+                  | sanitize: safeType.RESOURCEURL
+              "
               frameborder="0"
               width="100%"
               height="100%"></iframe>
@@ -43,12 +48,17 @@
                     [completed]="step.completed"
                     [stepFormGroup]="step.stepFormGroup"
                     [title]="step.title"
-                    [instructionUrl]="step.instructionUrl">
-                    <ng-container *ngIf="step.instructionUrl">
+                    [instructionPageObj]="step.instructionPageObj">
+                    <ng-container *ngIf="step.instructionPageObj">
+                      <ng-container *ngTemplateOutlet="langTpl"></ng-container>
                       <div class="row flex-column gy-2 h-100">
                         <div class="col">
                           <iframe
-                            [src]="step.instructionUrl"
+                            [src]="
+                              step.instructionPageObj
+                                | instructionUrl: selectedLanguage
+                                | sanitize: safeType.RESOURCEURL
+                            "
                             frameborder="0"
                             width="100%"
                             height="100%"></iframe>
@@ -61,6 +71,8 @@
                       </div>
                     </ng-container>
                     <ng-container *ngIf="step.stepFormGroup && activeAssessmentFormGroup">
+                      <ng-container
+                        *ngTemplateOutlet="langTpl; context: { $implicit: 'col-2' }"></ng-container>
                       <!-- <ng-container *ngIf="step.stepControl && step.stepControl.get('assessmentId')"> -->
                       <!-- Added above ngIf as instruction page don't have any formGroup controls-->
                       <h5 class="mt-4">
@@ -338,6 +350,20 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #langTpl let-className>
+  <div class="row justify-content-end mt-2" *ngIf="readOnlyAssessment">
+    <div [class]="className || 'col-1'">
+      <select
+        name="select-gen-language"
+        id="select-gen-language"
+        class="form-select"
+        [(ngModel)]="selectedLanguage">
+        <option [value]="lang" *ngFor="let lang of langOptions">{{ lang }}</option>
+      </select>
     </div>
   </div>
 </ng-template>

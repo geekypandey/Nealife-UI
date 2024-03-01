@@ -29,7 +29,12 @@
                     class="bi bi-file-pdf nl-cursor-pointer"></i>
                 </div>
               </ng-container>
-              <ng-container *ngSwitchCase="'resendToPhone'">
+              <ng-container *ngSwitchCase="'resendToReport'">
+                <div class="text-center fs-5">
+                  <i (click)="resendReport(rowData['id'])" class="bi bi-send nl-cursor-pointer"></i>
+                </div>
+              </ng-container>
+              <!-- <ng-container *ngSwitchCase="'resendToPhone'">
                 <div class="text-center fs-5">
                   <i (click)="resendReport(rowData['id'])" class="bi bi-send nl-cursor-pointer"></i>
                 </div>
@@ -38,7 +43,7 @@
                 <div class="text-center fs-5">
                   <i (click)="resendReport(rowData['id'])" class="bi bi-send nl-cursor-pointer"></i>
                 </div>
-              </ng-container>
+              </ng-container> -->
               <ng-container *ngSwitchCase="'assessmentName'">
                 {{
                   rowData['assessmentGroupId'] ? rowData['assessmentGroupName'] : rowData[col.field]

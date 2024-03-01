@@ -16,10 +16,9 @@ import { API_URL } from 'src/app/constants/api-url.constants';
   imports: [CommonModule, SpinnerComponent, TableComponent, RouterLink],
   templateUrl: './company-assessment-group.component.html',
   styleUrls: ['./company-assessment-group.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompanyAssessmentGroupComponent {
-
   selectedItems: Array<string> = [];
   spinnerName = 'company-assessment';
   assessmentGroups$: Observable<any[]>;
@@ -28,14 +27,14 @@ export class CompanyAssessmentGroupComponent {
 
   cols: ColDef[] = [
     { header: 'Id', field: 'id' },
-    { header: 'Company', field: 'companyName'},
-    { header: 'Assessment Group', field: 'assessmentGroupName'},
-    { header: 'Total Credits', field: 'timeLimit'},
-    { header: 'Available Credits', field: 'availableCredits'},
-    { header: 'Used Credits', field: 'usedCredits'},
-    { header: 'Time Limit', field: 'timeLimit'},
-    { header: 'Scheduled Date', field: 'scheduledDate'},
-  ]
+    { header: 'Company', field: 'companyName' },
+    { header: 'Assessment Group', field: 'assessmentGroupName' },
+    { header: 'Total Credits', field: 'timeLimit' },
+    { header: 'Available Credits', field: 'availableCredits' },
+    { header: 'Used Credits', field: 'usedCredits' },
+    { header: 'Time Limit', field: 'timeLimit' },
+    { header: 'Scheduled Date', field: 'scheduledDate' },
+  ];
 
   private http = inject(HttpClient);
   private spinner = inject(NgxSpinnerService);
@@ -45,14 +44,17 @@ export class CompanyAssessmentGroupComponent {
 
   constructor() {
     this.spinner.show(this.spinnerName);
-    this.assessmentGroups$ = this.http.get<any[]>(API_URL.assignGroup).pipe(finalize(() => this.spinner.hide(this.spinnerName)));
+    this.assessmentGroups$ = this.http
+      .get<any[]>(API_URL.assignGroup)
+      .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
     this.actionsList = [
       {
         icon: ACTION_ICON.VIEW,
         field: 'id',
         onClick: (value: string) => {
-          this.router.navigate(['company-assessment-group/' + value + '/edit'], {
+          this.router.navigate(['view-assessment-test'], {
             relativeTo: this.activatedRoute,
+            queryParams: { companyAssessmentGroupId: true, assessmentId: value },
           });
         },
       },
@@ -71,16 +73,16 @@ export class CompanyAssessmentGroupComponent {
         onClick: (value: string) => {
           const params = {
             companyAssessmentId: value,
-            isGroup: 'Y'
+            isGroup: 'Y',
           };
-          this.http.get(API_URL.notifyCompanyWiseUsers, { params: params}).subscribe({
+          this.http.get(API_URL.notifyCompanyWiseUsers, { params: params }).subscribe({
             next: () => {
               this.toastService.add({
                 severity: 'success',
                 summary: `Notifications sent Successfully`,
-              })
+              });
             },
-            error: () => {}
+            error: () => {},
           });
         },
       },
@@ -97,18 +99,20 @@ export class CompanyAssessmentGroupComponent {
                 next: () => {
                   this.toastService.add({
                     severity: 'success',
-                    summary: `Company Assessment ${value} successfully deleted`
-                })
-                }
-              })
+                    summary: `Company Assessment ${value} successfully deleted`,
+                  });
+                },
+              });
               // TODO: complete functionality to refresh the page
-              this.assessmentGroups$ = this.http.get<any[]>(API_URL.assignGroup).pipe(finalize(() => this.spinner.hide(this.spinnerName)));
+              this.assessmentGroups$ = this.http
+                .get<any[]>(API_URL.assignGroup)
+                .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
             },
-            reject: () => {}
-          })
+            reject: () => {},
+          });
         },
       },
-    ]
+    ];
   }
 
   updateSelection(items: any) {
@@ -120,14 +124,16 @@ export class CompanyAssessmentGroupComponent {
     // TODO: use forkJoin for this operation to get collective result
     for (const item of this.selectedItems) {
       this.http.delete(`${API_URL.assignGroup}/${item}`).subscribe({
-        next: () => { },
-        error: () => {}
-      })
+        next: () => {},
+        error: () => {},
+      });
     }
     this.toastService.add({
       severity: 'success',
-      summary: `${this.selectedItems.length} Company Assessment successfully deleted`
-    })
-    this.assessmentGroups$ = this.http.get<any[]>(API_URL.assignGroup).pipe(finalize(() => this.spinner.hide(this.spinnerName)));
+      summary: `${this.selectedItems.length} Company Assessment successfully deleted`,
+    });
+    this.assessmentGroups$ = this.http
+      .get<any[]>(API_URL.assignGroup)
+      .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
   }
 }

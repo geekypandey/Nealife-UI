@@ -14,6 +14,7 @@ import {
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ColDef } from 'src/app/components/table/table.model';
+import { API_URL } from 'src/app/constants/api-url.constants';
 import { CompetencyAspectItemROCount, ICompetencyAspectProjection } from '../assess.model';
 import { saveFile } from '../assess.util';
 import { AssessService } from '../services/assess.service';
@@ -99,7 +100,7 @@ export class MasterDataComponent {
 
   downloadTemplate(): void {
     this.spinner.show(this.spinnerName);
-    this.crudService.downloadReport('api/downloadTemplate').subscribe({
+    this.crudService.downloadReport(API_URL.downloadTemplate).subscribe({
       next: (response: Blob) => {
         const blob = new Blob([response], { type: 'application/octet-stream' });
         saveFile(blob, 'master-data-template.xlsx');
@@ -111,7 +112,7 @@ export class MasterDataComponent {
 
   downloadResultSheet(): void {
     this.spinner.show(this.spinnerName);
-    this.crudService.downloadReport('api/downloadResultSheet').subscribe({
+    this.crudService.downloadReport(API_URL.downloadResultSheet).subscribe({
       next: (response: Blob) => {
         const blob = new Blob([response], { type: 'application/octet-stream' });
         saveFile(blob, 'Export-Results.xlsx');
@@ -123,7 +124,7 @@ export class MasterDataComponent {
 
   downloadErrorSummary(): void {
     this.spinner.show(this.spinnerName);
-    this.crudService.downloadReport('api/downloadSummary').subscribe({
+    this.crudService.downloadReport(API_URL.downloadSummary).subscribe({
       next: (response: Blob) => {
         const blob = new Blob([response], { type: 'application/octet-stream' });
         saveFile(blob, 'master-data-upload-summary.xlsx');

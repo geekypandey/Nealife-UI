@@ -1,0 +1,11 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<ng-container *ngIf="viewAssessment$ | async as viewAssessment">
+  <div class="row h-100">
+    <nl-assessment-stepper
+      [logoUrl]="viewAssessment.logoUrl || ''"
+      [selectedLanguage]="'English'"
+      [readOnlyAssessment]="true"
+      [assessmentsData]="viewAssessment"
+      [completedAssessments]="[]"></nl-assessment-stepper>
+  </div>
+</ng-container>
