@@ -29,7 +29,7 @@ export class AuthenticationService {
               severity: 'error',
               summary: 'Error',
               detail: 'Failed to sign in! Please check your credentials and try again.',
-              sticky: true,
+              sticky: false,
               id: 'sign-in-error',
             });
           }
@@ -39,7 +39,7 @@ export class AuthenticationService {
             severity: 'error',
             summary: 'Error',
             detail: 'Failed to sign in! Please check your credentials and try again.',
-            sticky: true,
+            sticky: false,
             id: 'sign-in-error',
           });
         },

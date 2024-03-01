@@ -36,11 +36,11 @@ export const APP_ROUTES: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/assess',
+    redirectTo: '/assess/dashboard',
   },
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: '/assess',
+    redirectTo: '/assess/dashboard',
   },
 ];
