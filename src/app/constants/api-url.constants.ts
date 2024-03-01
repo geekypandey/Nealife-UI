@@ -33,6 +33,10 @@ export const API_URL = {
   norms: BASE_URL + '/norms',
   interpretations: BASE_URL + '/interpretations',
 
+  downloadTemplate: BASE_URL + '/downloadTemplate',
+  downloadResultSheet: BASE_URL + '/downloadResultSheet',
+  downloadSummary: BASE_URL + '/downloadSummary',
+
   assessment: BASE_URL + '/assessments/renderNewAssesment',
   getNewAssessmentJson: BASE_URL + '/assessments/getNewAssessmentJson',
   getNewAssessmentGroupJson: BASE_URL + '/assessments/getNewAssessmentGroupJson',

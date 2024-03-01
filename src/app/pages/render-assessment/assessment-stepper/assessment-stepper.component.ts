@@ -222,22 +222,27 @@ export class AssessmentStepperComponent implements OnChanges {
         .submitSectionDetails(sectionDetailsRequestPayload)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
-          next: resp => {
-            this.markStepCompleted();
-            this.activeAssessmentFormGroup = undefined;
-            this.nextAssessment();
-            // const targetEle = this.doc.getElementById(
-            //   this.SUB_TEST_CARD_LABEL + this.activeAssessmentIndex
-            // );
-            // scrollIntoView(targetEle);
-            this.spinner.hide(this.spinnerName);
-            this.cd.markForCheck();
-          },
+          next: resp => this.submitSectionDetailsResp(),
           error: _ => this.spinner.hide(this.spinnerName),
         });
     } else {
-      console.error('No preAssessmentDetails Id');
+      console.error('submitSectionDetails - No preAssessmentDetails Id');
+      if (this.readOnlyAssessment) {
+        this.submitSectionDetailsResp();
+      }
     }
+  }
+
+  private submitSectionDetailsResp() {
+    this.markStepCompleted();
+    this.activeAssessmentFormGroup = undefined;
+    this.nextAssessment();
+    // const targetEle = this.doc.getElementById(
+    //   this.SUB_TEST_CARD_LABEL + this.activeAssessmentIndex
+    // );
+    // scrollIntoView(targetEle);
+    this.spinner.hide(this.spinnerName);
+    this.cd.markForCheck();
   }
 
   private nextAssessment() {
@@ -287,7 +292,15 @@ export class AssessmentStepperComponent implements OnChanges {
             },
           });
       } else {
-        console.error('No preAssessmentDetails Id');
+        console.error('nextAssessment - No preAssessmentDetails Id');
+        if (this.readOnlyAssessment) {
+          this.showStepper = false;
+          this.showAssessmentLastPage = true;
+          setTimeout(() => {
+            this.thanksNote = true;
+            this.cd.markForCheck();
+          }, 7000);
+        }
       }
     }
   }

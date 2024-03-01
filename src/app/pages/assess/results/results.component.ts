@@ -30,8 +30,9 @@ export class ResultsComponent {
     { field: 'status', header: 'Status' },
     { field: 'notificationSent', header: 'Report Sent' },
     { field: 'reportUrl', header: 'Download Report' },
-    { field: 'resendToPhone', header: 'Resend Report to Phone' },
-    { field: 'resendToEmail', header: 'Resend Report to Email' },
+    { field: 'resendToReport', header: 'Resend Report to Phone & Email' },
+    // { field: 'resendToPhone', header: 'Resend Report to Phone' },
+    // { field: 'resendToEmail', header: 'Resend Report to Email' },
 
     // { field: 'activationkey', header: 'Activation key' },
     // { field: 'activated', header: 'Activated' },
