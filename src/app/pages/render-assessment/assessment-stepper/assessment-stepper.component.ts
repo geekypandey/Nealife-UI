@@ -373,7 +373,7 @@ export class AssessmentStepperComponent implements OnChanges {
         const instructionStep: Step = {
           title: 'Instructions',
           completed: false,
-          instructionUrl: this.getInstructionsUrl(assessment),
+          instructionPageObj: assessment?.instructionPage, //this.getInstructionsUrl(assessment),
         };
         const assessmentStep: Step = {
           title: assessment.displayName, //section.name,

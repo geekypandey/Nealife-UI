@@ -2,7 +2,6 @@ import { CdkStep } from '@angular/cdk/stepper';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'nl-step',
@@ -21,7 +20,7 @@ export class StepComponent extends CdkStep {
   @Input()
   icon: string = '';
   @Input()
-  instructionUrl?: SafeResourceUrl;
+  instructionPageObj?: { [key: string]: string };
   @Input()
   set stepFormGroup(value: FormGroup | undefined) {
     if (value) {

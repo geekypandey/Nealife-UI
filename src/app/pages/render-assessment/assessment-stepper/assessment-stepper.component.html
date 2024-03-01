@@ -48,13 +48,17 @@
                     [completed]="step.completed"
                     [stepFormGroup]="step.stepFormGroup"
                     [title]="step.title"
-                    [instructionUrl]="step.instructionUrl">
-                    <ng-container *ngIf="step.instructionUrl">
+                    [instructionPageObj]="step.instructionPageObj">
+                    <ng-container *ngIf="step.instructionPageObj">
                       <ng-container *ngTemplateOutlet="langTpl"></ng-container>
                       <div class="row flex-column gy-2 h-100">
                         <div class="col">
                           <iframe
-                            [src]="step.instructionUrl"
+                            [src]="
+                              step.instructionPageObj
+                                | instructionUrl: selectedLanguage
+                                | sanitize: safeType.RESOURCEURL
+                            "
                             frameborder="0"
                             width="100%"
                             height="100%"></iframe>
