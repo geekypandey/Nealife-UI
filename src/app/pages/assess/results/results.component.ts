@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { Observable, filter, finalize, map, switchMap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
-import { Action, ColDef } from 'src/app/components/table/table.model';
+import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { API_URL } from 'src/app/constants/api-url.constants';
+import { USER_ROLE } from 'src/app/constants/user-role.constants';
 import { Account, IApplicationUserAssessment } from '../assess.model';
 import { saveFile } from '../assess.util';
 import { AssessService } from '../services/assess.service';
@@ -28,6 +30,7 @@ export class ResultsComponent {
     { field: 'companyName', header: 'Company' },
     { field: 'assessmentName', header: 'Assessment' },
     { field: 'status', header: 'Status' },
+    { field: 'userName', header: 'User' },
     { field: 'notificationSent', header: 'Report Sent' },
     { field: 'reportUrl', header: 'Download Report' },
     { field: 'resendToReport', header: 'Resend Report to Phone & Email' },
@@ -49,6 +52,8 @@ export class ResultsComponent {
   private assessService = inject(AssessService);
   private toastService = inject(MessageService);
   private spinner = inject(NgxSpinnerService);
+  private router = inject(Router);
+  private cdRef = inject(ChangeDetectorRef);
   activatedRoute = inject(ActivatedRoute);
   result$: Observable<IApplicationUserAssessment[]>;
 
@@ -65,16 +70,29 @@ export class ResultsComponent {
       finalize(() => this.spinner.hide(this.spinnerName))
     );
 
-    // this.actionsList = [
-    //   {
-    //     icon: ACTION_ICON.DOWNLOAD,
-    //     field: 'reportUrl',
-    //     onClick: (reportUrl: string) => {
-    //       console.info(reportUrl);
-    //       this.downloadPdfReport(reportUrl);
-    //     },
-    //   },
-    // ];
+    this.profileService
+      .getProfile()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: resp => {
+          if (resp && resp.role && [USER_ROLE.ADMIN, USER_ROLE.SUPER_ADMIN].includes(resp.role)) {
+            this.actionsList = [
+              {
+                icon: ACTION_ICON.EDIT,
+                field: 'id',
+                onClick: (id: string) => {
+                  this.router.navigate([id + '/edit'], {
+                    relativeTo: this.activatedRoute,
+                  });
+                },
+              },
+            ];
+          } else {
+            this.actionsList = [];
+          }
+          this.cdRef.markForCheck();
+        },
+      });
   }
 
   downloadPdfReport(reportUrl: string): any {
