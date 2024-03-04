@@ -39,6 +39,7 @@ export class ResultsEditComponent {
   spinnerName = 'result-edit';
   editForm!: FormGroup;
   invalidEmail: boolean = false;
+  private resultResp!: IApplicationUserAssessment;
 
   ngOnInit() {
     this.spinner.show(this.spinnerName);
@@ -48,6 +49,7 @@ export class ResultsEditComponent {
         tap({
           next: resp => {
             if (resp) {
+              this.resultResp = resp;
               this.editForm = this.getEditForm(resp);
               this.cdRef.markForCheck();
             }
@@ -59,7 +61,7 @@ export class ResultsEditComponent {
 
   save() {
     if (this.editForm.valid) {
-      const form = this.createFromForm();
+      const form = this.createFromForm(this.resultResp);
       const resultId = this.editForm.get('id');
       this.spinner.show(this.spinnerName);
       if (!!resultId) {
@@ -78,8 +80,9 @@ export class ResultsEditComponent {
     }
   }
 
-  private createFromForm(): IApplicationUserAssessment {
+  private createFromForm(result: IApplicationUserAssessment): IApplicationUserAssessment {
     return <IApplicationUserAssessment>{
+      ...result,
       id: this.editForm.get(['id'])?.value || undefined,
       email: this.editForm.get(['email'])?.value,
       contactNumber1: this.editForm.get(['contactNumber1'])?.value,
@@ -107,7 +110,7 @@ export class ResultsEditComponent {
     return this.fb.group({
       id: [result.id],
       email: [
-        result.email || '',
+        result.userName || '',
         [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
       ],
       contactNumber1: [
@@ -120,33 +123,6 @@ export class ResultsEditComponent {
         ],
       ],
     });
-  }
-
-  checkEmailExist(evt: Event) {
-    const ctrlValue = this.editForm.get('email')?.value;
-    if (!ctrlValue) {
-      this.invalidEmail = false;
-      return;
-    }
-    if (this.checkNameExistSubscription) {
-      this.checkNameExistSubscription.unsubscribe();
-    }
-    this.checkNameExistSubscription = this.customAsyncValidator
-      .checkEmailExists(ctrlValue)
-      .subscribe({
-        next: resp => {
-          if (resp) {
-            this.invalidEmail = true;
-          } else {
-            this.invalidEmail = false;
-          }
-          this.cdRef.markForCheck();
-        },
-        error: err => {
-          this.invalidEmail = true;
-          this.cdRef.markForCheck();
-        },
-      });
   }
 
   goBack() {

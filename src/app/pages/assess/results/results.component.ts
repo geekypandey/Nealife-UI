@@ -75,7 +75,11 @@ export class ResultsComponent {
       .pipe(takeUntilDestroyed())
       .subscribe({
         next: resp => {
-          if (resp && resp.role && [USER_ROLE.ADMIN, USER_ROLE.SUPER_ADMIN].includes(resp.role)) {
+          if (
+            resp &&
+            resp.role &&
+            [USER_ROLE.ADMIN, USER_ROLE.SUPER_ADMIN, USER_ROLE.FRANCHISE].includes(resp.role)
+          ) {
             this.actionsList = [
               {
                 icon: ACTION_ICON.EDIT,
