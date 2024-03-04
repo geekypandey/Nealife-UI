@@ -38,7 +38,27 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <nl-table [cols]="cols" [value]="dashboardDetails" />
+          <nl-table [cols]="cols" [value]="dashboardDetails">
+            <ng-template #customBodyTpl let-rowData let-columns="columns">
+              <ng-template ngFor let-col [ngForOf]="columns" let-i="index">
+                <td *ngIf="col.visible">
+                  <ng-container [ngSwitch]="col.field">
+                    <ng-container *ngSwitchCase="'hasAssignStatus'">
+                      <img
+                        *ngIf="rowData[col.field]"
+                        style="cursor: pointer; margin-left: 10px"
+                        (click)="onEditAction(rowData['id'])"
+                        width="16px"
+                        height="16px"
+                        src="./../../../../../assets/dashboard/actions/edit.svg"
+                        alt="edit-icon" />
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>{{ rowData[col.field] }}</ng-container>
+                  </ng-container>
+                </td>
+              </ng-template>
+            </ng-template>
+          </nl-table>
         </div>
       </div>
     </div>

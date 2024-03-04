@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Params } from '@angular/router';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { API_URL } from 'src/app/constants/api-url.constants';
 import { DATE_FORMAT } from 'src/app/constants/assess.constants';
@@ -60,6 +61,10 @@ export class AssessService {
     return this.http.get<SaDashboard[]>(API_URL.dashboardDetails, {
       params: payload,
     });
+  }
+
+  getDashboardAdminStats(payload: any): Observable<any> {
+    return this.http.post(API_URL.dashboardAdminStats, payload);
   }
 
   getAssessmentsByGroup<T>(id?: any) {
