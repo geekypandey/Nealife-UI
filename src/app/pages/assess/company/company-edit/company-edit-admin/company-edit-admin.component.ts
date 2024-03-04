@@ -179,7 +179,7 @@ export class CompanyEditAdminComponent {
       // contactNumber2: this.editForm.get(['contactNumber2'])!.value,
       // brandingId: this.editForm.get(['brandingId'])?.value,
 
-      // gstNumber: this.editForm.get(['gstNumber'])!.value,
+      gstNumber: this.editForm.get(['gstNumber'])!.value,
       // validFrom: this.editForm.get(['validFrom'])!.value,
       // validTo: this.editForm.get(['validTo'])!.value,
     };
@@ -249,7 +249,7 @@ export class CompanyEditAdminComponent {
 
       // branding: [company.brandingId, Validators.required],
 
-      // gstNumber: [company.gstNumber],
+      gstNumber: [company.gstNumber, Validators.required],
       // validFrom: [company.validFrom, [Validators.required]],
       // validTo: [company.validTo, [Validators.required]],
     });
