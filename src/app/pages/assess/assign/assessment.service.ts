@@ -37,6 +37,8 @@ export class AssessmentService {
     const params: any = {
       'companyId.equals': companyId,
       'displayInSignup.equals': true,
+      'page': 0,
+      'size': 5000,
     };
 
     return this.http.get<Assessment[]>(API_URL.companyAssessmentForDropDown, {
