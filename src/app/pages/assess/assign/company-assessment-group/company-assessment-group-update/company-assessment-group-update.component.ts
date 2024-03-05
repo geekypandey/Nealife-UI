@@ -81,6 +81,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       email: [],
       emailReport: [],
       embedCreditCode: [],
+      contactNumber: [],
     });
 
     this.bulkEditForm = this.fb.group({
