@@ -37,7 +37,7 @@
                 <label class="d-block" for="assessment">Assessment</label>
                   <p-dropdown
                     [attr.id]="'parent'"
-                    formControlName="assessmentId"
+                    formControlName="assessmentGroupId"
                     [options]="assessments"
                     placeholder="Select Assessment"></p-dropdown>
               </div>
@@ -84,6 +84,16 @@
                   dateFormat="yy-mm-dd"
                   formControlName="validTo"
                   [showIcon]="true"></p-calendar>
+              </div>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6" [hidden]="!this.editForm.get('isBranch')!.value" >
+                <label class="d-block" for="branchId">Branch</label>
+                  <p-dropdown
+                    [attr.id]="'parent'"
+                    formControlName="branchId"
+                    [options]="branches"
+                    placeholder="Select Branch"></p-dropdown>
               </div>
             </div>
           </div>

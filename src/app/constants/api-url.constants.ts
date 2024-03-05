@@ -74,4 +74,5 @@ export const API_URL = {
   downloadBulkLinks: BASE_URL + '/notifications/download-bulk-links',
   uploadUser: BASE_URL + '/notifications/uploadUser',
   notifyCompanyWiseUsers: BASE_URL + '/assessments/notifyCompanywiseUsers',
+  companyAssessmentGroupBranchMapping: BASE_URL + '/company-assessment-groups-branch-mapping/fordropdown',
 };

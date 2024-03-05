@@ -37,6 +37,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   individualEditForm: FormGroup;
   bulkEditForm: FormGroup;
   companies: DropdownOption[] = [];
+  branches: DropdownOption[] = [];
   assessments: DropdownOption[] = [];
   loggedInUser: any;
   visible: boolean = false;
@@ -70,6 +71,8 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       totalCredits: [0, [Validators.required, Validators.maxLength(75)]],
       validFrom: [],
       validTo: [],
+      isBranch: [],
+      branchId: [],
     });
 
     this.individualEditForm = this.fb.group({
@@ -132,6 +135,12 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         this.companyAssessment = value;
         this.patchEditForm();
       });
+
+      this.assessmentService.getCompanyAssessmentGroupsBranchMapping(companyId, assessmentGroupId).subscribe((data) => {
+        this.branches = data.map((branch: any) => {
+          return { label: branch.name, value: branch.id };
+        });
+      })
     }
   }
 
@@ -149,6 +158,8 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       totalCredits: this.companyAssessment.totalCredits,
       validFrom: this.companyAssessment.validFrom,
       validTo: this.companyAssessment.validTo,
+      isBranch: this.companyAssessment.isBranch,
+      branchId: this.companyAssessment.branchId,
     });
 
     if (this.editForm.value['usedCredits'] == null) {

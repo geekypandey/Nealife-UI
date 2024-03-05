@@ -102,4 +102,8 @@ export class AssessmentService {
     }
     return this.http.get<RenderAssessmentResponse>(url);
   }
+
+  getCompanyAssessmentGroupsBranchMapping(companyId: string, assessmentGroupId: string) {
+    return this.http.get<any>(`${API_URL.companyAssessmentGroupBranchMapping}/${companyId}/${assessmentGroupId}`);
+  }
 }
