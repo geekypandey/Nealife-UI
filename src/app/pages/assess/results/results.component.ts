@@ -100,11 +100,12 @@ export class ResultsComponent {
   }
 
   downloadPdfReport(reportUrl: string): any {
+    const fileName = reportUrl.split('/').slice(-1)[0];
     this.spinner.show(this.spinnerName);
     this.crudService.downloadReport(reportUrl).subscribe({
       next: (response: Blob) => {
         const blob = new Blob([response], { type: 'application/pdf' });
-        saveFile(blob, 'report.pdf');
+        saveFile(blob, fileName);
         this.toastService.add({
           severity: 'success',
           summary: 'Success',
