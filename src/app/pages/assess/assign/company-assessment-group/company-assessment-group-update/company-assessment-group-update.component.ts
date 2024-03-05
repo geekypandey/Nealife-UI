@@ -68,6 +68,8 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       allocatedCredits: [],
       url: [],
       totalCredits: [0, [Validators.required, Validators.maxLength(75)]],
+      validFrom: [],
+      validTo: [],
     });
 
     this.individualEditForm = this.fb.group({
@@ -145,6 +147,8 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       usedCredits: this.companyAssessment.usedCredits,
       allocatedCredits: this.companyAssessment.allocatedCredits,
       totalCredits: this.companyAssessment.totalCredits,
+      validFrom: this.companyAssessment.validFrom,
+      validTo: this.companyAssessment.validTo,
     });
 
     if (this.editForm.value['usedCredits'] == null) {
@@ -186,6 +190,8 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         allocatedCredits: this.editForm.get(['allocatedCredits'])!.value,
         totalCredits: this.editForm.get(['totalCredits'])!.value,
         url: this.editForm.get(['url'])!.value,
+        validFrom: this.editForm.get(['validFrom'])!.value,
+        validTo: this.editForm.get(['validTo'])!.value,
       };
 
       companyAssessment['parentCompanyId'] = this.loggedInUser.companyId;
@@ -197,6 +203,12 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       } else {
         delete companyAssessment['id'];
         companyAssessment['scheduleDate'] = moment(companyAssessment['scheduleDate']).format(
+          'YYYY-MM-DD'
+        );
+        companyAssessment['validFrom'] = moment(companyAssessment['validFrom']).format(
+          'YYYY-MM-DD'
+        );
+        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format(
           'YYYY-MM-DD'
         );
         this.http.post<any>(API_URL.assignGroup, companyAssessment).subscribe({

@@ -60,7 +60,7 @@
                   class="p-inputtext" />
               </div>
               <div class="col-6">
-                <label class="d-block" for="total-credits">Total Credits*</label>
+                <label class="d-block" for="total-credits">Total Assessment*</label>
                 <input
                   type="text"
                   formControlName="totalCredits"
@@ -70,30 +70,20 @@
             </div>
             <div class="row mb-3 p-fluid">
               <div class="col-6">
-                <label class="d-block" for="available-credits">Avaliable Credits*</label>
-                <input
-                  type="text"
-                  formControlName="availableCredits"
-                  id="available-credits"
-                  class="p-inputtext" />
+                <label class="d-block" for="valid-from">Valid From</label>
+                  <p-calendar
+                    id="valid-from"
+                    dateFormat="yy-mm-dd"
+                    formControlName="validFrom"
+                    [showIcon]="true"></p-calendar>
               </div>
               <div class="col-6">
-                <label class="d-block" for="used-credits">Used Credits*</label>
-                <input
-                  type="text"
-                  formControlName="usedCredits"
-                  id="used-credits"
-                  class="p-inputtext" />
-              </div>
-            </div>
-            <div class="row mb-3 p-fluid">
-              <div class="col-6">
-                <label class="d-block" for="allocated-credits">Allocated Credits*</label>
-                <input
-                  type="text"
-                  formControlName="allocatedCredits"
-                  id="allocated-credits"
-                  class="p-inputtext" />
+                <label class="d-block" for="valid-to">Valid To</label>
+                <p-calendar
+                  id="valid-to"
+                  dateFormat="yy-mm-dd"
+                  formControlName="validTo"
+                  [showIcon]="true"></p-calendar>
               </div>
             </div>
           </div>
