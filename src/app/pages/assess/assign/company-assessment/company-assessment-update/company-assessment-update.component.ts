@@ -70,6 +70,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       creditCode: [],
       email: [],
       credits: [],
+      validFrom: [],
+      validTo: [],
     });
 
     this.individualEditForm = this.fb.group({
@@ -147,6 +149,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       allocatedCredits: this.assessment.allocatedCredits,
       url: this.assessment.url,
       totalCredits: this.assessment.totalCredits,
+      validFrom: this.assessment.validFrom,
+      validTo: this.assessment.validTo,
     });
 
     if (this.editForm.value['usedCredits'] == null) {
@@ -183,6 +187,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         allocatedCredits: this.editForm.get(['allocatedCredits'])!.value,
         totalCredits: this.editForm.get(['totalCredits'])!.value,
         url: this.editForm.get(['url'])!.value,
+        validFrom: this.editForm.get(['validFrom'])!.value,
+        validTo: this.editForm.get(['validTo'])!.value,
       };
 
       companyAssessment['parentCompanyId'] = this.loggedInUser.companyId;
@@ -194,6 +200,12 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       } else {
         delete companyAssessment['id'];
         companyAssessment['scheduleDate'] = moment(companyAssessment['scheduleDate']).format(
+          'YYYY-MM-DD'
+        );
+        companyAssessment['validFrom'] = moment(companyAssessment['validFrom']).format(
+          'YYYY-MM-DD'
+        );
+        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format(
           'YYYY-MM-DD'
         );
         this.http.post<any>(API_URL.companyAssessments, companyAssessment).subscribe({
