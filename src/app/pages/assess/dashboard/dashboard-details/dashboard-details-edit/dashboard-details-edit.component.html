@@ -12,21 +12,20 @@
                 <input type="text" formControlName="id" id="id" class="p-inputtext p-disabled" />
               </div>
               <div class="col-6">
-                <label class="d-block" for="contactNumber1">Contact Number</label>
+                <label class="d-block" for="contactNumber">Contact Number</label>
                 <input
                   type="text"
-                  formControlName="contactNumber1"
-                  id="contactNumber1"
+                  formControlName="contactNumber"
+                  id="contactNumber"
                   class="p-inputtext"
                   nlShowErrorMsg />
               </div>
               <div class="col-6">
-                <label class="d-block" for="emailId">Email Id</label>
+                <label class="d-block" for="userName">Email Id</label>
                 <input
-                  (focusout)="checkEmailExist($event)"
                   type="email"
-                  formControlName="email"
-                  id="emailId"
+                  formControlName="userName"
+                  id="userName"
                   class="p-inputtext"
                   nlShowErrorMsg />
                 <small class="p-error" *ngIf="invalidEmail">Email-id already exists</small>

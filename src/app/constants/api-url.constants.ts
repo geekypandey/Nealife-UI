@@ -14,6 +14,7 @@ export const API_URL = {
   accountDashboardDetails: BASE_URL + '/notifications/dashboard',
   dashboardAdminStats: BASE_URL + '/dashboard-admin-stats',
   notifications: BASE_URL + '/notifications',
+  resendNotifications: BASE_URL + '/notifications/resend-assign-assessment',
   dashboard: BASE_URL + '/dashboard-stats',
   dashboardDetails: BASE_URL + '/dashboard-sa-stats',
   companies: BASE_URL + '/companies',

@@ -44,14 +44,25 @@
                 <td *ngIf="col.visible">
                   <ng-container [ngSwitch]="col.field">
                     <ng-container *ngSwitchCase="'hasAssignStatus'">
-                      <img
-                        *ngIf="rowData[col.field]"
-                        style="cursor: pointer; margin-left: 10px"
-                        (click)="onEditAction(rowData['id'])"
-                        width="16px"
-                        height="16px"
-                        src="./../../../../../assets/dashboard/actions/edit.svg"
-                        alt="edit-icon" />
+                      <div class="d-flex align-items-center" *ngIf="rowData[col.field]">
+                        <img
+                          pTooltip="Edit"
+                          tooltipPosition="bottom"
+                          style="cursor: pointer; margin-left: 10px"
+                          (click)="onEditAction(rowData['id'])"
+                          width="16px"
+                          height="16px"
+                          src="./../../../../../assets/dashboard/actions/edit.svg"
+                          alt="edit-icon" />
+                        <span
+                          class="text-center fs-5 px-3"
+                          pTooltip="Resend Notification"
+                          tooltipPosition="bottom">
+                          <i
+                            (click)="resendReport(rowData['id'])"
+                            class="bi bi-send nl-cursor-pointer"></i>
+                        </span>
+                      </div>
                     </ng-container>
                     <ng-container *ngSwitchDefault>{{ rowData[col.field] }}</ng-container>
                   </ng-container>

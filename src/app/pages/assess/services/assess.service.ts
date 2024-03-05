@@ -104,6 +104,10 @@ export class AssessService {
     return this.http.get(API_URL.resendReport + '/' + id);
   }
 
+  resendNotificationReport(id: string) {
+    return this.http.get(API_URL.resendNotifications + '/' + id);
+  }
+
   uploadMasterData(formData: FormData) {
     const headers: any = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');

@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MessageService } from 'primeng/api';
+import { TooltipModule } from 'primeng/tooltip';
 import { Observable, finalize, map, of, switchMap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
@@ -15,7 +17,7 @@ import { ProfileService } from '../../services/profile.service';
 @Component({
   selector: 'nl-dashboard-details',
   standalone: true,
-  imports: [CommonModule, SpinnerComponent, TableComponent],
+  imports: [CommonModule, SpinnerComponent, TableComponent, TooltipModule],
   templateUrl: './dashboard-details.component.html',
   styleUrls: ['./dashboard-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,6 +29,7 @@ export class DashboardDetailsComponent {
 
   private activatedRoute = inject(ActivatedRoute);
   private assessService = inject(AssessService);
+  private toastService = inject(MessageService);
   private spinner = inject(NgxSpinnerService);
   private router = inject(Router);
   private cdRef = inject(ChangeDetectorRef);
@@ -46,7 +49,7 @@ export class DashboardDetailsComponent {
           this.cols = [
             // { field: 'fileName', header: 'File Name' },
             { field: 'userName', header: 'User Name' },
-            { field: 'contactNumber1', header: 'Contact Number' },
+            { field: 'contactNumber', header: 'Contact Number' },
             { field: 'notificationStatus', header: 'Status' },
             { field: 'assessmentStatus', header: 'Assessment Status' },
             { field: 'assessmentTakenDate', header: 'Assessment Taken Date' },
@@ -102,6 +105,32 @@ export class DashboardDetailsComponent {
 
   goBack(): void {
     window.history.back();
+  }
+
+  resendReport(id: string) {
+    this.spinner.show(this.spinnerName);
+    this.assessService.resendNotificationReport(id).subscribe({
+      next: _ => {
+        this.toastService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Notification sent successfully !!',
+          sticky: false,
+          id: 'app-assessment-notification-report',
+        });
+        this.spinner.hide(this.spinnerName);
+      },
+      error: _ => {
+        this.toastService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to send notification',
+          sticky: true,
+          id: 'app-assessment-notification-report',
+        });
+        this.spinner.hide(this.spinnerName);
+      },
+    });
   }
 
   get userRole() {
