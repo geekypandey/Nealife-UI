@@ -47,21 +47,42 @@ export class DashboardDetailsComponent {
         let payload = {};
         if ([USER_ROLE.ADMIN, USER_ROLE.FRANCHISE].includes(profile.role)) {
           this.cols = [
-            // { field: 'fileName', header: 'File Name' },
             { field: 'userName', header: 'User Name' },
             { field: 'contactNumber', header: 'Contact Number' },
             { field: 'notificationStatus', header: 'Status' },
             { field: 'assessmentStatus', header: 'Assessment Status' },
             { field: 'assessmentTakenDate', header: 'Assessment Taken Date' },
           ];
-          const assessmentId = this.activatedRoute.snapshot.queryParamMap.get('assessmentId');
           payload = {
             page: 0,
             size: 10,
             sort: 'id,desc',
             'companyId.equals': companyId,
-            'companyAssessmentId.equals': assessmentId,
           };
+          const companyAssessmentId =
+            this.activatedRoute.snapshot.queryParamMap.get('companyAssessmentId');
+          const companyAssessmentGroupId = this.activatedRoute.snapshot.queryParamMap.get(
+            'companyAssessmentGroupId'
+          );
+          const companyAssessmentGroupBranchId = this.activatedRoute.snapshot.queryParamMap.get(
+            'companyAssessmentGroupBranchId'
+          );
+          if (companyAssessmentId) {
+            payload = {
+              ...payload,
+              'companyAssessmentId.equals': companyAssessmentId,
+            };
+          } else if (companyAssessmentGroupId) {
+            payload = {
+              ...payload,
+              'companyAssessmentGroupId.equals': companyAssessmentGroupId,
+            };
+          } else if (companyAssessmentGroupBranchId) {
+            payload = {
+              ...payload,
+              'companyAssessmentGroupBranchId.equals': companyAssessmentGroupBranchId,
+            };
+          }
           return this.assessService.getAccountdashboardNotificationLookup(payload).pipe(
             map(resp => {
               this.accountDashboardNotificationsResp = resp;

@@ -74,7 +74,7 @@ export class DashboardComponent {
             this.cols = [
               { field: 'companyName', header: 'Client Name' },
               { field: 'assessmentName', header: 'Assessment Name' },
-              { field: 'allocatedCredits', header: 'Alloted Assessments' },
+              { field: 'totalCredits', header: 'Alloted Assessments' },
               { field: 'usedCredits', header: 'Used Assessments' },
               { field: 'availableCredits', header: 'Balance Assessments' },
               { field: 'validFrom', header: 'Valid From' },
@@ -101,7 +101,7 @@ export class DashboardComponent {
           if (profile.role === USER_ROLE.FRANCHISE) {
             this.cols = [
               { field: 'assessmentName', header: 'Assessment Name' },
-              { field: 'allocatedCredits', header: 'Alloted Assessments' },
+              { field: 'totalCredits', header: 'Alloted Assessments' },
               { field: 'usedCredits', header: 'Used Assessments' },
               { field: 'availableCredits', header: 'Balance Assessments' },
               { field: 'validFrom', header: 'Valid From' },

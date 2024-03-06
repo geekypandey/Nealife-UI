@@ -51,12 +51,29 @@ export class DashboardAdminStatsComponent {
 
   onRowSelect(event: TableRowSelectEvent) {
     const routePath = './../dashboard-details';
+    let queryParams: any = {
+      companyId: event.data.companyId,
+    };
+    if (event.data.companyAssessmentId) {
+      queryParams = {
+        ...queryParams,
+        companyAssessmentId: event.data.companyAssessmentId,
+      };
+    } else if (event.data.companyAssessmentGroupId) {
+      queryParams = {
+        ...queryParams,
+        companyAssessmentGroupId: event.data.companyAssessmentGroupId,
+      };
+    } else if (event.data.companyAssessmentGroupBranchId) {
+      queryParams = {
+        ...queryParams,
+        companyAssessmentGroupBranchId: event.data.companyAssessmentGroupBranchId,
+      };
+    }
+
     this.router.navigate([routePath], {
       relativeTo: this.activatedRoute,
-      queryParams: {
-        companyId: event.data.companyId,
-        assessmentId: event.data.companyAssessmentId,
-      },
+      queryParams,
     });
   }
 }
