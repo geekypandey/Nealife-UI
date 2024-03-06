@@ -1,0 +1,17 @@
+<nl-spinner [name]="spinnerName"></nl-spinner>
+<div class="mt-3">
+  <button class="p-button nl-auto d-block" (click)="goBack()">Back</button>
+</div>
+<ng-container *ngIf="adminStats$ | async as adminStats">
+  <div class="py-3">
+    <div class="row">
+      <div class="col-md-12">
+        <nl-table
+          [cols]="cols"
+          [value]="adminStats"
+          [selectionMode]="'single'"
+          (onRowSelect)="onRowSelect($event)" />
+      </div>
+    </div>
+  </div>
+</ng-container>

@@ -12,6 +12,9 @@ export const API_URL = {
   getAspectProjectionListURL: BASE_URL + '/itemAspectProjections',
   accountDashboard: BASE_URL + '/account-dashboard',
   accountDashboardDetails: BASE_URL + '/notifications/dashboard',
+  dashboardAdminStats: BASE_URL + '/dashboard-admin-stats',
+  notifications: BASE_URL + '/notifications',
+  resendNotifications: BASE_URL + '/notifications/resend-assign-assessment',
   dashboard: BASE_URL + '/dashboard-stats',
   dashboardDetails: BASE_URL + '/dashboard-sa-stats',
   companies: BASE_URL + '/companies',
@@ -50,12 +53,12 @@ export const API_URL = {
   preAssessmentSectionDetails: BASE_URL + '/pre-assessment-section-details',
   submitGroupResult: BASE_URL + '/submitGroupResult',
 
-  companyAssessments: BASE_URL + '/company-assessments',
+  companyAssessments: BASE_URL + '/company-assessments?page=0&size=5000',
   assessmentForDropDown: BASE_URL + '/company-assessments/fordropdown',
   companyAssessmentForDropDown: BASE_URL + '/company-assessment-groups/fordropdown',
 
   payment: BASE_URL + '/payments',
-  assignGroup: BASE_URL + '/company-assessment-groups',
+  assignGroup: BASE_URL + '/company-assessment-groups?page=0&size=5000',
   downloadCredits: BASE_URL + '/download-credits',
 
   assessments: BASE_URL + '/assessments',

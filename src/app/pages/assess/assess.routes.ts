@@ -66,7 +66,7 @@ export const DASHBOARD_ROUTES: Route[] = [
           pageTitle: 'nealifeApp.applicationUserAssessment.home.title',
         },
         canActivate: [authGuard],
-        loadComponent: () => import('./results/results.component').then(c => c.ResultsComponent),
+        loadChildren: () => import('./results/results.route').then(c => c.resultRoute),
       },
       {
         path: 'application-user',

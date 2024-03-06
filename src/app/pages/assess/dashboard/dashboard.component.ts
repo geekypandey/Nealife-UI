@@ -38,6 +38,7 @@ export class DashboardComponent {
   private activatedRoute = inject(ActivatedRoute);
   dashboardStats$: Observable<AccountDashboard>;
   private cd = inject(ChangeDetectorRef);
+  private role!: USER_ROLE;
 
   constructor() {
     // Cols based on Role
@@ -73,7 +74,7 @@ export class DashboardComponent {
             this.cols = [
               { field: 'companyName', header: 'Client Name' },
               { field: 'assessmentName', header: 'Assessment Name' },
-              { field: 'allocatedCredits', header: 'Alloted Assessments' },
+              { field: 'totalCredits', header: 'Alloted Assessments' },
               { field: 'usedCredits', header: 'Used Assessments' },
               { field: 'availableCredits', header: 'Balance Assessments' },
               { field: 'validFrom', header: 'Valid From' },
@@ -100,7 +101,7 @@ export class DashboardComponent {
           if (profile.role === USER_ROLE.FRANCHISE) {
             this.cols = [
               { field: 'assessmentName', header: 'Assessment Name' },
-              { field: 'allocatedCredits', header: 'Alloted Assessments' },
+              { field: 'totalCredits', header: 'Alloted Assessments' },
               { field: 'usedCredits', header: 'Used Assessments' },
               { field: 'availableCredits', header: 'Balance Assessments' },
               { field: 'validFrom', header: 'Valid From' },
@@ -129,6 +130,7 @@ export class DashboardComponent {
               },
             ];
           }
+          this.role = profile.role;
           this.cd.markForCheck();
         }),
         takeUntilDestroyed()
@@ -145,11 +147,17 @@ export class DashboardComponent {
   }
 
   onRowSelect(event: TableRowSelectEvent) {
-    this.router.navigate(['dashboard-details'], {
+    let routePath = 'dashboard-details';
+    if (this.role === this.userRole.ADMIN) {
+      routePath = 'dashboard-admin-stats';
+    }
+    this.router.navigate([routePath], {
       relativeTo: this.activatedRoute,
       queryParams: {
         companyId: event.data.companyId,
-        assessmentId: event.data.id,
+        assessmentId: event.data.assessmentId,
+        companyAssessmentGroupId: event.data.companyAssessmentGroupId,
+        companyAssessmentGroupBranchMappingId: event.data.companyAssessmentGroupBranchMappingId,
       },
     });
   }

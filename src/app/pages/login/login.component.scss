@@ -1,33 +1,10 @@
 :host {
   display: block;
   height: 100%;
-  position: relative;
   background-image: url('./../../../assets/login/login-bg.jpeg');
   background-size: cover;
   background-repeat: no-repeat;
-  background-color: var(--nl-body-bg-color);
-}
-.company-logo {
-  position: absolute;
-  left: 252px;
-  top: 78px;
-}
-.welcome-msg {
-  position: absolute;
-  left: 70px;
-  top: 70px;
-}
-.login-welcome {
-  font-size: 2rem;
-  color: #fff;
-  font-weight: 600;
-}
-.login-container {
-  width: 560px;
-  height: 575px;
-  position: absolute;
-  top: 20%;
-  right: 14%;
+  // background-color: var(--nl-body-bg-color);
 }
 .signup-link {
   margin-left: 0.5rem;
@@ -41,10 +18,6 @@
   padding: 20px 50px;
 }
 @media screen and (max-width: 1350px) {
-  .login-container {
-    top: 15%;
-    right: 3%;
-  }
   .signin-container {
     background-color: #ffffff;
     border-radius: 8px;
