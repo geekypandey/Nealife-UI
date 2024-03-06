@@ -264,6 +264,10 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   }
 
   generateLinkCall() {
+    if (this.companyAssessment.isBranch) {
+      this.generateLinkPayload['companyAssessmentGroupBranchId'] = this.generateLinkPayload['companyAssessmentGroupId'];
+      this.generateLinkPayload['companyAssessmentGroupId'] = null;
+    }
     this.http.post<any>(API_URL.assignAssessment, this.generateLinkPayload).subscribe({
       next: data => {
         this.individualEditForm.patchValue({ generateUrl: data.link, creditCode: data.creditCode });
