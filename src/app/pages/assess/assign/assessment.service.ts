@@ -22,6 +22,11 @@ export class AssessmentService {
     return this.http.get<CompanyAssessment>(`${API_URL.assignGroup}/${id}`);
   }
 
+  // company-assessment-groups-branch-mapping/1
+  getCompanyAssessmentIfIsBranch(id: number) {
+    return this.http.get<CompanyAssessment>(`${API_URL.assignGroupIfBranch}/${id}`);
+  }
+
   getAssessmentsForDropDown(companyId: string) {
     const params: any = {
       'companyId.equals': companyId,

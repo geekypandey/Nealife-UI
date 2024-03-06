@@ -56,6 +56,7 @@ export const API_URL = {
 
   payment: BASE_URL + '/payments',
   assignGroup: BASE_URL + '/company-assessment-groups',
+  assignGroupIfBranch: BASE_URL + '/company-assessment-groups-branch-mapping',
   downloadCredits: BASE_URL + '/download-credits',
 
   assessments: BASE_URL + '/assessments',

@@ -134,7 +134,14 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
     if (assessmentGroupId) {
       this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe(value => {
         this.companyAssessment = value;
-        this.patchEditForm();
+        if (this.companyAssessment.isBranch) {
+          this.assessmentService.getCompanyAssessmentIfIsBranch(assessmentGroupId).subscribe(value => {
+            this.companyAssessment = value;
+            this.patchEditForm();
+          })
+        } else {
+          this.patchEditForm();
+        }
       });
 
       this.assessmentService.getCompanyAssessmentGroupsBranchMapping(companyId, assessmentGroupId).subscribe((data) => {
