@@ -164,7 +164,7 @@ export class CompanyEditFranchiseComponent {
       //   [Validators.maxLength(10), Validators.minLength(10), Validators.pattern('^[0-9]*$')],
       // ],
 
-      // gstNumber: [company.gstNumber],
+      gstNumber: [company.gstNumber, Validators.required],
       // validFrom: [company.validFrom, [Validators.required]],
       // validTo: [company.validTo, [Validators.required]],
     });
@@ -236,7 +236,7 @@ export class CompanyEditFranchiseComponent {
 
       // contactNumber2: this.editForm.get(['contactNumber2'])!.value,
 
-      // gstNumber: this.editForm.get(['gstNumber'])!.value,
+      gstNumber: this.editForm.get(['gstNumber'])!.value,
       // validFrom: this.editForm.get(['validFrom'])!.value,
       // validTo: this.editForm.get(['validTo'])!.value,
     };

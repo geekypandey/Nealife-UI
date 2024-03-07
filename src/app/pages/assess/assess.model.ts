@@ -206,6 +206,7 @@ export interface IApplicationUserAssessment {
   assessmentGroupName?: string;
   reportUrl: string;
   contactNumber1: string;
+  email?: string;
 }
 
 export interface ILookup {
