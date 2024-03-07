@@ -81,6 +81,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       emailReport: [],
       embedCreditCode: [],
       contactNumber: [],
+      sendTo: [],
+      sendSms: [],
     });
 
     this.bulkEditForm = this.fb.group({
@@ -224,13 +226,22 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   }
 
   generateLink() {
+    const sendEmail = this.individualEditForm.get('emailReport')?.value == true;
+    const sendSms = this.individualEditForm.get('sendSms')?.value == true;
+    const embedCreditCode = this.individualEditForm.get('sendSms')?.value == true;
+    if (sendEmail && !this.individualEditForm.get('email')?.value) {
+      return;
+    }
+    if (sendSms && !this.individualEditForm.get('contactNumber')?.value) {
+      return;
+    }
     this.generateLinkPayload = {
       ...this.generateLinkPayload,
       companyAssessmentId: this.editForm.get('id')?.value,
       email: this.individualEditForm.get('email')?.value,
 
-      emailReport: this.individualEditForm.get('emailReport')?.value ? 'Y' : 'N',
-      embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? 'Y' : 'N',
+      emailReport: sendEmail ? 'Y' : 'N',
+      embeddCreditCode: embedCreditCode ? 'Y' : 'N',
 
       sendAssignmentEmail: 'N',
       companyAssessmentGroupId: null,
