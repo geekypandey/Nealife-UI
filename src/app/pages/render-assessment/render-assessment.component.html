@@ -1,11 +1,12 @@
 <nl-spinner [name]="spinnerName"></nl-spinner>
 <ng-container *ngIf="landingPage">
+  <!-- *ngIf="layoutService.isXLargeUp$ | async" -->
   <div class="render-assessment">
     <div class="container-fluid h-100">
       <div class="row h-100 overflow-hidden">
-        <div class="col-md-6">
+        <div class="h-100 wave-img">
           <div class="h-100 d-flex flex-column">
-            <div class="col-auto pt-5">
+            <div class="col-auto pt-5" style="padding-bottom: 45px">
               <div class="align-items-center d-inline-flex h-100 offset-1 w-100">
                 <h3 class="assess-welcome">Welcome to</h3>
                 <img
@@ -16,19 +17,14 @@
                   height="48" />
               </div>
             </div>
-            <ng-container
-              [ngTemplateOutlet]="modalImgTpl"
-              [ngTemplateOutletContext]="{
-                $implicit: renderAssessmentData ? getModalImage() : defaultModelImage
-              }">
-            </ng-container>
-            <ng-template let-modalImgUrl #modalImgTpl>
-              <div
-                class="col modal-image"
-                [ngStyle]="{
-                  'background-image': 'url(' + modalImgUrl + ')'
-                }"></div>
-            </ng-template>
+            <div class="col">
+              <ng-container
+                [ngTemplateOutlet]="modalImgTpl"
+                [ngTemplateOutletContext]="{
+                  $implicit: renderAssessmentData ? getModalImage() : defaultModelImage
+                }">
+              </ng-container>
+            </div>
           </div>
         </div>
         <div class="col-md-6">
@@ -85,6 +81,28 @@
       </div>
     </div>
   </div>
+  <!-- <div class="render-assessment" *ngIf="!(layoutService.isXLargeUp$ | async)">
+    <div class="wave-img h-100">
+      <div class="row flex-column h-100">
+        <div class="col-12 h-50">
+          <ng-container
+            [ngTemplateOutlet]="modalImgTpl"
+            [ngTemplateOutletContext]="{
+              $implicit: renderAssessmentData ? getModalImage() : defaultModelImage
+            }">
+          </ng-container>
+        </div>
+        <div class="col-12 h-50"></div>
+      </div>
+    </div>
+  </div> -->
+  <ng-template let-modalImgUrl #modalImgTpl>
+    <div
+      class="modal-image"
+      [ngStyle]="{
+        'background-image': 'url(' + modalImgUrl + ')'
+      }"></div>
+  </ng-template>
 </ng-container>
 <ng-container *ngIf="personalInfoPage">
   <nl-personal-info
