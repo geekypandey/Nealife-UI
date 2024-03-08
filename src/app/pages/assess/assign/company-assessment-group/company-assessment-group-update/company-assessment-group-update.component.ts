@@ -37,6 +37,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   individualEditForm: FormGroup;
   bulkEditForm: FormGroup;
   companies: DropdownOption[] = [];
+  branches: DropdownOption[] = [];
   assessments: DropdownOption[] = [];
   loggedInUser: any;
   visible: boolean = false;
@@ -68,6 +69,10 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       allocatedCredits: [],
       url: [],
       totalCredits: [0, [Validators.required, Validators.maxLength(75)]],
+      validFrom: [],
+      validTo: [],
+      isBranch: [],
+      branchId: [],
     });
 
     this.individualEditForm = this.fb.group({
@@ -76,6 +81,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       email: [],
       emailReport: [],
       embedCreditCode: [],
+      contactNumber: [],
     });
 
     this.bulkEditForm = this.fb.group({
@@ -128,8 +134,21 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
     if (assessmentGroupId) {
       this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe(value => {
         this.companyAssessment = value;
-        this.patchEditForm();
+        if (this.companyAssessment.isBranch) {
+          this.assessmentService.getCompanyAssessmentIfIsBranch(assessmentGroupId).subscribe(value => {
+            this.companyAssessment = value;
+            this.patchEditForm();
+          })
+        } else {
+          this.patchEditForm();
+        }
       });
+
+      this.assessmentService.getCompanyAssessmentGroupsBranchMapping(companyId, assessmentGroupId).subscribe((data) => {
+        this.branches = data.map((branch: any) => {
+          return { label: branch.name, value: branch.id };
+        });
+      })
     }
   }
 
@@ -145,6 +164,10 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       usedCredits: this.companyAssessment.usedCredits,
       allocatedCredits: this.companyAssessment.allocatedCredits,
       totalCredits: this.companyAssessment.totalCredits,
+      validFrom: this.companyAssessment.validFrom,
+      validTo: this.companyAssessment.validTo,
+      isBranch: this.companyAssessment.isBranch,
+      branchId: this.companyAssessment.branchId,
     });
 
     if (this.editForm.value['usedCredits'] == null) {
@@ -186,6 +209,8 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         allocatedCredits: this.editForm.get(['allocatedCredits'])!.value,
         totalCredits: this.editForm.get(['totalCredits'])!.value,
         url: this.editForm.get(['url'])!.value,
+        validFrom: this.editForm.get(['validFrom'])!.value,
+        validTo: this.editForm.get(['validTo'])!.value,
       };
 
       companyAssessment['parentCompanyId'] = this.loggedInUser.companyId;
@@ -197,6 +222,12 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       } else {
         delete companyAssessment['id'];
         companyAssessment['scheduleDate'] = moment(companyAssessment['scheduleDate']).format(
+          'YYYY-MM-DD'
+        );
+        companyAssessment['validFrom'] = moment(companyAssessment['validFrom']).format(
+          'YYYY-MM-DD'
+        );
+        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format(
           'YYYY-MM-DD'
         );
         this.http.post<any>(API_URL.assignGroup, companyAssessment).subscribe({
@@ -233,6 +264,10 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   }
 
   generateLinkCall() {
+    if (this.companyAssessment.isBranch) {
+      this.generateLinkPayload['companyAssessmentGroupBranchId'] = this.generateLinkPayload['companyAssessmentGroupId'];
+      this.generateLinkPayload['companyAssessmentGroupId'] = null;
+    }
     this.http.post<any>(API_URL.assignAssessment, this.generateLinkPayload).subscribe({
       next: data => {
         this.individualEditForm.patchValue({ generateUrl: data.link, creditCode: data.creditCode });

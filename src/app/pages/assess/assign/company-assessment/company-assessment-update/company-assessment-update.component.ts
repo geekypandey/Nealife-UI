@@ -70,6 +70,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       creditCode: [],
       email: [],
       credits: [],
+      validFrom: [],
+      validTo: [],
     });
 
     this.individualEditForm = this.fb.group({
@@ -78,6 +80,9 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       email: [],
       emailReport: [],
       embedCreditCode: [],
+      contactNumber: [],
+      sendTo: [],
+      sendSms: [],
     });
 
     this.bulkEditForm = this.fb.group({
@@ -147,6 +152,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       allocatedCredits: this.assessment.allocatedCredits,
       url: this.assessment.url,
       totalCredits: this.assessment.totalCredits,
+      validFrom: this.assessment.validFrom,
+      validTo: this.assessment.validTo,
     });
 
     if (this.editForm.value['usedCredits'] == null) {
@@ -183,6 +190,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         allocatedCredits: this.editForm.get(['allocatedCredits'])!.value,
         totalCredits: this.editForm.get(['totalCredits'])!.value,
         url: this.editForm.get(['url'])!.value,
+        validFrom: this.editForm.get(['validFrom'])!.value,
+        validTo: this.editForm.get(['validTo'])!.value,
       };
 
       companyAssessment['parentCompanyId'] = this.loggedInUser.companyId;
@@ -194,6 +203,12 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       } else {
         delete companyAssessment['id'];
         companyAssessment['scheduleDate'] = moment(companyAssessment['scheduleDate']).format(
+          'YYYY-MM-DD'
+        );
+        companyAssessment['validFrom'] = moment(companyAssessment['validFrom']).format(
+          'YYYY-MM-DD'
+        );
+        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format(
           'YYYY-MM-DD'
         );
         this.http.post<any>(API_URL.companyAssessments, companyAssessment).subscribe({
@@ -211,13 +226,22 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   }
 
   generateLink() {
+    const sendEmail = this.individualEditForm.get('emailReport')?.value == true;
+    const sendSms = this.individualEditForm.get('sendSms')?.value == true;
+    const embedCreditCode = this.individualEditForm.get('sendSms')?.value == true;
+    if (sendEmail && !this.individualEditForm.get('email')?.value) {
+      return;
+    }
+    if (sendSms && !this.individualEditForm.get('contactNumber')?.value) {
+      return;
+    }
     this.generateLinkPayload = {
       ...this.generateLinkPayload,
       companyAssessmentId: this.editForm.get('id')?.value,
       email: this.individualEditForm.get('email')?.value,
 
-      emailReport: this.individualEditForm.get('emailReport')?.value ? 'Y' : 'N',
-      embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? 'Y' : 'N',
+      emailReport: sendEmail ? 'Y' : 'N',
+      embeddCreditCode: embedCreditCode ? 'Y' : 'N',
 
       sendAssignmentEmail: 'N',
       companyAssessmentGroupId: null,

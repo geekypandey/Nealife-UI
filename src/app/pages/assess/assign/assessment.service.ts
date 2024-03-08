@@ -22,6 +22,11 @@ export class AssessmentService {
     return this.http.get<CompanyAssessment>(`${API_URL.assignGroup}/${id}`);
   }
 
+  // company-assessment-groups-branch-mapping/1
+  getCompanyAssessmentIfIsBranch(id: number) {
+    return this.http.get<CompanyAssessment>(`${API_URL.assignGroupIfBranch}/${id}`);
+  }
+
   getAssessmentsForDropDown(companyId: string) {
     const params: any = {
       'companyId.equals': companyId,
@@ -37,6 +42,8 @@ export class AssessmentService {
     const params: any = {
       'companyId.equals': companyId,
       'displayInSignup.equals': true,
+      'page': 0,
+      'size': 5000,
     };
 
     return this.http.get<Assessment[]>(API_URL.companyAssessmentForDropDown, {
@@ -99,5 +106,9 @@ export class AssessmentService {
       url = `${API_URL.getNewAssessmentGroupJson}?companyAssessmentGroupId=${payload.id}`;
     }
     return this.http.get<RenderAssessmentResponse>(url);
+  }
+
+  getCompanyAssessmentGroupsBranchMapping(companyId: string, assessmentGroupId: string) {
+    return this.http.get<any>(`${API_URL.companyAssessmentGroupBranchMapping}/${companyId}/${assessmentGroupId}`);
   }
 }
