@@ -5,7 +5,7 @@
       <div class="row h-100 overflow-hidden">
         <div class="col-md-6">
           <div class="h-100 d-flex flex-column">
-            <div class="col-auto py-4">
+            <div class="col-auto pt-5">
               <div class="align-items-center d-inline-flex h-100 offset-1 w-100">
                 <h3 class="assess-welcome">Welcome to</h3>
                 <img
@@ -32,6 +32,11 @@
           </div>
         </div>
         <div class="col-md-6">
+          <img
+            style="width: 180px; height: 80px; position: absolute; right: 60px; top: 30px"
+            src="./../../../assets/render-assessment/nealife.png"
+            alt="nealife-logo"
+            height="48" />
           <div class="assess-container">
             <div class="fs-4 fw-bold mt-4">{{ renderAssessmentData?.displayName }}</div>
             <form [formGroup]="assessmentForm" (ngSubmit)="onSubmit()">
