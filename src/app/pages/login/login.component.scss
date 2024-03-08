@@ -12,16 +12,13 @@
   cursor: pointer;
 }
 .signin-container {
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.4);
   border-radius: 8px;
-  opacity: 0.9;
   padding: 20px 50px;
 }
 @media screen and (max-width: 1350px) {
   .signin-container {
-    background-color: #ffffff;
     border-radius: 8px;
-    opacity: 0.9;
     padding: 20px 50px;
   }
 }

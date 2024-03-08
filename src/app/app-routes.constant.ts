@@ -14,12 +14,23 @@ export const APP_ROUTES: Routes = [
     canActivate: [isNotAuthenticatedGuard],
   },
   {
-    path: 'forgot-password',
+    path: 'account/reset/request',
     loadComponent: () =>
       import('./pages/forgot-password/forgot-password.component').then(
         c => c.ForgotPasswordComponent
       ),
     canActivate: [isNotAuthenticatedGuard],
+  },
+  {
+    path: 'account/reset/finish',
+    data: {
+      authorities: [],
+      pageTitle: 'global.menu.account.password',
+    },
+    loadComponent: () =>
+      import('./pages/password-reset-finish/password-reset-finish.component').then(
+        c => c.PasswordResetFinishComponent
+      ),
   },
   {
     path: 'assess',
