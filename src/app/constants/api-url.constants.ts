@@ -54,12 +54,12 @@ export const API_URL = {
   preAssessmentSectionDetails: BASE_URL + '/pre-assessment-section-details',
   submitGroupResult: BASE_URL + '/submitGroupResult',
 
-  companyAssessments: BASE_URL + '/company-assessments?page=0&size=5000',
+  companyAssessments: BASE_URL + '/company-assessments',
   assessmentForDropDown: BASE_URL + '/company-assessments/fordropdown',
   companyAssessmentForDropDown: BASE_URL + '/company-assessment-groups/fordropdown',
 
   payment: BASE_URL + '/payments',
-  assignGroup: BASE_URL + '/company-assessment-groups?page=0&size=5000',
+  assignGroup: BASE_URL + '/company-assessment-groups',
   assignGroupIfBranch: BASE_URL + '/company-assessment-groups-branch-mapping',
   downloadCredits: BASE_URL + '/download-credits',
 

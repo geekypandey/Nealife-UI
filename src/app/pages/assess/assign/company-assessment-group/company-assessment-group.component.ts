@@ -9,6 +9,7 @@ import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
 import { API_URL } from 'src/app/constants/api-url.constants';
+import { AssessmentService } from '../assessment.service';
 
 @Component({
   selector: 'nl-company-assessment-group',
@@ -41,11 +42,12 @@ export class CompanyAssessmentGroupComponent {
   private router = inject(Router);
   private toastService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
+  private assessmentService = inject(AssessmentService);
 
   constructor() {
     this.spinner.show(this.spinnerName);
-    this.assessmentGroups$ = this.http
-      .get<any[]>(API_URL.assignGroup)
+    this.assessmentGroups$ = this.assessmentService
+      .getCompanyAssessmentGroup()
       .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
     this.actionsList = [
       {
@@ -132,8 +134,8 @@ export class CompanyAssessmentGroupComponent {
       severity: 'success',
       summary: `${this.selectedItems.length} Company Assessment successfully deleted`,
     });
-    this.assessmentGroups$ = this.http
-      .get<any[]>(API_URL.assignGroup)
+    this.assessmentGroups$ = this.assessmentService
+      .getCompanyAssessmentGroup()
       .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
   }
 }
