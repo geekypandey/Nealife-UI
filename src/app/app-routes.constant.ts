@@ -8,11 +8,11 @@ export const APP_ROUTES: Routes = [
     loadComponent: () => import('./pages/login/login.component').then(c => c.LoginComponent),
     canActivate: [isNotAuthenticatedGuard],
   },
-  {
-    path: 'signup',
-    loadComponent: () => import('./pages/signup/signup.component').then(c => c.SignupComponent),
-    canActivate: [isNotAuthenticatedGuard],
-  },
+  // {
+  //   path: 'signup',
+  //   loadComponent: () => import('./pages/signup/signup.component').then(c => c.SignupComponent),
+  //   canActivate: [isNotAuthenticatedGuard],
+  // },
   {
     path: 'account/reset/request',
     loadComponent: () =>

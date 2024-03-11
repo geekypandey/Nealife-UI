@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -49,6 +55,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   private companyService = inject(CompanyService);
   private http = inject(HttpClient);
   private dialogService = inject(DialogService);
+  private cd = inject(ChangeDetectorRef);
 
   private generateLinkPayload: any = {};
 
@@ -61,9 +68,15 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       reportTemplate: [],
       emailTemplate: [],
       timeLimit: [null, [Validators.required, Validators.maxLength(75)]],
-      availableCredits: [0, [Validators.required, Validators.maxLength(75)]],
-      usedCredits: [0, [Validators.required, Validators.maxLength(75)]],
-      allocatedCredits: [0, [Validators.required, Validators.maxLength(75)]],
+      availableCredits: [
+        { value: 0, disable: true },
+        [Validators.required, Validators.maxLength(75)],
+      ],
+      usedCredits: [{ value: 0, disable: true }, [Validators.required, Validators.maxLength(75)]],
+      allocatedCredits: [
+        { value: 0, disable: true },
+        [Validators.required, Validators.maxLength(75)],
+      ],
       url: [],
       totalCredits: [0, [Validators.required, Validators.maxLength(75)]],
       generateUrl: [],
@@ -100,6 +113,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         this.assessment = value;
         this.patchEditForm();
         this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
+        this.cd.markForCheck();
       });
     }
   }
@@ -124,11 +138,13 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       this.companies = data.map((company: any) => {
         return { label: company.name, value: company.id };
       });
+      this.cd.markForCheck();
     });
     this.assessmentService.getAssessmentsForDropDown(companyId || '').subscribe(data => {
       this.assessments = data.map((assessment: any) => {
         return { label: assessment.assessmentName, value: assessment.assessmentId };
       });
+      this.cd.markForCheck();
     });
     // TODO: fix this call made twice
     const assessmentId = this.activatedRoute.snapshot.params['id'];
@@ -136,6 +152,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       this.assessmentService.getAssessment(assessmentId).subscribe(value => {
         this.assessment = value;
         this.patchEditForm();
+        this.cd.markForCheck();
       });
     }
   }
@@ -208,9 +225,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         companyAssessment['validFrom'] = moment(companyAssessment['validFrom']).format(
           'YYYY-MM-DD'
         );
-        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format(
-          'YYYY-MM-DD'
-        );
+        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format('YYYY-MM-DD');
         this.http.post<any>(API_URL.companyAssessments, companyAssessment).subscribe({
           next: () => this.goBack(),
           error: () => {},

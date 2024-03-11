@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -54,6 +60,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
 
   private generateLinkPayload: any = {};
   private toastService = inject(MessageService);
+  private cd = inject(ChangeDetectorRef);
 
   constructor() {
     this.editForm = this.fb.group({
@@ -99,6 +106,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         this.companyAssessment = value;
         this.patchEditForm();
         this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
+        this.cd.markForCheck();
       });
     }
   }
@@ -128,6 +136,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       this.assessments = data.map((assessment: any) => {
         return { label: assessment.assessmentGroupName, value: assessment.assessmentGroupId };
       });
+      this.cd.markForCheck();
     });
     // TODO: fix this call made twice
     const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
@@ -135,20 +144,26 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe(value => {
         this.companyAssessment = value;
         if (this.companyAssessment.isBranch) {
-          this.assessmentService.getCompanyAssessmentIfIsBranch(assessmentGroupId).subscribe(value => {
-            this.companyAssessment = value;
-            this.patchEditForm();
-          })
+          this.assessmentService
+            .getCompanyAssessmentIfIsBranch(assessmentGroupId)
+            .subscribe(value => {
+              this.companyAssessment = value;
+              this.patchEditForm();
+            });
         } else {
           this.patchEditForm();
         }
+        this.cd.markForCheck();
       });
 
-      this.assessmentService.getCompanyAssessmentGroupsBranchMapping(companyId, assessmentGroupId).subscribe((data) => {
-        this.branches = data.map((branch: any) => {
-          return { label: branch.name, value: branch.id };
+      this.assessmentService
+        .getCompanyAssessmentGroupsBranchMapping(companyId, assessmentGroupId)
+        .subscribe(data => {
+          this.branches = data.map((branch: any) => {
+            return { label: branch.name, value: branch.id };
+          });
+          this.cd.markForCheck();
         });
-      })
     }
   }
 
@@ -227,9 +242,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         companyAssessment['validFrom'] = moment(companyAssessment['validFrom']).format(
           'YYYY-MM-DD'
         );
-        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format(
-          'YYYY-MM-DD'
-        );
+        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format('YYYY-MM-DD');
         this.http.post<any>(API_URL.assignGroup, companyAssessment).subscribe({
           next: () => this.goBack(),
           error: () => {},
@@ -265,7 +278,8 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
 
   generateLinkCall() {
     if (this.companyAssessment.isBranch) {
-      this.generateLinkPayload['companyAssessmentGroupBranchId'] = this.generateLinkPayload['companyAssessmentGroupId'];
+      this.generateLinkPayload['companyAssessmentGroupBranchId'] =
+        this.generateLinkPayload['companyAssessmentGroupId'];
       this.generateLinkPayload['companyAssessmentGroupId'] = null;
     }
     this.http.post<any>(API_URL.assignAssessment, this.generateLinkPayload).subscribe({

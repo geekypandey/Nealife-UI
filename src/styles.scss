@@ -30,9 +30,12 @@ body {
   margin: 0;
 }
 
-.form-check-input:checked {
-  background-color: var(--nl-success-color);
-  border-color: var(--nl-success-color);
+.form-check-input {
+  border-color: var(--gray-700);
+  &:checked {
+    background-color: var(--nl-success-color);
+    border-color: var(--nl-success-color);
+  }
 }
 
 .p-button {
@@ -118,8 +121,8 @@ p-tabView {
 }
 
 // remove increment/decrement from input type number
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
