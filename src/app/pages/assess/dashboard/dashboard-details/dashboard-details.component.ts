@@ -102,9 +102,9 @@ export class DashboardDetailsComponent {
         if (profile.role === USER_ROLE.SUPER_ADMIN) {
           this.cols = [
             { field: 'companyName', header: 'Company Name' },
-            { field: 'assessmentsLeftToAssign', header: 'Assessment Left to Assign' },
             { field: 'assessmentName', header: 'Assessment Name' },
             { field: 'allottedAssessments', header: 'Allotted Assessment' },
+            { field: 'assessmentsLeftToAssign', header: 'Assessment Left to Assign' },
           ];
           payload = {
             companyId: companyId,

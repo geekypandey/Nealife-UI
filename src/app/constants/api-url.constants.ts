@@ -6,6 +6,7 @@ export const API_URL = {
   getLoggedInUser: BASE_URL + '/users/getLoggedInUser',
   account: BASE_URL + '/account',
   resetPassword: BASE_URL + '/account/reset-password/init',
+  resetPasswordFinish: BASE_URL + '/account/reset-password/finish',
   competencyAspectProjections:
     BASE_URL + '/competencyAspectProjections?page=0&size=5000&sort=competency,desc',
   competencyAspectItemROCount: BASE_URL + '/competencies/getCompetencyAspectItemROCount',
@@ -53,12 +54,12 @@ export const API_URL = {
   preAssessmentSectionDetails: BASE_URL + '/pre-assessment-section-details',
   submitGroupResult: BASE_URL + '/submitGroupResult',
 
-  companyAssessments: BASE_URL + '/company-assessments?page=0&size=5000',
+  companyAssessments: BASE_URL + '/company-assessments',
   assessmentForDropDown: BASE_URL + '/company-assessments/fordropdown',
   companyAssessmentForDropDown: BASE_URL + '/company-assessment-groups/fordropdown',
 
   payment: BASE_URL + '/payments',
-  assignGroup: BASE_URL + '/company-assessment-groups?page=0&size=5000',
+  assignGroup: BASE_URL + '/company-assessment-groups',
   assignGroupIfBranch: BASE_URL + '/company-assessment-groups-branch-mapping',
   downloadCredits: BASE_URL + '/download-credits',
 
@@ -78,5 +79,6 @@ export const API_URL = {
   downloadBulkLinks: BASE_URL + '/notifications/download-bulk-links',
   uploadUser: BASE_URL + '/notifications/uploadUser',
   notifyCompanyWiseUsers: BASE_URL + '/assessments/notifyCompanywiseUsers',
-  companyAssessmentGroupBranchMapping: BASE_URL + '/company-assessment-groups-branch-mapping/fordropdown',
+  companyAssessmentGroupBranchMapping:
+    BASE_URL + '/company-assessment-groups-branch-mapping/fordropdown',
 };

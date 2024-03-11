@@ -1,101 +1,114 @@
 <nl-spinner [name]="spinnerName"></nl-spinner>
-<h3 class="signup-welcome">Welcome to Assess</h3>
-<div class="signup-container">
-  <div class="d-inline-flex justify-content-center">
-    <img
-      routerLink="/"
-      class="company-logo justify-content-center"
-      src="./../../../assets/login/logo.svg"
-      alt="logo-svg"
-      height="60" />
+<div class="container-fluid">
+  <div class="align-items-center p-5 row">
+    <div class="col-auto offset-1">
+      <h3 class="fs-2 fw-semibold text-white d-inline">Welcome to</h3>
+      <img
+        class="px-3"
+        src="./../../../assets/login/assess-log-white.svg"
+        alt="assess-log-white.svg"
+        height="48" />
+    </div>
+    <div class="col-auto ms-auto">
+      <img src="./../../../assets/login/nea-logo.svg" alt="nea-logo.svg" height="80" width="178" />
+    </div>
   </div>
-  <h5 class="mt-4 p-0">Sign Up</h5>
-  <form [formGroup]="registrationForm">
-    <div class="row mt-2 mb-3">
-      <div class="col-12">
-        <label for="name" class="d-block px-0">Name</label>
-        <input
-          nlShowErrorMsg
-          formControlName="contactPerson"
-          type="text"
-          name="name"
-          id="name"
-          class="w-100 p-inputtext p-component" />
-      </div>
-    </div>
+  <div class="row justify-content-end">
+    <div class="col-xl-4 col-lg-4 col-md-5 col-sm-8">
+      <div class="signup-container">
+        <h5 class="mt-4 p-0">Sign Up</h5>
+        <form [formGroup]="registrationForm">
+          <div class="row mt-2 mb-3">
+            <div class="col-12">
+              <label for="name" class="d-block px-0">Name</label>
+              <input
+                nlShowErrorMsg
+                formControlName="contactPerson"
+                type="text"
+                name="name"
+                id="name"
+                class="w-100 p-inputtext p-component" />
+            </div>
+          </div>
 
-    <div class="row mb-2">
-      <div class="col-12">
-        <label for="email" class="d-block px-0">Email</label>
-        <input
-          nlShowErrorMsg
-          formControlName="email"
-          type="email"
-          name="email"
-          id="email"
-          class="w-100 p-inputtext p-component" />
-      </div>
-    </div>
-    <div class="row mb-2">
-      <div class="col-12">
-        <label for="contact" class="px-0">Contact Number</label>
-        <input
-          nlShowErrorMsg
-          formControlName="contactNumber1"
-          type="text"
-          name="contact"
-          id="contact"
-          class="w-100 p-inputtext p-component" />
-      </div>
-    </div>
-    <ng-container *ngIf="assessmentNames$ | async as assessmentNames">
-      <!-- formArrayName="assessmentGroups" -->
-      <ng-container formArrayName="assessmentGroups">
-        <ng-container *ngFor="let _ of assessmentGroups.controls; index as i">
-          <ng-container [formGroupName]="i">
-            <div class="row mb-2">
-              <div class="col-12">
-                <label class="d-block" for="parent">Assessment Name</label>
-                <p-dropdown
-                  (onChange)="patchPrice($event, i)"
-                  styleClass="w-100"
-                  [attr.id]="'assessmentName'"
-                  [options]="assessmentNames"
-                  optionLabel="displayName"
-                  optionValue="assessmentId"
-                  placeholder="Select assessment name"></p-dropdown>
-              </div>
+          <div class="row mb-2">
+            <div class="col-12">
+              <label for="email" class="d-block px-0">Email</label>
+              <input
+                nlShowErrorMsg
+                formControlName="email"
+                type="email"
+                name="email"
+                id="email"
+                class="w-100 p-inputtext p-component" />
             </div>
-            <div class="row mb-2">
-              <div class="col-12">
-                <label for="price" class="px-0">Price</label>
-                <input
-                  formControlName="price"
-                  readonly
-                  type="text"
-                  name="price"
-                  id="price"
-                  class="w-100 p-inputtext p-component" />
-              </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-12">
+              <label for="contact" class="px-0">Contact Number</label>
+              <input
+                nlShowErrorMsg
+                formControlName="contactNumber1"
+                type="text"
+                name="contact"
+                id="contact"
+                class="w-100 p-inputtext p-component" />
             </div>
-            <div class="row mb-2">
-              <div class="col-12">
-                <label for="quantity" class="px-0">Quantity</label>
-                <input
-                  formControlName="credits"
-                  readonly
-                  type="number"
-                  name="quantity"
-                  id="quantity"
-                  class="w-100 p-inputtext p-component" />
-              </div>
-            </div>
+          </div>
+          <ng-container *ngIf="assessmentNames$ | async as assessmentNames">
+            <!-- formArrayName="assessmentGroups" -->
+            <ng-container formArrayName="assessmentGroups">
+              <ng-container *ngFor="let _ of assessmentGroups.controls; index as i">
+                <ng-container [formGroupName]="i">
+                  <div class="row mb-2">
+                    <div class="col-12">
+                      <label class="d-block" for="parent">Assessment Name</label>
+                      <p-dropdown
+                        (onChange)="patchPrice($event, i)"
+                        styleClass="w-100"
+                        [attr.id]="'assessmentName'"
+                        [options]="assessmentNames"
+                        optionLabel="displayName"
+                        optionValue="assessmentId"
+                        placeholder="Select assessment name"></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col-12">
+                      <label for="price" class="px-0">Price</label>
+                      <input
+                        formControlName="price"
+                        readonly
+                        type="text"
+                        name="price"
+                        id="price"
+                        class="w-100 p-inputtext p-component" />
+                    </div>
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col-12">
+                      <label for="quantity" class="px-0">Quantity</label>
+                      <input
+                        formControlName="credits"
+                        readonly
+                        type="number"
+                        name="quantity"
+                        id="quantity"
+                        class="w-100 p-inputtext p-component" />
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-container>
           </ng-container>
-        </ng-container>
-      </ng-container>
-    </ng-container>
-    <button type="submit" class="p-button justify-content-center mt-3" (click)="createRazorPay()">
-      Make Payment
-    </button>
-  </form>
+          <button
+            type="submit"
+            class="p-button justify-content-center mt-3 w-100"
+            (click)="createRazorPay()">
+            Make Payment
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

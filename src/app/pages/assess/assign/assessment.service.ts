@@ -11,11 +11,23 @@ export class AssessmentService {
   private http = inject(HttpClient);
 
   getAssessments() {
-    return this.http.get<Assessment[]>(API_URL.companyAssessments);
+    const params = {
+      page: 0,
+      size: 5000,
+    };
+    return this.http.get<Assessment[]>(API_URL.companyAssessments, { params });
   }
 
   getAssessment(id: number) {
     return this.http.get<Assessment>(`${API_URL.companyAssessments}/${id}`);
+  }
+
+  getCompanyAssessmentGroup() {
+    const params = {
+      page: 0,
+      size: 5000,
+    };
+    return this.http.get<CompanyAssessment[]>(`${API_URL.assignGroup}`, { params });
   }
 
   getCompanyAssessment(id: number) {
@@ -42,8 +54,8 @@ export class AssessmentService {
     const params: any = {
       'companyId.equals': companyId,
       'displayInSignup.equals': true,
-      'page': 0,
-      'size': 5000,
+      page: 0,
+      size: 5000,
     };
 
     return this.http.get<Assessment[]>(API_URL.companyAssessmentForDropDown, {
@@ -109,6 +121,8 @@ export class AssessmentService {
   }
 
   getCompanyAssessmentGroupsBranchMapping(companyId: string, assessmentGroupId: string) {
-    return this.http.get<any>(`${API_URL.companyAssessmentGroupBranchMapping}/${companyId}/${assessmentGroupId}`);
+    return this.http.get<any>(
+      `${API_URL.companyAssessmentGroupBranchMapping}/${companyId}/${assessmentGroupId}`
+    );
   }
 }

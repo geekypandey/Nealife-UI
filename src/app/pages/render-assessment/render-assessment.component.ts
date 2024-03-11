@@ -24,6 +24,7 @@ import { Observable, finalize, forkJoin, switchMap, tap, throwError } from 'rxjs
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { REPORT_TYPE } from 'src/app/constants/assessment.constants';
 import { DropdownOption } from 'src/app/models/common.model';
+import { LayoutService } from 'src/app/services/layout.service';
 import { SharedApiService } from 'src/app/services/shared-api.service';
 import { AssessmentStepperComponent } from './assessment-stepper/assessment-stepper.component';
 import { PersonalInfoComponent } from './personal-info/personal-info.component';
@@ -94,6 +95,7 @@ export class RenderAssessmentComponent implements OnInit {
 
   defaultModelImage = './../../../assets/login/illustration.svg';
   logoUrl: string = '';
+  layoutService = inject(LayoutService);
 
   constructor() {
     this.preAssessDetailsReqPayload = new PreAssessDetailsReqPayload();

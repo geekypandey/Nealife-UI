@@ -1,6 +1,12 @@
+::ng-deep p-dialog .custom-style {
+  display: flex;
+  flex-direction: column;
+}
 .render-assessment {
-  display: block;
+  background: linear-gradient(90deg, #99c3ff 0%, rgba(255, 255, 255, 0) 100%);
   height: 100%;
+}
+.wave-img {
   position: relative;
   background-image: url('./../../../assets/login/wave.svg');
   background-size: 100% 100%;
@@ -8,7 +14,6 @@
   -webkit-background-size: 100% 100%;
   background-size: contain;
   background-repeat: no-repeat;
-  background-color: var(--nl-body-bg-color);
 }
 .modal-image {
   display: block;
@@ -27,8 +32,8 @@
 .assess-container {
   width: 460px;
   position: absolute;
-  top: 60px;
-  right: 10%;
+  top: 165px;
+  right: 50px;
 }
 .company-logo {
   cursor: pointer;
@@ -38,7 +43,9 @@
   text-decoration: underline;
   color: var(--nl-primary-color);
 }
-::ng-deep p-dialog .custom-style {
-  display: flex;
-  flex-direction: column;
-}
+
+// @media (max-width: 1199px) {
+//   .modal-image {
+//     background-position: center;
+//   }
+// }
