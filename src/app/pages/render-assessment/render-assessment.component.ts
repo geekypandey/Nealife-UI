@@ -115,17 +115,17 @@ export class RenderAssessmentComponent implements OnInit {
         this.paramAssessmentId = params['assessmentId'];
       }
 
-      if (this.queryParamcc) {
-        this.validateCreditCode(this.queryParamcc).subscribe();
-      } else {
-        this.isValidCreditCode = true;
-      }
-
       this.assessmentForm = this.fb.group({
         code: [{ value: null, disabled: this.queryParamcc }, [Validators.required]],
         language: [null, [Validators.required]],
         isChecked: [{ value: null, disabled: true }, [Validators.required]],
       });
+
+      if (this.queryParamcc) {
+        this.checkCreditUsed(this.queryParamcc);
+      } else {
+        this.isValidCreditCode = true;
+      }
     });
   }
 
@@ -143,16 +143,15 @@ export class RenderAssessmentComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    this.preAssessDetailsReqPayload.language = this.languageCtrl.value;
-    if (!this.queryParamcc) {
-      this.spinner.show(this.spinnerName);
-      this.validateCreditCode(this.codeCtrl.value)
+  checkCreditUsed(creditCode?: string) {
+    const code = creditCode ?? this.codeCtrl.value;
+    if (code) {
+      this.validateCreditCode(code)
         .pipe(
           switchMap(resp => {
             if (resp && resp.data) {
-              this.preAssessDetailsReqPayload.creditCode = this.codeCtrl.value;
-              this.queryParamcc = this.codeCtrl.value;
+              this.preAssessDetailsReqPayload.creditCode = code;
+              this.queryParamcc = code;
               this.cd.markForCheck();
               return this.isCreditUsedBefore();
             }
@@ -162,10 +161,20 @@ export class RenderAssessmentComponent implements OnInit {
             this.spinner.hide(this.spinnerName);
           })
         )
-        .subscribe();
-    } else {
-      this.isCreditUsedBefore().subscribe();
+        .subscribe({
+          next: resp => {
+            if (resp && resp.language) {
+              this.languageCtrl.setValue(resp.language);
+              this.languageCtrl.disable();
+            }
+          },
+          error: err => this.languageCtrl.enable(),
+        });
     }
+  }
+
+  onSubmit() {
+    this.navigateToDemographicsPage();
   }
 
   private isCreditUsedBefore(): Observable<PreAssessmentDetailsResponse> {
@@ -178,12 +187,10 @@ export class RenderAssessmentComponent implements OnInit {
               resp && resp.demographics ? resp.demographics : undefined;
           }
           this.spinner.hide(this.spinnerName);
-          this.navigateToDemographicsPage();
         },
         error: _ => {
           console.error('No demographics details');
           this.spinner.hide(this.spinnerName);
-          this.navigateToDemographicsPage();
         },
       })
     );
