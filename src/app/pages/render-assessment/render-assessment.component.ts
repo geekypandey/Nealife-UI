@@ -20,7 +20,7 @@ import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { Observable, finalize, forkJoin, switchMap, tap, throwError } from 'rxjs';
+import { Observable, finalize, switchMap, tap, throwError } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { REPORT_TYPE } from 'src/app/constants/assessment.constants';
 import { DropdownOption } from 'src/app/models/common.model';
@@ -202,43 +202,44 @@ export class RenderAssessmentComponent implements OnInit {
         ...this.preAssessDetailsReqPayload,
         demographics: value,
       };
-      const apiCalls = [this.assementService.submitPersonalInfo(reqPayload)];
-      if (this.reportType === 'ECFEREPORT') {
-        apiCalls.push(this.assementService.assessmentCourseFit(value.sectors, this.queryParamaa));
-      }
       this.spinner.show(this.spinnerName);
-      forkJoin<any[]>(apiCalls).subscribe({
-        next: ([preAssessDetailsResp, assessData]) => {
-          if (preAssessDetailsResp) {
-            this.preAssessmentDetailsResponse = preAssessDetailsResp;
-            this.preAssessmentDemographics =
-              preAssessDetailsResp && preAssessDetailsResp.demographics
-                ? preAssessDetailsResp.demographics
-                : undefined;
-          }
-          if (assessData && this.reportType === 'ECFEREPORT') {
-            this.renderAssessmentData = assessData;
-          }
-          this.spinner.hide(this.spinnerName);
-          this.navigateToAssessmentPage();
-          this.cd.markForCheck();
-        },
-        error: () => this.spinner.hide(this.spinnerName),
-      });
+      this.assementService
+        .submitPersonalInfo(reqPayload)
+        .pipe(
+          switchMap(preAssessDetailsResp => {
+            if (preAssessDetailsResp) {
+              this.preAssessmentDetailsResponse = preAssessDetailsResp;
+              this.preAssessmentDemographics =
+                preAssessDetailsResp && preAssessDetailsResp.demographics
+                  ? preAssessDetailsResp.demographics
+                  : undefined;
+              this.cd.markForCheck();
+            }
+            return this.assementService.renderNewAssesmentWithAssessment(preAssessDetailsResp.id);
+          })
+        )
+        .subscribe({
+          next: newAssessmentResp => {
+            if (newAssessmentResp) {
+              this.renderAssessmentData = newAssessmentResp;
+            }
+            this.spinner.hide(this.spinnerName);
+            this.navigateToAssessmentPage();
+            this.cd.markForCheck();
+          },
+          error: () => this.spinner.hide(this.spinnerName),
+        });
     } else {
-      if (this.reportType === 'ECFEREPORT') {
-        this.spinner.show(this.spinnerName);
-        this.assementService
-          .assessmentCourseFit(value.sectors, this.queryParamaa)
-          .subscribe(assessData => {
+      this.assementService
+        .renderNewAssesmentWithAssessment(this.preAssessmentDetailsResponse.id)
+        .subscribe({
+          next: assessData => {
             this.renderAssessmentData = assessData;
             this.navigateToAssessmentPage();
             this.spinner.hide(this.spinnerName);
             this.cd.markForCheck();
-          });
-      } else {
-        this.navigateToAssessmentPage();
-      }
+          },
+        });
     }
   }
 
