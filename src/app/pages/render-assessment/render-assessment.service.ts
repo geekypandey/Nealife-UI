@@ -35,6 +35,12 @@ export class RenderAssessmentService {
     return this.http.post<any>(API_URL.branchAssessmentCourseFitURL, payload);
   }
 
+  renderNewAssesmentWithAssessment(id: number) {
+    return this.http.get<RenderAssessmentResponse>(
+      API_URL.renderNewAssesmentWithAssessment + '?preAssessmentDetailsId=' + id
+    );
+  }
+
   submitPersonalInfo(payload: PreAssessDetailsReqPayload) {
     return this.http.post<PreAssessmentDetailsResponse>(API_URL.preAssessmentDetails, payload);
   }

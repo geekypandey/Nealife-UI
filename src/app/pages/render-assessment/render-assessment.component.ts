@@ -20,7 +20,7 @@ import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { Observable, finalize, forkJoin, switchMap, tap, throwError } from 'rxjs';
+import { Observable, finalize, switchMap, tap, throwError } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { REPORT_TYPE } from 'src/app/constants/assessment.constants';
 import { DropdownOption } from 'src/app/models/common.model';
@@ -115,17 +115,17 @@ export class RenderAssessmentComponent implements OnInit {
         this.paramAssessmentId = params['assessmentId'];
       }
 
-      if (this.queryParamcc) {
-        this.validateCreditCode(this.queryParamcc).subscribe();
-      } else {
-        this.isValidCreditCode = true;
-      }
-
       this.assessmentForm = this.fb.group({
         code: [{ value: null, disabled: this.queryParamcc }, [Validators.required]],
         language: [null, [Validators.required]],
         isChecked: [{ value: null, disabled: true }, [Validators.required]],
       });
+
+      if (this.queryParamcc) {
+        this.checkCreditUsed(this.queryParamcc);
+      } else {
+        this.isValidCreditCode = true;
+      }
     });
   }
 
@@ -143,16 +143,15 @@ export class RenderAssessmentComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    this.preAssessDetailsReqPayload.language = this.languageCtrl.value;
-    if (!this.queryParamcc) {
-      this.spinner.show(this.spinnerName);
-      this.validateCreditCode(this.codeCtrl.value)
+  checkCreditUsed(creditCode?: string) {
+    const code = creditCode ?? this.codeCtrl.value;
+    if (code) {
+      this.validateCreditCode(code)
         .pipe(
           switchMap(resp => {
             if (resp && resp.data) {
-              this.preAssessDetailsReqPayload.creditCode = this.codeCtrl.value;
-              this.queryParamcc = this.codeCtrl.value;
+              this.preAssessDetailsReqPayload.creditCode = code;
+              this.queryParamcc = code;
               this.cd.markForCheck();
               return this.isCreditUsedBefore();
             }
@@ -162,10 +161,20 @@ export class RenderAssessmentComponent implements OnInit {
             this.spinner.hide(this.spinnerName);
           })
         )
-        .subscribe();
-    } else {
-      this.isCreditUsedBefore().subscribe();
+        .subscribe({
+          next: resp => {
+            if (resp && resp.language) {
+              this.languageCtrl.setValue(resp.language);
+              this.languageCtrl.disable();
+            }
+          },
+          error: err => this.languageCtrl.enable(),
+        });
     }
+  }
+
+  onSubmit() {
+    this.navigateToDemographicsPage();
   }
 
   private isCreditUsedBefore(): Observable<PreAssessmentDetailsResponse> {
@@ -178,12 +187,10 @@ export class RenderAssessmentComponent implements OnInit {
               resp && resp.demographics ? resp.demographics : undefined;
           }
           this.spinner.hide(this.spinnerName);
-          this.navigateToDemographicsPage();
         },
         error: _ => {
           console.error('No demographics details');
           this.spinner.hide(this.spinnerName);
-          this.navigateToDemographicsPage();
         },
       })
     );
@@ -195,43 +202,44 @@ export class RenderAssessmentComponent implements OnInit {
         ...this.preAssessDetailsReqPayload,
         demographics: value,
       };
-      const apiCalls = [this.assementService.submitPersonalInfo(reqPayload)];
-      if (this.reportType === 'ECFEREPORT') {
-        apiCalls.push(this.assementService.assessmentCourseFit(value.sectors, this.queryParamaa));
-      }
       this.spinner.show(this.spinnerName);
-      forkJoin<any[]>(apiCalls).subscribe({
-        next: ([preAssessDetailsResp, assessData]) => {
-          if (preAssessDetailsResp) {
-            this.preAssessmentDetailsResponse = preAssessDetailsResp;
-            this.preAssessmentDemographics =
-              preAssessDetailsResp && preAssessDetailsResp.demographics
-                ? preAssessDetailsResp.demographics
-                : undefined;
-          }
-          if (assessData && this.reportType === 'ECFEREPORT') {
-            this.renderAssessmentData = assessData;
-          }
-          this.spinner.hide(this.spinnerName);
-          this.navigateToAssessmentPage();
-          this.cd.markForCheck();
-        },
-        error: () => this.spinner.hide(this.spinnerName),
-      });
+      this.assementService
+        .submitPersonalInfo(reqPayload)
+        .pipe(
+          switchMap(preAssessDetailsResp => {
+            if (preAssessDetailsResp) {
+              this.preAssessmentDetailsResponse = preAssessDetailsResp;
+              this.preAssessmentDemographics =
+                preAssessDetailsResp && preAssessDetailsResp.demographics
+                  ? preAssessDetailsResp.demographics
+                  : undefined;
+              this.cd.markForCheck();
+            }
+            return this.assementService.renderNewAssesmentWithAssessment(preAssessDetailsResp.id);
+          })
+        )
+        .subscribe({
+          next: newAssessmentResp => {
+            if (newAssessmentResp) {
+              this.renderAssessmentData = newAssessmentResp;
+            }
+            this.spinner.hide(this.spinnerName);
+            this.navigateToAssessmentPage();
+            this.cd.markForCheck();
+          },
+          error: () => this.spinner.hide(this.spinnerName),
+        });
     } else {
-      if (this.reportType === 'ECFEREPORT') {
-        this.spinner.show(this.spinnerName);
-        this.assementService
-          .assessmentCourseFit(value.sectors, this.queryParamaa)
-          .subscribe(assessData => {
+      this.assementService
+        .renderNewAssesmentWithAssessment(this.preAssessmentDetailsResponse.id)
+        .subscribe({
+          next: assessData => {
             this.renderAssessmentData = assessData;
             this.navigateToAssessmentPage();
             this.spinner.hide(this.spinnerName);
             this.cd.markForCheck();
-          });
-      } else {
-        this.navigateToAssessmentPage();
-      }
+          },
+        });
     }
   }
 
