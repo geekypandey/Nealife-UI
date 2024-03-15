@@ -81,7 +81,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       emailReport: [],
       embedCreditCode: [],
       contactNumber: [],
-      sendTo: [],
+      sendReportTo: [],
       sendSms: [],
     });
 
@@ -226,6 +226,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   }
 
   generateLink() {
+    const sendReportTo = this.individualEditForm.get('sendReportTo')?.value;
     const sendEmail = this.individualEditForm.get('emailReport')?.value == true;
     const sendSms = this.individualEditForm.get('sendSms')?.value == true;
     const embedCreditCode = this.individualEditForm.get('sendSms')?.value == true;
@@ -249,6 +250,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       link: null,
       message: null,
       error: null,
+      sendReportTo: sendReportTo,
     };
     this.generateLinkCall();
   }
