@@ -77,7 +77,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
     this.individualEditForm = this.fb.group({
       generateUrl: [],
       creditCode: [],
-      email: [],
+      email: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       emailReport: [],
       embedCreditCode: [],
       contactNumber: [],
@@ -114,6 +114,14 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       }
       this.loadData();
     });
+
+    this.individualEditForm.controls['emailReport'].valueChanges.subscribe((emailReport) => {
+      if (emailReport) {
+        this.individualEditForm.controls['email'].addValidators([Validators.required]);
+      } else {
+        this.individualEditForm.controls['email'].removeValidators([Validators.required]);
+      }
+    })
   }
 
   loadData() {
