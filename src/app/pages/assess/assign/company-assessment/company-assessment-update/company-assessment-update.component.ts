@@ -91,7 +91,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       email: [],
       emailReport: [],
       embedCreditCode: [],
-      credits: [null, Validators.required],
+      credits: ['', [Validators.required]],
     });
 
     this.spinner.show(this.spinnerName);
@@ -316,6 +316,9 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
 
   uploadUserAndEmailLinks() {
     if (!this.bulkEditForm.valid) {
+      if (this.bulkEditForm.get('credits')?.invalid) {
+        alert('Please enter credits');
+      }
       // TODO: inform user of the same
       console.log('Please enter the credits');
       return;
@@ -350,7 +353,9 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   downloadBulkLinks() {
     if (!this.bulkEditForm.valid) {
       // TODO: inform user of the same
-      console.log('Please enter the credits');
+      if (this.bulkEditForm.get('credits')?.invalid) {
+        alert('Please enter credits');
+      }
       return;
     }
 
