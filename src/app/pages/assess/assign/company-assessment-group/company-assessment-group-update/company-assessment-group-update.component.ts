@@ -93,12 +93,14 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       credits: [null, Validators.required],
     });
 
+    this.spinner.show(this.spinnerName);
     const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
     if (assessmentGroupId) {
       this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe(value => {
         this.companyAssessment = value;
         this.patchEditForm();
         this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
+        this.spinner.hide(this.spinnerName);
       });
     }
   }
