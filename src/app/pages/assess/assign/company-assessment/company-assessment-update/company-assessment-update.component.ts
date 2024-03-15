@@ -80,7 +80,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       email: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       emailReport: [],
       embedCreditCode: [],
-      contactNumber: [],
+      contactNumber: ['', []],
       sendReportTo: [],
       sendSms: [],
     });
@@ -116,12 +116,21 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
     });
 
     this.individualEditForm.controls['emailReport'].valueChanges.subscribe((emailReport) => {
-      if (emailReport) {
-        this.individualEditForm.controls['email'].addValidators([Validators.required]);
-      } else {
-        this.individualEditForm.controls['email'].removeValidators([Validators.required]);
-      }
+      this.toggleRequiredValidator(this.individualEditForm, 'email', emailReport);
     })
+
+    this.individualEditForm.controls['sendSms'].valueChanges.subscribe((sendSms) => {
+      this.toggleRequiredValidator(this.individualEditForm, 'contactNumber', sendSms);
+    })
+  }
+
+  toggleRequiredValidator(formGroup: FormGroup, controlName: string, currentValue: boolean) {
+    if (currentValue) {
+      formGroup.controls[controlName].addValidators([Validators.required]);
+    } else {
+      formGroup.controls[controlName].removeValidators([Validators.required]);
+    }
+    formGroup.controls[controlName].updateValueAndValidity();
   }
 
   loadData() {
@@ -236,20 +245,19 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   }
 
   generateLink() {
+    if (this.individualEditForm.invalid) {
+      return;
+    }
     const sendReportTo = this.individualEditForm.get('sendReportTo')?.value;
     const sendEmail = this.individualEditForm.get('emailReport')?.value == true;
     const sendSms = this.individualEditForm.get('sendSms')?.value == true;
-    const embedCreditCode = this.individualEditForm.get('sendSms')?.value == true;
-    if (sendEmail && !this.individualEditForm.get('email')?.value) {
-      return;
-    }
-    if (sendSms && !this.individualEditForm.get('contactNumber')?.value) {
-      return;
-    }
+    const contactNumber = this.individualEditForm.get('contactNumber')?.value;
+    const embedCreditCode = this.individualEditForm.get('embedCreditCode')?.value == true;
+
     this.generateLinkPayload = {
       ...this.generateLinkPayload,
       companyAssessmentId: this.editForm.get('id')?.value,
-      email: this.individualEditForm.get('email')?.value,
+      email: sendEmail ? this.individualEditForm.get('email')?.value: null,
 
       emailReport: sendEmail ? 'Y' : 'N',
       embeddCreditCode: embedCreditCode ? 'Y' : 'N',
@@ -261,6 +269,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       message: null,
       error: null,
       sendReportTo: sendReportTo,
+      contactNumber: sendSms ? contactNumber : null,
     };
     this.generateLinkCall();
   }
