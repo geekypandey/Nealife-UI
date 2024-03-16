@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Observable, finalize } from 'rxjs';
+import { Observable, finalize, tap } from 'rxjs';
 import { SpinnerComponent } from 'src/app/components/spinner/spinner.component';
 import { TableComponent } from 'src/app/components/table/table.component';
 import { ACTION_ICON, Action, ColDef } from 'src/app/components/table/table.model';
@@ -43,12 +43,13 @@ export class CompanyAssessmentGroupComponent {
   private toastService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
   private assessmentService = inject(AssessmentService);
+  private allAssessments: Array<any> = [];
 
   constructor() {
     this.spinner.show(this.spinnerName);
     this.assessmentGroups$ = this.assessmentService
       .getCompanyAssessmentGroup()
-      .pipe(finalize(() => this.spinner.hide(this.spinnerName)));
+      .pipe(tap((values) => this.allAssessments = values), finalize(() => this.spinner.hide(this.spinnerName)));
     this.actionsList = [
       {
         icon: ACTION_ICON.VIEW,
@@ -64,8 +65,16 @@ export class CompanyAssessmentGroupComponent {
         icon: ACTION_ICON.EDIT,
         field: 'id',
         onClick: (value: string) => {
+          let isBranch = false;
+          for (const assessment of this.allAssessments) {
+            if (assessment.id == value) {
+              isBranch = (assessment.isBranch == true);
+              break;
+            }
+          }
           this.router.navigate(['company-assessment-group/' + value + '/edit'], {
             relativeTo: this.activatedRoute,
+            queryParams: { isBranch: isBranch },
           });
         },
       },
