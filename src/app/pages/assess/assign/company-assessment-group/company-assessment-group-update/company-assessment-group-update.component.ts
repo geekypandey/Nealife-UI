@@ -210,8 +210,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   downloadCredits() {
     const id = this.companyAssessment.id;
 
+    const param = this.companyAssessment.isBranch ? 'companyAssessmentGroupsId' : 'companyAssessmentGroupBranchId';
     this.http
-      .get(`${API_URL.downloadCredits}?companyAssessmentGroupsId.equals=${id}`, {
+      .get(`${API_URL.downloadCredits}?${param}.equals=${id}`, {
         responseType: 'blob',
       })
       .subscribe((value: any) => {
