@@ -46,6 +46,7 @@ export const API_URL = {
   getNewAssessmentGroupJson: BASE_URL + '/assessments/getNewAssessmentGroupJson',
   checkCreditCode: BASE_URL + '/checkCreditUsed',
   branchAssessmentCourseFitURL: BASE_URL + '/assessments/renderNewAssesmentForCourseFit',
+  renderNewAssesmentWithAssessment: BASE_URL + '/assessments/renderNewAssesmentWithAssessment',
   assessmentName: BASE_URL + '/signup-assessments-fordropdown',
   createOrder: BASE_URL + '/createOrder',
   verifyOrder: BASE_URL + '/verifyOrder',

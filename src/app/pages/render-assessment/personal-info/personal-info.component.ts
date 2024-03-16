@@ -85,6 +85,7 @@ export class PersonalInfoComponent {
   sectors: LookupResponse[] = [];
   engBranches: LookupResponse[] | DropdownOption[] = [];
   mbaBranches: LookupResponse[] | DropdownOption[] = [];
+  secondLanguages: DropdownOption[] = [];
 
   basicInfoForm!: FormGroup<any>;
   todaysDate: Date = new Date();
@@ -250,6 +251,8 @@ export class PersonalInfoComponent {
       return this.engBranches;
     } else if (fieldName === 'mbaBranch') {
       return this.mbaBranches;
+    } else if (fieldName === 'secondLanguage') {
+      return this.secondLanguages;
     } else return [];
   }
 
@@ -347,6 +350,9 @@ export class PersonalInfoComponent {
       this.sharedApiService.lookup('BOARD').pipe(tap(res => (this.board = res))),
       this.engBranchApiCall(true),
       this.mbaBranchApiCall(true),
+      this.sharedApiService
+        .lookup('SECOND_LANGUAGE')
+        .pipe(tap(res => (this.secondLanguages = res))),
     ];
   }
 
@@ -381,6 +387,7 @@ export class PersonalInfoComponent {
       'board',
       'engBranch',
       'mbaBranch',
+      'secondLanguage',
     ];
   }
 
