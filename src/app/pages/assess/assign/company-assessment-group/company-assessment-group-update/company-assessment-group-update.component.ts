@@ -93,6 +93,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       emailReport: [],
       embedCreditCode: [],
       credits: ['', Validators.required],
+      sendReportTo: [],
     });
 
     this.spinner.show(this.spinnerName);
@@ -368,6 +369,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         link: null,
         message: null,
         error: null,
+        sendReportTo: this.bulkEditForm.get('sendReportTo')?.value,
       };
       this.ref = this.dialogService.open(CompanyAssessmentGroupUploadComponent, {
         data: {
