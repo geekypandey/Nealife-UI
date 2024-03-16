@@ -81,7 +81,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       email: [],
       emailReport: [],
       embedCreditCode: [],
+      sendSms:[],
       contactNumber: [],
+      sendReportTo: [],
     });
 
     this.bulkEditForm = this.fb.group({
@@ -90,7 +92,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       email: [],
       emailReport: [],
       embedCreditCode: [],
-      credits: [null, Validators.required],
+      credits: ['', Validators.required],
     });
 
     this.spinner.show(this.spinnerName);
@@ -113,6 +115,23 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       }
       this.loadData();
     });
+
+    this.individualEditForm.controls['emailReport'].valueChanges.subscribe((emailReport) => {
+      this.toggleRequiredValidator(this.individualEditForm, 'email', emailReport);
+    })
+
+    this.individualEditForm.controls['sendSms'].valueChanges.subscribe((sendSms) => {
+      this.toggleRequiredValidator(this.individualEditForm, 'contactNumber', sendSms);
+    })
+  }
+
+  toggleRequiredValidator(formGroup: FormGroup, controlName: string, currentValue: boolean) {
+    if (currentValue) {
+      formGroup.controls[controlName].addValidators([Validators.required]);
+    } else {
+      formGroup.controls[controlName].removeValidators([Validators.required]);
+    }
+    formGroup.controls[controlName].updateValueAndValidity();
   }
 
   loadData() {
@@ -247,20 +266,31 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   }
 
   generateLink() {
+    if (this.individualEditForm.invalid) {
+      return;
+    }
+    const sendReportTo = this.individualEditForm.get('sendReportTo')?.value;
+    const sendEmail = this.individualEditForm.get('emailReport')?.value == true;
+    const sendSms = this.individualEditForm.get('sendSms')?.value == true;
+    const contactNumber = this.individualEditForm.get('contactNumber')?.value;
+    const embedCreditCode = this.individualEditForm.get('embedCreditCode')?.value == true;
+
     this.generateLinkPayload = {
       ...this.generateLinkPayload,
       companyAssessmentId: null,
       companyAssessmentGroupId: this.editForm.get('id')?.value,
-      email: this.individualEditForm.get('email')?.value,
+      email: sendEmail ? this.individualEditForm.get('email')?.value: null,
 
-      emailReport: this.individualEditForm.get('emailReport')?.value ? 'Y' : 'N',
-      embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? 'Y' : 'N',
+      emailReport: sendEmail ? 'Y' : 'N',
+      embeddCreditCode: embedCreditCode ? 'Y' : 'N',
 
       sendAssignmentEmail: 'N',
       creditCode: null,
       link: null,
       message: null,
       error: null,
+      sendReportTo: sendReportTo,
+      contactNumber: sendSms ? contactNumber : null,
     };
     this.generateLinkCall();
   }

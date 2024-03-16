@@ -134,7 +134,8 @@
                     type="text"
                     formControlName="email"
                     id="email"
-                    class="p-inputtext" />
+                    class="p-inputtext"
+                    [ngClass]="{'ng-invalid ng-dirty': individualEditForm.get('email')?.invalid }" />
               </div>
               <div class="col-6">
                 <label class="d-block" for="contactNumber">Contact Number</label>
@@ -142,22 +143,45 @@
                     type="number"
                     formControlName="contactNumber"
                     id="contactNumber"
-                    class="p-inputtext" />
+                    class="p-inputtext"
+                    [ngClass]="{'ng-invalid ng-dirty': individualEditForm.get('contactNumber')?.invalid }" />
+              </div>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6 d-flex flex-column gap-2">
+                <div> Send Report to </div>
+                <div class="d-flex gap-4">
+                  <div class="d-flex gap-1">
+                    <input type="radio" id="institute" name="sendReportTo" value="INSTITUTE" formControlName="sendReportTo">
+                    <label for="institute">Institute</label>
+                  </div>
+                  <div class="d-flex gap-1">
+                    <input type="radio" id="student" name="sendReportTo" value="STUDENT" formControlName="sendReportTo"/>
+                    <label for="student">Student</label>
+                  </div>
+                  <div class="d-flex gap-1">
+                    <input type="radio" id="both" name="sendReportTo" value="STUDENT_N_INSTITUTE" formControlName="sendReportTo" />
+                    <label for="both">Both</label>
+                  </div>
+                </div>
               </div>
               <div class="col-6 d-flex flex-column">
-                <div class="d-flex gap-3">
-                  <div>
+                <div class="d-flex gap-3 h-32">
+                  <div class="d-flex gap-1">
                     <input type="checkbox" formControlName="emailReport"/>
                     <label for="">Email Report</label>
                   </div>
-                  <div>
+                  <div class="d-flex gap-1">
                     <input type="checkbox" formControlName="embedCreditCode"/>
                     <label for="">Generate Link Via Embedded Credit Code</label>
                   </div>
+                  <div class="d-flex gap-1">
+                    <input type="checkbox" formControlName="sendSms"/>
+                    <label for="">Send via Message/WhatsApp</label>
+                  </div>
                 </div>
-                <div class="d-flex mt-1 gap-2">
+                <div class="d-flex gap-2 mt-1">
                     <button class="p-button justify-content-center" (click)="generateLink()">Generate Link</button>
-                    <button class="p-button justify-content-center" (click)="generateAndEmailLink()">Generate & Email Link</button>
                 </div>
               </div>
             </div>
