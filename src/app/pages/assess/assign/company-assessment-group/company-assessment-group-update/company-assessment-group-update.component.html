@@ -1,20 +1,12 @@
 <nl-spinner [name]="spinnerName"></nl-spinner>
 <div class="mt-3 row flex-column">
   <div class="d-flex mb-2">
-    <strong class="col mb-3"
-      >{{ this.editForm.get('id')?.value ? 'Edit' : 'Add' }} Assign Assessment Group</strong
-    >
+    <strong class="col mb-3">{{ this.editForm.get('id')?.value ? 'Edit': 'Add'}} Assign Assessment Group</strong>
     <!-- TODO: fix the button -->
     <div class="d-flex gap-2">
       <button type="button" class="p-button" (click)="save()">Save</button>
       <button type="button" class="p-button" (click)="goBack()">Cancel</button>
-      <button
-        type="button"
-        class="p-button"
-        (click)="downloadCredits()"
-        *ngIf="this.editForm.get('id')?.value">
-        Download Credits
-      </button>
+      <button type="button" class="p-button" (click)="downloadCredits()" *ngIf="this.editForm.get('id')?.value">Download Credits</button>
     </div>
   </div>
   <ng-container [formGroup]="editForm">
@@ -22,37 +14,43 @@
       <div class="row">
         <div class="col">
           <div class="nl-card nl-border nl-border-1">
-            <div class="row mb-3 p-fluid gy-3">
+            <div class="row mb-3 p-fluid">
               <div class="col-6" [hidden]="!this.editForm.get('id')!.value">
                 <label class="d-block" for="id">Id</label>
-                <input type="text" formControlName="id" id="id" class="p-inputtext p-disabled" />
+                <input
+                  type="text"
+                  formControlName="id"
+                  id="id"
+                  class="p-inputtext" />
               </div>
               <div class="col-6">
                 <label class="d-block" for="companyId">Company</label>
-                <p-dropdown
-                  [attr.id]="'parent'"
-                  formControlName="companyId"
-                  [options]="companies"
-                  placeholder="Select Company"></p-dropdown>
+                  <p-dropdown
+                    [attr.id]="'parent'"
+                    formControlName="companyId"
+                    [options]="companies"
+                    placeholder="Select Company"></p-dropdown>
               </div>
+            </div>
+            <div class="row mb-3 p-fluid">
               <div class="col-6">
                 <label class="d-block" for="assessment">Assessment</label>
-                <p-dropdown
-                  [attr.id]="'parent'"
-                  formControlName="assessmentGroupId"
-                  [options]="assessments"
-                  [disabled]="this.editForm.get('id')!.value"
-                  placeholder="Select Assessment"></p-dropdown>
+                  <p-dropdown
+                    [attr.id]="'parent'"
+                    formControlName="assessmentGroupId"
+                    [options]="assessments"
+                    placeholder="Select Assessment"></p-dropdown>
               </div>
               <div class="col-6">
                 <label class="d-block" for="assessment">Assessment Date</label>
-                <p-calendar
-                  id="assessment-date"
-                  dateFormat="yy-mm-dd"
-                  formControlName="scheduleDate"
-                  [showIcon]="true"></p-calendar>
+                  <p-calendar
+                    id="assessment-date"
+                    dateFormat="yy-mm-dd"
+                    formControlName="scheduleDate"
+                    [showIcon]="true"></p-calendar>
               </div>
-
+            </div>
+            <div class="row mb-3 p-fluid">
               <div class="col-6">
                 <label class="d-block" for="time-limit">Time Limit (in minutes)*</label>
                 <input
@@ -69,39 +67,15 @@
                   id="total-credits"
                   class="p-inputtext" />
               </div>
-              <ng-container *ngIf="!!this.editForm.get('id')?.value">
-                <div class="col-6">
-                  <label class="d-block" for="available-credits">Avaliable Credits*</label>
-                  <input
-                    type="text"
-                    formControlName="availableCredits"
-                    id="available-credits"
-                    class="p-inputtext p-disabled" />
-                </div>
-                <div class="col-6">
-                  <label class="d-block" for="used-credits">Used Credits*</label>
-                  <input
-                    type="text"
-                    formControlName="usedCredits"
-                    id="used-credits"
-                    class="p-inputtext p-disabled" />
-                </div>
-                <div class="col-6">
-                  <label class="d-block" for="allocated-credits">Allocated Credits*</label>
-                  <input
-                    type="text"
-                    formControlName="allocatedCredits"
-                    id="allocated-credits"
-                    class="p-inputtext p-disabled" />
-                </div>
-              </ng-container>
+            </div>
+            <div class="row mb-3 p-fluid">
               <div class="col-6">
                 <label class="d-block" for="valid-from">Valid From</label>
-                <p-calendar
-                  id="valid-from"
-                  dateFormat="yy-mm-dd"
-                  formControlName="validFrom"
-                  [showIcon]="true"></p-calendar>
+                  <p-calendar
+                    id="valid-from"
+                    dateFormat="yy-mm-dd"
+                    formControlName="validFrom"
+                    [showIcon]="true"></p-calendar>
               </div>
               <div class="col-6">
                 <label class="d-block" for="valid-to">Valid To</label>
@@ -111,14 +85,15 @@
                   formControlName="validTo"
                   [showIcon]="true"></p-calendar>
               </div>
-
-              <div class="col-6" [hidden]="!this.editForm.get('isBranch')!.value">
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6" [hidden]="!this.editForm.get('isBranch')!.value" >
                 <label class="d-block" for="branchId">Branch</label>
-                <p-dropdown
-                  [attr.id]="'parent'"
-                  formControlName="branchId"
-                  [options]="branches"
-                  placeholder="Select Branch"></p-dropdown>
+                  <p-dropdown
+                    [attr.id]="'parent'"
+                    formControlName="branchId"
+                    [options]="branches"
+                    placeholder="Select Branch"></p-dropdown>
               </div>
             </div>
           </div>
@@ -137,62 +112,76 @@
             <div class="row mb-3 p-fluid">
               <div class="col-6">
                 <label class="d-block" for="generateUrl">Generate URL</label>
-                <input
-                  type="text"
-                  formControlName="generateUrl"
-                  id="generateUrl"
-                  class="p-inputtext" />
+                  <input
+                    type="text"
+                    formControlName="generateUrl"
+                    id="generateUrl"
+                    class="p-inputtext" />
               </div>
               <div class="col-6">
                 <label class="d-block" for="creditCode">Credit Code</label>
-                <input
-                  type="text"
-                  formControlName="creditCode"
-                  id="creditCode"
-                  class="p-inputtext" />
+                  <input
+                    type="text"
+                    formControlName="creditCode"
+                    id="creditCode"
+                    class="p-inputtext" />
               </div>
             </div>
             <div class="row mb-3 p-fluid">
               <div class="col-6">
                 <label class="d-block" for="email">Email</label>
-                <input type="text" formControlName="email" id="email" class="p-inputtext" />
+                  <input
+                    type="text"
+                    formControlName="email"
+                    id="email"
+                    class="p-inputtext"
+                    [ngClass]="{'ng-invalid ng-dirty': individualEditForm.get('email')?.invalid }" />
               </div>
               <div class="col-6">
                 <label class="d-block" for="contactNumber">Contact Number</label>
-                <input
-                  type="number"
-                  formControlName="contactNumber"
-                  id="contactNumber"
-                  class="p-inputtext" />
+                  <input
+                    type="number"
+                    formControlName="contactNumber"
+                    id="contactNumber"
+                    class="p-inputtext"
+                    [ngClass]="{'ng-invalid ng-dirty': individualEditForm.get('contactNumber')?.invalid }" />
               </div>
-              <div class="col-6 d-flex flex-column">
-                <div class="d-flex gap-3">
-                  <div class="form-check">
-                    <input
-                      type="checkbox"
-                      id="individual-emailReport"
-                      formControlName="emailReport"
-                      class="form-check-input" />
-                    <label for="individual-emailReport">Email Report</label>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6 d-flex flex-column gap-2">
+                <div> Send Report to </div>
+                <div class="d-flex gap-4">
+                  <div class="d-flex gap-1">
+                    <input type="radio" id="institute" name="sendReportTo" value="INSTITUTE" formControlName="sendReportTo">
+                    <label for="institute">Institute</label>
                   </div>
-                  <div class="form-check">
-                    <input
-                      type="checkbox"
-                      id="individual-embedCreditCode"
-                      formControlName="embedCreditCode"
-                      class="form-check-input" />
-                    <label for="individual-embedCreditCode"
-                      >Generate Link Via Embedded Credit Code</label
-                    >
+                  <div class="d-flex gap-1">
+                    <input type="radio" id="student" name="sendReportTo" value="STUDENT" formControlName="sendReportTo"/>
+                    <label for="student">Student</label>
+                  </div>
+                  <div class="d-flex gap-1">
+                    <input type="radio" id="both" name="sendReportTo" value="STUDENT_N_INSTITUTE" formControlName="sendReportTo" />
+                    <label for="both">Both</label>
                   </div>
                 </div>
-                <div class="d-flex mt-1 gap-2">
-                  <button class="p-button justify-content-center" (click)="generateLink()">
-                    Generate Link
-                  </button>
-                  <button class="p-button justify-content-center" (click)="generateAndEmailLink()">
-                    Generate & Email Link
-                  </button>
+              </div>
+              <div class="col-6 d-flex flex-column">
+                <div class="d-flex gap-3 h-32">
+                  <div class="d-flex gap-1">
+                    <input type="checkbox" formControlName="emailReport"/>
+                    <label for="">Email Report</label>
+                  </div>
+                  <div class="d-flex gap-1">
+                    <input type="checkbox" formControlName="embedCreditCode"/>
+                    <label for="">Generate Link Via Embedded Credit Code</label>
+                  </div>
+                  <div class="d-flex gap-1">
+                    <input type="checkbox" formControlName="sendSms"/>
+                    <label for="">Send via Message/WhatsApp</label>
+                  </div>
+                </div>
+                <div class="d-flex gap-2 mt-1">
+                    <button class="p-button justify-content-center" (click)="generateLink()">Generate Link</button>
                 </div>
               </div>
             </div>
@@ -213,46 +202,53 @@
             <div class="row mb-3 p-fluid">
               <div class="col-6">
                 <label class="d-block" for="parent">Credits</label>
-                <input type="text" formControlName="credits" id="email" class="p-inputtext" />
-              </div>
-              <div class="col-6 d-flex flex-column">
-                <div class="d-flex column-gap-3">
-                  <div class="form-check">
-                    <input
-                      type="checkbox"
-                      id="bulk-emailReport"
-                      formControlName="emailReport"
-                      class="form-check-input" />
-                    <label for="bulk-emailReport">Email Report</label>
+                  <input
+                    type="text"
+                    formControlName="credits"
+                    id="email"
+                    class="p-inputtext" />
+                </div>
+                <div class="col-6 d-flex flex-column gap-3">
+                  <div class="d-flex gap-3">
+                    <div class="d-flex gap-1">
+                      <input type="checkbox" formControlName="emailReport"/>
+                      <label for="">Email Report</label>
+                    </div>
+                    <div class="d-flex gap-1">
+                      <input type="checkbox" formControlName="embedCreditCode"/>
+                      <label for="">Generate Link Via Embedded Credit Code</label>
+                    </div>
                   </div>
-                  <div class="form-check">
-                    <input
-                      type="checkbox"
-                      id="bulk-embedCreditCode"
-                      formControlName="embedCreditCode"
-                      class="form-check-input" />
-                    <label for="bulk-embedCreditCode">Generate Link Via Embedded Credit Code</label>
+                  <div class="d-flex mt-1 gap-2">
+                      <button class="p-button justify-content-center" (click)="downloadTemplate()">Download Template</button>
+                      <button class="p-button justify-content-center" (click)="uploadUserAndEmailLinks()">Upload User & Email Links</button>
+                      <button class="p-button justify-content-center" (click)="downloadBulkLinks()">Download Links</button>
                   </div>
                 </div>
-                <div class="d-flex column-gap-2">
-                  <button class="p-button justify-content-center" (click)="downloadTemplate()">
-                    Download Template
-                  </button>
-                  <button
-                    class="p-button justify-content-center"
-                    (click)="uploadUserAndEmailLinks()">
-                    Upload User & Email Links
-                  </button>
-                  <button class="p-button justify-content-center" (click)="downloadBulkLinks()">
-                    Download Links
-                  </button>
+            </div>
+            <div class="row mb-3 p-fluid">
+              <div class="col-6 d-flex flex-column gap-2">
+                <div> Send Report to </div>
+                <div class="d-flex gap-4">
+                  <div class="d-flex gap-1">
+                    <input type="radio" id="institute" name="sendReportTo" value="INSTITUTE" formControlName="sendReportTo">
+                    <label for="institute">Institute</label>
+                  </div>
+                  <div class="d-flex gap-1">
+                    <input type="radio" id="student" name="sendReportTo" value="STUDENT" formControlName="sendReportTo"/>
+                    <label for="student">Student</label>
+                  </div>
+                  <div class="d-flex gap-1">
+                    <input type="radio" id="both" name="sendReportTo" value="STUDENT_N_INSTITUTE" formControlName="sendReportTo" />
+                    <label for="both">Both</label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <!--card end-->
+            <!--card end-->
+          </div>
         </div>
       </div>
-    </div>
   </ng-container>
 </div>

@@ -1,12 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -55,7 +49,6 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   private companyService = inject(CompanyService);
   private http = inject(HttpClient);
   private dialogService = inject(DialogService);
-  private cd = inject(ChangeDetectorRef);
 
   private generateLinkPayload: any = {};
 
@@ -68,15 +61,9 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       reportTemplate: [],
       emailTemplate: [],
       timeLimit: [null, [Validators.required, Validators.maxLength(75)]],
-      availableCredits: [
-        { value: 0, disable: true },
-        [Validators.required, Validators.maxLength(75)],
-      ],
-      usedCredits: [{ value: 0, disable: true }, [Validators.required, Validators.maxLength(75)]],
-      allocatedCredits: [
-        { value: 0, disable: true },
-        [Validators.required, Validators.maxLength(75)],
-      ],
+      availableCredits: [0, [Validators.required, Validators.maxLength(75)]],
+      usedCredits: [0, [Validators.required, Validators.maxLength(75)]],
+      allocatedCredits: [0, [Validators.required, Validators.maxLength(75)]],
       url: [],
       totalCredits: [0, [Validators.required, Validators.maxLength(75)]],
       generateUrl: [],
@@ -90,11 +77,11 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
     this.individualEditForm = this.fb.group({
       generateUrl: [],
       creditCode: [],
-      email: [],
+      email: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       emailReport: [],
       embedCreditCode: [],
-      contactNumber: [],
-      sendTo: [],
+      contactNumber: ['', []],
+      sendReportTo: [],
       sendSms: [],
     });
 
@@ -104,16 +91,18 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       email: [],
       emailReport: [],
       embedCreditCode: [],
-      credits: [null, Validators.required],
+      credits: ['', [Validators.required]],
+      sendReportTo: [],
     });
 
+    this.spinner.show(this.spinnerName);
     const assessmentId = this.activatedRoute.snapshot.params['id'];
     if (assessmentId) {
       this.assessmentService.getAssessment(assessmentId).subscribe(value => {
         this.assessment = value;
         this.patchEditForm();
         this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
-        this.cd.markForCheck();
+        this.spinner.hide(this.spinnerName);
       });
     }
   }
@@ -126,6 +115,23 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       }
       this.loadData();
     });
+
+    this.individualEditForm.controls['emailReport'].valueChanges.subscribe((emailReport) => {
+      this.toggleRequiredValidator(this.individualEditForm, 'email', emailReport);
+    })
+
+    this.individualEditForm.controls['sendSms'].valueChanges.subscribe((sendSms) => {
+      this.toggleRequiredValidator(this.individualEditForm, 'contactNumber', sendSms);
+    })
+  }
+
+  toggleRequiredValidator(formGroup: FormGroup, controlName: string, currentValue: boolean) {
+    if (currentValue) {
+      formGroup.controls[controlName].addValidators([Validators.required]);
+    } else {
+      formGroup.controls[controlName].removeValidators([Validators.required]);
+    }
+    formGroup.controls[controlName].updateValueAndValidity();
   }
 
   loadData() {
@@ -138,13 +144,11 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       this.companies = data.map((company: any) => {
         return { label: company.name, value: company.id };
       });
-      this.cd.markForCheck();
     });
     this.assessmentService.getAssessmentsForDropDown(companyId || '').subscribe(data => {
       this.assessments = data.map((assessment: any) => {
         return { label: assessment.assessmentName, value: assessment.assessmentId };
       });
-      this.cd.markForCheck();
     });
     // TODO: fix this call made twice
     const assessmentId = this.activatedRoute.snapshot.params['id'];
@@ -152,7 +156,6 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       this.assessmentService.getAssessment(assessmentId).subscribe(value => {
         this.assessment = value;
         this.patchEditForm();
-        this.cd.markForCheck();
       });
     }
   }
@@ -225,7 +228,9 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         companyAssessment['validFrom'] = moment(companyAssessment['validFrom']).format(
           'YYYY-MM-DD'
         );
-        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format('YYYY-MM-DD');
+        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format(
+          'YYYY-MM-DD'
+        );
         this.http.post<any>(API_URL.companyAssessments, companyAssessment).subscribe({
           next: () => this.goBack(),
           error: () => {},
@@ -241,19 +246,19 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   }
 
   generateLink() {
+    if (this.individualEditForm.invalid) {
+      return;
+    }
+    const sendReportTo = this.individualEditForm.get('sendReportTo')?.value;
     const sendEmail = this.individualEditForm.get('emailReport')?.value == true;
     const sendSms = this.individualEditForm.get('sendSms')?.value == true;
-    const embedCreditCode = this.individualEditForm.get('sendSms')?.value == true;
-    if (sendEmail && !this.individualEditForm.get('email')?.value) {
-      return;
-    }
-    if (sendSms && !this.individualEditForm.get('contactNumber')?.value) {
-      return;
-    }
+    const contactNumber = this.individualEditForm.get('contactNumber')?.value;
+    const embedCreditCode = this.individualEditForm.get('embedCreditCode')?.value == true;
+
     this.generateLinkPayload = {
       ...this.generateLinkPayload,
       companyAssessmentId: this.editForm.get('id')?.value,
-      email: this.individualEditForm.get('email')?.value,
+      email: sendEmail ? this.individualEditForm.get('email')?.value: null,
 
       emailReport: sendEmail ? 'Y' : 'N',
       embeddCreditCode: embedCreditCode ? 'Y' : 'N',
@@ -264,6 +269,8 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       link: null,
       message: null,
       error: null,
+      sendReportTo: sendReportTo,
+      contactNumber: sendSms ? contactNumber : null,
     };
     this.generateLinkCall();
   }
@@ -310,6 +317,9 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
 
   uploadUserAndEmailLinks() {
     if (!this.bulkEditForm.valid) {
+      if (this.bulkEditForm.get('credits')?.invalid) {
+        alert('Please enter credits');
+      }
       // TODO: inform user of the same
       console.log('Please enter the credits');
       return;
@@ -330,6 +340,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         link: null,
         message: null,
         error: null,
+        sendReportTo: this.bulkEditForm.get('sendReportTo')?.value,
       };
       this.ref = this.dialogService.open(UploadUserComponent, {
         data: {
@@ -344,7 +355,9 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   downloadBulkLinks() {
     if (!this.bulkEditForm.valid) {
       // TODO: inform user of the same
-      console.log('Please enter the credits');
+      if (this.bulkEditForm.get('credits')?.invalid) {
+        alert('Please enter credits');
+      }
       return;
     }
 

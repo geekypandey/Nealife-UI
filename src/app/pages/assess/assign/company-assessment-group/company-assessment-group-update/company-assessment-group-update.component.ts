@@ -1,12 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -60,7 +54,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
 
   private generateLinkPayload: any = {};
   private toastService = inject(MessageService);
-  private cd = inject(ChangeDetectorRef);
+  private getCompanyAssessment$: any;
 
   constructor() {
     this.editForm = this.fb.group({
@@ -88,7 +82,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       email: [],
       emailReport: [],
       embedCreditCode: [],
+      sendSms:[],
       contactNumber: [],
+      sendReportTo: [],
     });
 
     this.bulkEditForm = this.fb.group({
@@ -97,17 +93,29 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       email: [],
       emailReport: [],
       embedCreditCode: [],
-      credits: [null, Validators.required],
+      credits: ['', Validators.required],
+      sendReportTo: [],
     });
 
+    this.spinner.show(this.spinnerName);
     const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
     if (assessmentGroupId) {
-      this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe(value => {
-        this.companyAssessment = value;
-        this.patchEditForm();
-        this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
-        this.cd.markForCheck();
-      });
+      this.assessmentService.getCompanyAssessmentGroup().subscribe((values: Array<any>) => {
+        let isBranch = false;
+        for (const value of values) {
+          if (value.id == assessmentGroupId) {
+            isBranch = value.isBranch == true;
+            break;
+          }
+        }
+        this.getCompanyAssessment$ = isBranch ? this.assessmentService.getCompanyAssessmentIfIsBranch(assessmentGroupId) : this.assessmentService.getCompanyAssessment(assessmentGroupId);
+        this.getCompanyAssessment$.subscribe((companyAssessment: any) => {
+          this.companyAssessment = companyAssessment;
+          this.patchEditForm();
+          this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
+          this.spinner.hide(this.spinnerName);
+        });
+      })
     }
   }
 
@@ -119,6 +127,23 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       }
       this.loadData();
     });
+
+    this.individualEditForm.controls['emailReport'].valueChanges.subscribe((emailReport) => {
+      this.toggleRequiredValidator(this.individualEditForm, 'email', emailReport);
+    })
+
+    this.individualEditForm.controls['sendSms'].valueChanges.subscribe((sendSms) => {
+      this.toggleRequiredValidator(this.individualEditForm, 'contactNumber', sendSms);
+    })
+  }
+
+  toggleRequiredValidator(formGroup: FormGroup, controlName: string, currentValue: boolean) {
+    if (currentValue) {
+      formGroup.controls[controlName].addValidators([Validators.required]);
+    } else {
+      formGroup.controls[controlName].removeValidators([Validators.required]);
+    }
+    formGroup.controls[controlName].updateValueAndValidity();
   }
 
   loadData() {
@@ -136,34 +161,20 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       this.assessments = data.map((assessment: any) => {
         return { label: assessment.assessmentGroupName, value: assessment.assessmentGroupId };
       });
-      this.cd.markForCheck();
     });
     // TODO: fix this call made twice
     const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
     if (assessmentGroupId) {
-      this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe(value => {
+      this.getCompanyAssessment$.subscribe((value: any) => {
         this.companyAssessment = value;
-        if (this.companyAssessment.isBranch) {
-          this.assessmentService
-            .getCompanyAssessmentIfIsBranch(assessmentGroupId)
-            .subscribe(value => {
-              this.companyAssessment = value;
-              this.patchEditForm();
-            });
-        } else {
-          this.patchEditForm();
-        }
-        this.cd.markForCheck();
+        this.patchEditForm();
       });
 
-      this.assessmentService
-        .getCompanyAssessmentGroupsBranchMapping(companyId, assessmentGroupId)
-        .subscribe(data => {
-          this.branches = data.map((branch: any) => {
-            return { label: branch.name, value: branch.id };
-          });
-          this.cd.markForCheck();
+      this.assessmentService.getCompanyAssessmentGroupsBranchMapping(companyId, assessmentGroupId).subscribe((data) => {
+        this.branches = data.map((branch: any) => {
+          return { label: branch.name, value: branch.id };
         });
+      })
     }
   }
 
@@ -199,8 +210,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   downloadCredits() {
     const id = this.companyAssessment.id;
 
+    const param = this.companyAssessment.isBranch ? 'companyAssessmentGroupsId' : 'companyAssessmentGroupBranchId';
     this.http
-      .get(`${API_URL.downloadCredits}?companyAssessmentGroupsId.equals=${id}`, {
+      .get(`${API_URL.downloadCredits}?${param}.equals=${id}`, {
         responseType: 'blob',
       })
       .subscribe((value: any) => {
@@ -242,7 +254,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         companyAssessment['validFrom'] = moment(companyAssessment['validFrom']).format(
           'YYYY-MM-DD'
         );
-        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format('YYYY-MM-DD');
+        companyAssessment['validTo'] = moment(companyAssessment['validTo']).format(
+          'YYYY-MM-DD'
+        );
         this.http.post<any>(API_URL.assignGroup, companyAssessment).subscribe({
           next: () => this.goBack(),
           error: () => {},
@@ -258,28 +272,38 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   }
 
   generateLink() {
+    if (this.individualEditForm.invalid) {
+      return;
+    }
+    const sendReportTo = this.individualEditForm.get('sendReportTo')?.value;
+    const sendEmail = this.individualEditForm.get('emailReport')?.value == true;
+    const sendSms = this.individualEditForm.get('sendSms')?.value == true;
+    const contactNumber = this.individualEditForm.get('contactNumber')?.value;
+    const embedCreditCode = this.individualEditForm.get('embedCreditCode')?.value == true;
+
     this.generateLinkPayload = {
       ...this.generateLinkPayload,
       companyAssessmentId: null,
       companyAssessmentGroupId: this.editForm.get('id')?.value,
-      email: this.individualEditForm.get('email')?.value,
+      email: sendEmail ? this.individualEditForm.get('email')?.value: null,
 
-      emailReport: this.individualEditForm.get('emailReport')?.value ? 'Y' : 'N',
-      embeddCreditCode: this.individualEditForm.get('embedCreditCode')?.value ? 'Y' : 'N',
+      emailReport: sendEmail ? 'Y' : 'N',
+      embeddCreditCode: embedCreditCode ? 'Y' : 'N',
 
       sendAssignmentEmail: 'N',
       creditCode: null,
       link: null,
       message: null,
       error: null,
+      sendReportTo: sendReportTo,
+      contactNumber: sendSms ? contactNumber : null,
     };
     this.generateLinkCall();
   }
 
   generateLinkCall() {
     if (this.companyAssessment.isBranch) {
-      this.generateLinkPayload['companyAssessmentGroupBranchId'] =
-        this.generateLinkPayload['companyAssessmentGroupId'];
+      this.generateLinkPayload['companyAssessmentGroupBranchId'] = this.generateLinkPayload['companyAssessmentGroupId'];
       this.generateLinkPayload['companyAssessmentGroupId'] = null;
     }
     this.http.post<any>(API_URL.assignAssessment, this.generateLinkPayload).subscribe({
@@ -328,6 +352,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   uploadUserAndEmailLinks() {
     if (!this.bulkEditForm.valid) {
       // TODO: inform user of the same
+      if (this.bulkEditForm.get('credits')?.invalid) {
+        alert('Please enter credits');
+      }
       console.log('Please enter the credits');
       return;
     }
@@ -347,6 +374,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         link: null,
         message: null,
         error: null,
+        sendReportTo: this.bulkEditForm.get('sendReportTo')?.value,
       };
       this.ref = this.dialogService.open(CompanyAssessmentGroupUploadComponent, {
         data: {
@@ -361,6 +389,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   downloadBulkLinks() {
     if (!this.bulkEditForm.valid) {
       // TODO: inform user of the same
+      if (this.bulkEditForm.get('credits')?.invalid) {
+        alert('Please enter credits');
+      }
       console.log('Please enter the credits');
       return;
     }

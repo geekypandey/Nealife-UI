@@ -16,6 +16,8 @@ import { API_URL } from 'src/app/constants/api-url.constants';
 export class UploadUserComponent implements OnInit {
   file: any;
   payload: any;
+  defaultText: string = 'Choose file';
+  displayText: string = this.defaultText;
 
   private ref = inject(DynamicDialogRef);
   private config = inject(DynamicDialogConfig);
@@ -33,6 +35,7 @@ export class UploadUserComponent implements OnInit {
 
   onFileChange(event: any): void {
     this.file = event.target.files[0];
+    this.displayText = this.file.name;
   }
 
   upload(): void {
