@@ -346,6 +346,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   uploadUserAndEmailLinks() {
     if (!this.bulkEditForm.valid) {
       // TODO: inform user of the same
+      if (this.bulkEditForm.get('credits')?.invalid) {
+        alert('Please enter credits');
+      }
       console.log('Please enter the credits');
       return;
     }
@@ -379,6 +382,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   downloadBulkLinks() {
     if (!this.bulkEditForm.valid) {
       // TODO: inform user of the same
+      if (this.bulkEditForm.get('credits')?.invalid) {
+        alert('Please enter credits');
+      }
       console.log('Please enter the credits');
       return;
     }
