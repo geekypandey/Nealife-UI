@@ -54,6 +54,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
 
   private generateLinkPayload: any = {};
   private toastService = inject(MessageService);
+  private getCompanyAssessment$: any;
 
   constructor() {
     this.editForm = this.fb.group({
@@ -99,12 +100,22 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
     this.spinner.show(this.spinnerName);
     const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
     if (assessmentGroupId) {
-      this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe(value => {
-        this.companyAssessment = value;
-        this.patchEditForm();
-        this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
-        this.spinner.hide(this.spinnerName);
-      });
+      this.assessmentService.getCompanyAssessmentGroup().subscribe((values: Array<any>) => {
+        let isBranch = false;
+        for (const value of values) {
+          if (value.id == assessmentGroupId) {
+            isBranch = value.isBranch == true;
+            break;
+          }
+        }
+        this.getCompanyAssessment$ = isBranch ? this.assessmentService.getCompanyAssessmentIfIsBranch(assessmentGroupId) : this.assessmentService.getCompanyAssessment(assessmentGroupId);
+        this.getCompanyAssessment$.subscribe((companyAssessment: any) => {
+          this.companyAssessment = companyAssessment;
+          this.patchEditForm();
+          this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
+          this.spinner.hide(this.spinnerName);
+        });
+      })
     }
   }
 
@@ -154,16 +165,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
     // TODO: fix this call made twice
     const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
     if (assessmentGroupId) {
-      this.assessmentService.getCompanyAssessment(assessmentGroupId).subscribe(value => {
+      this.getCompanyAssessment$.subscribe((value: any) => {
         this.companyAssessment = value;
-        if (this.companyAssessment.isBranch) {
-          this.assessmentService.getCompanyAssessmentIfIsBranch(assessmentGroupId).subscribe(value => {
-            this.companyAssessment = value;
-            this.patchEditForm();
-          })
-        } else {
-          this.patchEditForm();
-        }
+        this.patchEditForm();
       });
 
       this.assessmentService.getCompanyAssessmentGroupsBranchMapping(companyId, assessmentGroupId).subscribe((data) => {
