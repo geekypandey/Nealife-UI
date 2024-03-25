@@ -97,9 +97,9 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       sendReportTo: [],
     });
 
-    this.spinner.show(this.spinnerName);
     const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
     if (assessmentGroupId) {
+      this.spinner.show(this.spinnerName);
       this.assessmentService.getCompanyAssessmentGroup().subscribe((values: Array<any>) => {
         let isBranch = false;
         for (const value of values) {
