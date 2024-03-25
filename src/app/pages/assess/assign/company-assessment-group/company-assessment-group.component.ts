@@ -72,7 +72,7 @@ export class CompanyAssessmentGroupComponent {
               break;
             }
           }
-          this.router.navigate(['company-assessment-group/' + value + '/edit'], {
+          this.router.navigate([value + '/edit'], {
             relativeTo: this.activatedRoute,
             queryParams: { isBranch: isBranch },
           });
