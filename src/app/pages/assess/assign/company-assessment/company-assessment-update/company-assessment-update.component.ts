@@ -80,7 +80,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       email: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       emailReport: [],
       embedCreditCode: [],
-      contactNumber: ['', []],
+      contactNumber: ['', [Validators.pattern('[0-9]{10}')]],
       sendReportTo: [],
       sendSms: [],
     });

@@ -83,7 +83,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       emailReport: [],
       embedCreditCode: [],
       sendSms:[],
-      contactNumber: [],
+      contactNumber: ['', [Validators.pattern('[0-9]{10}')]],
       sendReportTo: [],
     });
 
