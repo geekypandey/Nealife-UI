@@ -61,7 +61,7 @@ export class CompanyAssessmentComponent {
         icon: ACTION_ICON.EDIT,
         field: 'id',
         onClick: (value: string) => {
-          this.router.navigate(['company-assessment/' + value + '/edit'], {
+          this.router.navigate([value + '/edit'], {
             relativeTo: this.activatedRoute,
           });
         },
