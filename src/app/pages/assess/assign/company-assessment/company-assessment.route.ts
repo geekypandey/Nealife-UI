@@ -3,6 +3,21 @@ import { Authority } from 'src/app/constants/authority.constants';
 
 export const companyAssessmentRoutes: Route[] = [
   {
+    path: '',
+    loadComponent: () =>
+      import('./company-assessment.component').then(
+        c => c.CompanyAssessmentComponent
+      ),
+    data: {
+      authorities: [
+        Authority.ACCOUNT_ADMIN,
+        Authority.NEA_ADMIN,
+        Authority.ADMIN,
+        Authority.SUPER_ADMIN,
+      ],
+    },
+  },
+  {
     path: ':id/view',
     loadComponent: () =>
       import('./company-assessment-details/company-assessment-details.component').then(
@@ -47,6 +62,7 @@ export const companyAssessmentRoutes: Route[] = [
       ],
     },
   },
+
   // {
   //   path: 'view-assessment-test',
   //   component: ViewAssessmentTestComponent,

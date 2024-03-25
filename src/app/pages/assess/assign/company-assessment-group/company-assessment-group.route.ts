@@ -16,6 +16,19 @@ export const companyAssessmentGroupRoutes: Route[] = [
 //     },
 //   },
   {
+    path: '',
+    loadComponent: () =>
+      import('./company-assessment-group.component').then(c => c.CompanyAssessmentGroupComponent),
+    data: {
+      authorities: [
+        Authority.ACCOUNT_ADMIN,
+        Authority.NEA_ADMIN,
+        Authority.ADMIN,
+        Authority.SUPER_ADMIN,
+      ],
+    },
+  },
+  {
     path: ':id/edit',
     loadComponent: () =>
       import('./company-assessment-group-update/company-assessment-group-update.component').then(c => c.CompanyAssessmentGroupUpdateComponent),
