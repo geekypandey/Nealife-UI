@@ -1,5 +1,7 @@
 import { Route } from '@angular/router';
 import { Authority } from 'src/app/constants/authority.constants';
+import { authGuard } from 'src/app/guards/is-authorized.guard';
+import { ViewAssessmentTestComponent } from '../view-assessment-test/view-assessment-test.component';
 
 export const companyAssessmentGroupRoutes: Route[] = [
 //   {
@@ -53,6 +55,20 @@ export const companyAssessmentGroupRoutes: Route[] = [
         Authority.SUPER_ADMIN,
       ],
     },
+  },
+  {
+    path: 'view-assessment-test',
+    component: ViewAssessmentTestComponent,
+    data: {
+      authorities: [
+        Authority.ACCOUNT_ADMIN,
+        Authority.NEA_ADMIN,
+        Authority.ADMIN,
+        Authority.SUPER_ADMIN,
+      ],
+      pageTitle: 'nealifeApp.competencyAspect.home.title',
+    },
+    canActivate: [authGuard],
   },
 //   {
 //     path: 'add',
