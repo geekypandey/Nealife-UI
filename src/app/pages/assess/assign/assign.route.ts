@@ -6,16 +6,6 @@ export const assignRoute: Route[] = [
   {
     path: '',
     loadComponent: () => import('./assign.component').then(c => c.AssignComponent),
-    data: {
-      authorities: [
-        Authority.ACCOUNT_ADMIN,
-        Authority.NEA_ADMIN,
-        Authority.ADMIN,
-        Authority.SUPER_ADMIN,
-      ],
-      pageTitle: 'nealifeApp.companyAssessment.home.title',
-    },
-    canActivate: [authGuard],
     children: [
       {
         path: 'company-assessment',
