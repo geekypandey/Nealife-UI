@@ -144,9 +144,12 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         this.editForm.controls['isBranch'].setValue(true);
         this.assessmentService.getCompanyAssessmentGroupsBranchMapping(assessment[0].companyId, value).subscribe((data) => {
           this.branches = data.map((branch: any) => {
-            return { label: branch.name, value: branch.id };
+            return { label: branch.key, value: branch.id };
           });
-      })
+        })
+      } else {
+        this.editForm.controls['isBranch'].setValue(false);
+        this.editForm.controls['branchId'].setValue(null);
       }
     })
   }
@@ -187,7 +190,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
 
       this.assessmentService.getCompanyAssessmentGroupsBranchMapping(companyId, assessmentGroupId).subscribe((data) => {
         this.branches = data.map((branch: any) => {
-          return { label: branch.name, value: branch.id };
+          return { label: branch.key, value: branch.id };
         });
       })
     }
