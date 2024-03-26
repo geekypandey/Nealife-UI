@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -56,6 +56,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   private toastService = inject(MessageService);
   private getCompanyAssessment$: any;
   private allAssessmentsForDropDown: Array<any> = [];
+  private cd = inject(ChangeDetectorRef);
 
   constructor() {
     this.editForm = this.fb.group({
@@ -116,6 +117,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
           this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
           this.spinner.hide(this.spinnerName);
         });
+        this.cd.markForCheck();
       })
     }
   }
@@ -127,6 +129,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
         this.editForm.disable();
       }
       this.loadData();
+      this.cd.markForCheck();
     });
 
     this.individualEditForm.controls['emailReport'].valueChanges.subscribe((emailReport) => {
@@ -146,6 +149,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
           this.branches = data.map((branch: any) => {
             return { label: branch.key, value: branch.id };
           });
+          this.cd.markForCheck();
         })
       } else {
         this.editForm.controls['isBranch'].setValue(false);
@@ -173,12 +177,14 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       this.companies = data.map((company: any) => {
         return { label: company.name, value: company.id };
       });
+      this.cd.markForCheck();
     });
     this.assessmentService.getCompanyAssessmentsForDropDown(companyId || '').subscribe(data => {
       this.allAssessmentsForDropDown = data;
       this.assessments = data.map((assessment: any) => {
         return { label: assessment.assessmentGroupName, value: assessment.assessmentGroupId };
       });
+      this.cd.markForCheck();
     });
     // TODO: fix this call made twice
     const assessmentGroupId = this.activatedRoute.snapshot.params['id'];
@@ -186,12 +192,14 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       this.getCompanyAssessment$.subscribe((value: any) => {
         this.companyAssessment = value;
         this.patchEditForm();
+        this.cd.markForCheck();
       });
 
       this.assessmentService.getCompanyAssessmentGroupsBranchMapping(companyId, assessmentGroupId).subscribe((data) => {
         this.branches = data.map((branch: any) => {
           return { label: branch.key, value: branch.id };
         });
+        this.cd.markForCheck();
       })
     }
   }
