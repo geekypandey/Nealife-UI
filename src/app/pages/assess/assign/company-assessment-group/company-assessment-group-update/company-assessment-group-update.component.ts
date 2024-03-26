@@ -55,6 +55,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
   private generateLinkPayload: any = {};
   private toastService = inject(MessageService);
   private getCompanyAssessment$: any;
+  private allAssessmentsForDropDown: Array<any> = [];
 
   constructor() {
     this.editForm = this.fb.group({
@@ -135,6 +136,19 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
     this.individualEditForm.controls['sendSms'].valueChanges.subscribe((sendSms) => {
       this.toggleRequiredValidator(this.individualEditForm, 'contactNumber', sendSms);
     })
+
+    this.editForm.controls['assessmentGroupId'].valueChanges.subscribe((value) => {
+      const assessment = this.allAssessmentsForDropDown.filter((a) => a.assessmentGroupId == value);
+      if (assessment.length > 0 && assessment[0]['isBranch']) {
+        // TODO: show branch menu
+        this.editForm.controls['isBranch'].setValue(true);
+        this.assessmentService.getCompanyAssessmentGroupsBranchMapping(assessment[0].companyId, value).subscribe((data) => {
+          this.branches = data.map((branch: any) => {
+            return { label: branch.name, value: branch.id };
+          });
+      })
+      }
+    })
   }
 
   toggleRequiredValidator(formGroup: FormGroup, controlName: string, currentValue: boolean) {
@@ -158,6 +172,7 @@ export class CompanyAssessmentGroupUpdateComponent implements OnInit {
       });
     });
     this.assessmentService.getCompanyAssessmentsForDropDown(companyId || '').subscribe(data => {
+      this.allAssessmentsForDropDown = data;
       this.assessments = data.map((assessment: any) => {
         return { label: assessment.assessmentGroupName, value: assessment.assessmentGroupId };
       });
