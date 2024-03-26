@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -51,6 +51,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
   private dialogService = inject(DialogService);
 
   private generateLinkPayload: any = {};
+  private cd = inject(ChangeDetectorRef);
 
   constructor() {
     this.editForm = this.fb.group({
@@ -61,9 +62,15 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       reportTemplate: [],
       emailTemplate: [],
       timeLimit: [null, [Validators.required, Validators.maxLength(75)]],
-      availableCredits: [0, [Validators.required, Validators.maxLength(75)]],
-      usedCredits: [0, [Validators.required, Validators.maxLength(75)]],
-      allocatedCredits: [0, [Validators.required, Validators.maxLength(75)]],
+      availableCredits: [
+        { value: 0, disable: true },
+        [Validators.required, Validators.maxLength(75)],
+      ],
+      usedCredits: [{ value: 0, disable: true }, [Validators.required, Validators.maxLength(75)]],
+      allocatedCredits: [
+        { value: 0, disable: true },
+        [Validators.required, Validators.maxLength(75)],
+      ],
       url: [],
       totalCredits: [0, [Validators.required, Validators.maxLength(75)]],
       generateUrl: [],
@@ -103,6 +110,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         this.patchEditForm();
         this.disableFieldsInEditForm(['usedCredits', 'availableCredits', 'allocatedCredits']);
         this.spinner.hide(this.spinnerName);
+        this.cd.markForCheck();
       });
     }
   }
@@ -114,6 +122,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
         this.editForm.disable();
       }
       this.loadData();
+      this.cd.markForCheck();
     });
 
     this.individualEditForm.controls['emailReport'].valueChanges.subscribe((emailReport) => {
@@ -144,11 +153,13 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       this.companies = data.map((company: any) => {
         return { label: company.name, value: company.id };
       });
+      this.cd.markForCheck();
     });
     this.assessmentService.getAssessmentsForDropDown(companyId || '').subscribe(data => {
       this.assessments = data.map((assessment: any) => {
         return { label: assessment.assessmentName, value: assessment.assessmentId };
       });
+      this.cd.markForCheck();
     });
     // TODO: fix this call made twice
     const assessmentId = this.activatedRoute.snapshot.params['id'];
@@ -156,6 +167,7 @@ export class CompanyAssessmentUpdateComponent implements OnInit {
       this.assessmentService.getAssessment(assessmentId).subscribe(value => {
         this.assessment = value;
         this.patchEditForm();
+        this.cd.markForCheck();
       });
     }
   }
