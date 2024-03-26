@@ -32,6 +32,7 @@ export class ViewAssessmentTestComponent {
           .viewTestAssessment({
             id: params['assessmentId'],
             isGroupAssessment: params['companyAssessmentGroupId'],
+            isGroupBranch: params['isGroupBranch'],
           })
           .pipe(finalize(() => this.spinnerService.hide(this.spinnerName)));
       })

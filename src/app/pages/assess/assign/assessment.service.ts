@@ -112,10 +112,14 @@ export class AssessmentService {
     return this.http.get<any>(API_URL.notifyCompanyWiseUsers, { params: params });
   }
 
-  public viewTestAssessment(payload: { id: string; isGroupAssessment: boolean }) {
+  public viewTestAssessment(payload: { id: string; isGroupAssessment: boolean; isGroupBranch: boolean }) {
     let url = `${API_URL.getNewAssessmentJson}?companyAssessmentId=${payload.id}`;
     if (payload.isGroupAssessment) {
-      url = `${API_URL.getNewAssessmentGroupJson}?companyAssessmentGroupId=${payload.id}`;
+      if (payload.isGroupBranch) {
+        url = `${API_URL.getNewAssessmentGroupBranchMappingJson}?companyAssessmentGroupBranchMappingId=${payload.id}`;
+      } else {
+        url = `${API_URL.getNewAssessmentGroupJson}?companyAssessmentGroupId=${payload.id}`;
+      }
     }
     return this.http.get<RenderAssessmentResponse>(url);
   }

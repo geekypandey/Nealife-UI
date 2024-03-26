@@ -55,9 +55,16 @@ export class CompanyAssessmentGroupComponent {
         icon: ACTION_ICON.VIEW,
         field: 'id',
         onClick: (value: string) => {
+          let isBranch = false;
+          for (const assessment of this.allAssessments) {
+            if (assessment.id == value) {
+              isBranch = (assessment.isBranch == true);
+              break;
+            }
+          }
           this.router.navigate(['view-assessment-test'], {
             relativeTo: this.activatedRoute,
-            queryParams: { companyAssessmentGroupId: true, assessmentId: value },
+            queryParams: { companyAssessmentGroupId: true, assessmentId: value, isGroupBranch: isBranch},
           });
         },
       },
